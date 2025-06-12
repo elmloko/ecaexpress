@@ -44,12 +44,15 @@ CREATE TABLE IF NOT EXISTS `empresa` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) DEFAULT NULL,
   `tipo` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla geca.empresa: ~1 rows (aproximadamente)
-INSERT INTO `empresa` (`id`, `nombre`, `tipo`) VALUES
-	(1, 'VMD', 'ANTIGUO');
+-- Volcando datos para la tabla geca.empresa: ~0 rows (aproximadamente)
+INSERT INTO `empresa` (`id`, `nombre`, `tipo`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'VMD', 'ANTIGUO', NULL, NULL, NULL);
 
 -- Volcando estructura para tabla geca.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -166,6 +169,9 @@ CREATE TABLE IF NOT EXISTS `peso` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `max` float DEFAULT NULL,
   `min` float DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -187,9 +193,9 @@ CREATE TABLE IF NOT EXISTS `pulse_aggregates` (
   KEY `pulse_aggregates_period_bucket_index` (`period`,`bucket`),
   KEY `pulse_aggregates_type_index` (`type`),
   KEY `pulse_aggregates_period_type_aggregate_bucket_index` (`period`,`type`,`aggregate`,`bucket`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_aggregates: ~35 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_aggregates: ~56 rows (aproximadamente)
 INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggregate`, `value`, `count`) VALUES
 	(1, 1749739620, 60, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'count', 1.00, NULL),
 	(2, 1749739320, 360, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'count', 1.00, NULL),
@@ -198,11 +204,11 @@ INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggreg
 	(5, 1749739620, 60, 'slow_user_request', '1', 'count', 1.00, NULL),
 	(6, 1749739320, 360, 'slow_user_request', '1', 'count', 1.00, NULL),
 	(7, 1749738240, 1440, 'slow_user_request', '1', 'count', 1.00, NULL),
-	(8, 1749736800, 10080, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(8, 1749736800, 10080, 'slow_user_request', '1', 'count', 3.00, NULL),
 	(9, 1749739620, 60, 'user_request', '1', 'count', 2.00, NULL),
 	(10, 1749739320, 360, 'user_request', '1', 'count', 2.00, NULL),
 	(11, 1749738240, 1440, 'user_request', '1', 'count', 2.00, NULL),
-	(12, 1749736800, 10080, 'user_request', '1', 'count', 3.00, NULL),
+	(12, 1749736800, 10080, 'user_request', '1', 'count', 14.00, NULL),
 	(13, 1749739620, 60, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'max', 1036.00, NULL),
 	(14, 1749739320, 360, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'max', 1036.00, NULL),
 	(15, 1749738240, 1440, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'max', 1036.00, NULL),
@@ -225,7 +231,31 @@ INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggreg
 	(32, 1749736800, 10080, 'exception', '["Illuminate\\\\Database\\\\QueryException","vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Database\\\\Connection.php:822"]', 'max', 1749739632.00, NULL),
 	(37, 1749739680, 60, 'user_request', '1', 'count', 1.00, NULL),
 	(38, 1749739680, 360, 'user_request', '1', 'count', 1.00, NULL),
-	(39, 1749739680, 1440, 'user_request', '1', 'count', 1.00, NULL);
+	(39, 1749739680, 1440, 'user_request', '1', 'count', 1.00, NULL),
+	(41, 1749741300, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(42, 1749741120, 360, 'user_request', '1', 'count', 5.00, NULL),
+	(43, 1749741120, 1440, 'user_request', '1', 'count', 11.00, NULL),
+	(45, 1749741360, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(53, 1749741420, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(61, 1749741480, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(62, 1749741480, 360, 'user_request', '1', 'count', 6.00, NULL),
+	(65, 1749741480, 60, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'count', 1.00, NULL),
+	(66, 1749741480, 360, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'count', 2.00, NULL),
+	(67, 1749741120, 1440, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'count', 2.00, NULL),
+	(68, 1749736800, 10080, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'count', 2.00, NULL),
+	(69, 1749741480, 60, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(70, 1749741480, 360, 'slow_user_request', '1', 'count', 2.00, NULL),
+	(71, 1749741120, 1440, 'slow_user_request', '1', 'count', 2.00, NULL),
+	(77, 1749741480, 60, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'max', 1052.00, NULL),
+	(78, 1749741480, 360, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'max', 1115.00, NULL),
+	(79, 1749741120, 1440, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'max', 1115.00, NULL),
+	(80, 1749736800, 10080, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'max', 1115.00, NULL),
+	(81, 1749741540, 60, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'count', 1.00, NULL),
+	(82, 1749741540, 60, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(83, 1749741540, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(93, 1749741540, 60, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 'max', 1115.00, NULL),
+	(97, 1749741600, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(105, 1749741660, 60, 'user_request', '1', 'count', 1.00, NULL);
 
 -- Volcando estructura para tabla geca.pulse_entries
 CREATE TABLE IF NOT EXISTS `pulse_entries` (
@@ -240,9 +270,9 @@ CREATE TABLE IF NOT EXISTS `pulse_entries` (
   KEY `pulse_entries_type_index` (`type`),
   KEY `pulse_entries_key_hash_index` (`key_hash`),
   KEY `pulse_entries_timestamp_type_key_hash_value_index` (`timestamp`,`type`,`key_hash`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_entries: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_entries: ~23 rows (aproximadamente)
 INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(1, 1749739626, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 1036),
 	(2, 1749739626, 'slow_user_request', '1', NULL),
@@ -251,7 +281,22 @@ INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(5, 1749739628, 'exception', '["Illuminate\\\\Database\\\\QueryException","vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Database\\\\Connection.php:822"]', 1749739628),
 	(6, 1749739632, 'exception', '["Illuminate\\\\Database\\\\QueryException","vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Database\\\\Connection.php:822"]', 1749739632),
 	(7, 1749739674, 'user_request', '1', NULL),
-	(8, 1749739680, 'user_request', '1', NULL);
+	(8, 1749739680, 'user_request', '1', NULL),
+	(9, 1749741358, 'user_request', '1', NULL),
+	(10, 1749741373, 'user_request', '1', NULL),
+	(11, 1749741378, 'user_request', '1', NULL),
+	(12, 1749741420, 'user_request', '1', NULL),
+	(13, 1749741454, 'user_request', '1', NULL),
+	(14, 1749741511, 'user_request', '1', NULL),
+	(15, 1749741528, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 1052),
+	(16, 1749741528, 'slow_user_request', '1', NULL),
+	(17, 1749741528, 'user_request', '1', NULL),
+	(18, 1749741571, 'slow_request', '["GET","\\/empresa","App\\\\Http\\\\Controllers\\\\TarifaController@getEmpresa"]', 1115),
+	(19, 1749741571, 'slow_user_request', '1', NULL),
+	(20, 1749741571, 'user_request', '1', NULL),
+	(21, 1749741613, 'user_request', '1', NULL),
+	(22, 1749741621, 'user_request', '1', NULL),
+	(23, 1749741669, 'user_request', '1', NULL);
 
 -- Volcando estructura para tabla geca.pulse_values
 CREATE TABLE IF NOT EXISTS `pulse_values` (
@@ -309,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla geca.sessions: ~1 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('XzFMItKiHT3dzc91P7WCqs2FZcHH5BzaIgV96Q4W', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzlyVmQ5Wlg3SjlqUzljWXNLUEtQV3hLQ1VKWnpEZ2NmTmVjdG01diI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3RhcmlmYSI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1749739681);
+	('XzFMItKiHT3dzc91P7WCqs2FZcHH5BzaIgV96Q4W', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzlyVmQ5Wlg3SjlqUzljWXNLUEtQV3hLQ1VKWnpEZ2NmTmVjdG01diI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3Blc28iO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1749741669);
 
 -- Volcando estructura para tabla geca.tarifario
 CREATE TABLE IF NOT EXISTS `tarifario` (
@@ -324,6 +369,9 @@ CREATE TABLE IF NOT EXISTS `tarifario` (
   `centro` float DEFAULT NULL,
   `euro` float DEFAULT NULL,
   `asia` float DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -17,7 +17,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-        Route::get('/tarifa', [TarifaController::class, 'getTarifa']);
+        Route::get('/tarifa', [TarifaController::class, 'getTarifas']);
+        Route::get('/peso', [TarifaController::class, 'getPesos']);
+        Route::get('/empresa', [TarifaController::class, 'getEmpresas']);
         
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

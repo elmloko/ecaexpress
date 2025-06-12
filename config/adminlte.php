@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' =>'images/AGBClogo.png',
+            'path' => 'images/AGBClogo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -324,48 +324,56 @@ return [
                 [
                     'text' => 'Personal AGBC',
                     'url' => 'users',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-id-badge', // Representa a un usuario con credencial
                 ],
                 [
                     'text' => 'Roles',
                     'url' => 'roles',
-                    'icon' => 'fas fa-users-cog',
+                    'icon' => 'fas fa-user-shield', // Mejor que users-cog para roles de seguridad
                 ],
                 [
                     'text' => 'Permisos',
                     'url' => 'permissions',
-                    'icon' => 'fas fa-key',
+                    'icon' => 'fas fa-unlock-alt', // Representa acceso controlado
                 ],
                 [
                     'text' => 'Accesos',
                     'url' => 'role-has-permissions',
-                    'icon' => 'fas fa-key',
+                    'icon' => 'fas fa-user-lock', // Ícono relacionado con control de acceso
                 ],
             ],
         ],
         [
             'text' => 'Tarifario',
-            'icon' => 'fas fa-users',
+            'icon'   => 'fas fa-money-check-alt',
             // 'can'  => 'users.index',
             'submenu' => [
                 [
                     'text' => 'Ajustes Tarifarios',
                     'url' => '/tarifa',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-money-bill-wave', // Ícono de tarifas / finanzas
+                ],
+                [
+                    'text' => 'Ajustes Pesos',
+                    'url' => '/peso',
+                    'icon' => 'fas fa-weight', // Ícono de peso
+                ],
+                [
+                    'text' => 'Ajustes Empresas',
+                    'url' => '/empresa',
+                    'icon' => 'fas fa-building', // Ícono de empresa
                 ],
             ],
         ],
         [
             'text' => 'Rendimiento',
             'url' => '/pulse',
-
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad
         ],
         [
             'text' => 'Logs',
             'url' => '/log-viewer',
-
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-file-alt', // Ícono de archivo o registro
         ],
     ],
 
