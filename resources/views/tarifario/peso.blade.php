@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-@livewire('peso')
+@livewire('pesos')
 @endsection
