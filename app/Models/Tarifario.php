@@ -25,8 +25,8 @@ class Tarifario extends Model
     ];
 
     protected $casts = [
-        'peso'     => 'float',
-        'empresa'  => 'string',
+        'peso'     => 'integer', // CAMBIADO DE float A integer
+        'empresa'  => 'integer',
         'local'    => 'float',
         'nacional' => 'float',
         'camiri'   => 'float',
@@ -36,4 +36,14 @@ class Tarifario extends Model
         'euro'     => 'float',
         'asia'     => 'float',
     ];
+
+    public function empresaDatos()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa');
+    }
+
+    public function pesoRango()
+    {
+        return $this->belongsTo(Peso::class, 'peso');
+    }
 }

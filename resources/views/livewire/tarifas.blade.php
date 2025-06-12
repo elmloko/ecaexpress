@@ -15,14 +15,23 @@
 
     <section class="content">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <button class="btn btn-success" wire:click="abrirModal">
-                    <i class="fas fa-plus-circle"></i> Crear Tarifario
-                </button>
-                <div class="input-group" style="max-width: 400px;">
-                    <input type="text" class="form-control" placeholder="Buscar por empresa..." wire:model.defer="searchInput">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" wire:click="buscar"><i class="fas fa-search"></i></button>
+            <div class="card-header">
+                <div class="row w-100">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <button class="btn btn-success" wire:click="abrirModal">
+                            <i class="fas fa-plus-circle"></i> Crear Tarifario
+                        </button>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <div class="input-group" style="max-width: 400px;">
+                            <input type="text" class="form-control" placeholder="Buscar por empresa..."
+                                wire:model.defer="searchInput">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary btn-flat" wire:click="buscar">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,8 +60,10 @@
                     <tbody>
                         @forelse ($tarifarios as $tarifa)
                             <tr>
-                                <td>{{ $tarifa->empresa }}</td>
-                                <td>{{ $tarifa->peso }}</td>
+                                <td>{{ $tarifa->empresaDatos ? $tarifa->empresaDatos->nombre : '—' }}</td>
+                                <td>
+                                    {{ $tarifa->pesoRango ? $tarifa->pesoRango->min . ' - ' . $tarifa->pesoRango->max . ' kg' : '—' }}
+                                </td>
                                 <td>{{ $tarifa->local }}</td>
                                 <td>{{ $tarifa->nacional }}</td>
                                 <td>{{ $tarifa->camiri }}</td>
@@ -62,13 +73,17 @@
                                 <td>{{ $tarifa->euro }}</td>
                                 <td>{{ $tarifa->asia }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" wire:click="editar({{ $tarifa->id }})"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-warning" wire:click="editar({{ $tarifa->id }})"><i
+                                            class="fas fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger" wire:click="eliminar({{ $tarifa->id }})"
-                                        onclick="return confirm('¿Deseas eliminar este tarifario?')"><i class="fas fa-trash-alt"></i></button>
+                                        onclick="return confirm('¿Deseas eliminar este tarifario?')"><i
+                                            class="fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="11" class="text-center">No se encontraron registros.</td></tr>
+                            <tr>
+                                <td colspan="11" class="text-center">No se encontraron registros.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -81,7 +96,8 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade @if ($modal) show d-block @endif" style="background: rgba(0,0,0,0.5);" role="dialog">
+    <div class="modal fade @if ($modal) show d-block @endif" style="background: rgba(0,0,0,0.5);"
+        role="dialog">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -90,26 +106,51 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        @foreach (['empresa', 'peso', 'local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia'] as $campo)
-                            <div class="col-md-4 mb-3">
-                                <label class="text-capitalize">{{ ucfirst($campo) }}</label>
-                                <input 
-                                    type="{{ $campo === 'empresa' ? 'text' : 'number' }}"
-                                    step="0.01" 
-                                    wire:model.defer="{{ $campo }}"
-                                    class="form-control"
-                                    placeholder="{{ ucfirst($campo) }}"
-                                    style="{{ $campo === 'empresa' ? 'text-transform: uppercase;' : '' }}"
-                                >
-                                @error($campo)
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                        @endforeach
+                        <div class="col-md-4 mb-3">
+                            <label>Empresa</label>
+                            <select wire:model.defer="empresa" class="form-control">
+                                <option value="">-- Selecciona Empresa --</option>
+                                @foreach ($empresas as $emp)
+                                    <option value="{{ $emp->id }}">{{ $emp->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @error('empresa')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Peso</label>
+                            <select wire:model.defer="peso" class="form-control">
+                                <option value="">-- Selecciona Peso --</option>
+                                @foreach ($pesos as $p)
+                                    <option value="{{ $p->id }}">{{ $p->min }} - {{ $p->max }} kg
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('peso')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="row">
+                            @foreach (['local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia'] as $campo)
+                                <div class="col-md-1-5 col mb-3">
+                                    <label>{{ ucfirst($campo) }}</label>
+                                    <input type="number" step="0.01" wire:model.defer="{{ $campo }}"
+                                        class="form-control">
+                                    @error($campo)
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            @endforeach
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button wire:click="guardar" class="btn btn-primary">{{ $tarifario_id ? 'Actualizar' : 'Guardar' }}</button>
+                    <button wire:click="guardar"
+                        class="btn btn-primary">{{ $tarifario_id ? 'Actualizar' : 'Guardar' }}</button>
                     <button type="button" class="btn btn-secondary" wire:click="cerrarModal">Cancelar</button>
                 </div>
             </div>

@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Tarifario;
+use App\Models\Empresa;
+use App\Models\Peso;
 
 class Tarifas extends Component
 {
@@ -14,14 +16,14 @@ class Tarifas extends Component
     public $searchInput = '';
     public $modal = false;
     public $tarifario_id;
-    public $peso, $empresa, $local, $nacional, $camiri, $sud, $norte, $centro, $euro, $asia;
+    public $empresa, $peso, $local, $nacional, $camiri, $sud, $norte, $centro, $euro, $asia;
 
     protected $paginationTheme = 'bootstrap';
     protected $updatesQueryString = ['search'];
 
     protected $rules = [
-        'empresa'  => 'required|string|max:50',
-        'peso'     => 'required|numeric|min:0',
+        'empresa'  => 'required|numeric|exists:empresa,id',
+        'peso'     => 'required|numeric|exists:peso,id',
         'local'    => 'nullable|numeric|min:0',
         'nacional' => 'nullable|numeric|min:0',
         'camiri'   => 'nullable|numeric|min:0',
@@ -32,9 +34,16 @@ class Tarifas extends Component
         'asia'     => 'nullable|numeric|min:0',
     ];
 
-    public function mount() { $this->searchInput = $this->search; }
+    public function mount()
+    {
+        $this->searchInput = $this->search;
+    }
 
-    public function buscar() { $this->search = $this->searchInput; $this->resetPage(); }
+    public function buscar()
+    {
+        $this->search = $this->searchInput;
+        $this->resetPage();
+    }
 
     public function abrirModal()
     {
@@ -42,7 +51,10 @@ class Tarifas extends Component
         $this->modal = true;
     }
 
-    public function cerrarModal() { $this->modal = false; }
+    public function cerrarModal()
+    {
+        $this->modal = false;
+    }
 
     public function guardar()
     {
@@ -52,7 +64,7 @@ class Tarifas extends Component
             ['id' => $this->tarifario_id],
             [
                 'peso'     => $this->peso,
-                'empresa'  => strtoupper($this->empresa),
+                'empresa'  => $this->empresa,
                 'local'    => $this->local,
                 'nacional' => $this->nacional,
                 'camiri'   => $this->camiri,
@@ -83,10 +95,15 @@ class Tarifas extends Component
 
     public function render()
     {
-        $tarifarios = Tarifario::where('empresa', 'like', '%' . $this->search . '%')
+        $tarifarios = Tarifario::with(['empresaDatos', 'pesoRango'])
+            ->whereHas('empresaDatos', fn($q) => $q->where('nombre', 'like', '%' . $this->search . '%'))
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        return view('livewire.tarifas', compact('tarifarios'));
+
+        $empresas = Empresa::all();
+        $pesos = Peso::all();
+
+        return view('livewire.tarifas', compact('tarifarios', 'empresas', 'pesos'));
     }
 }
