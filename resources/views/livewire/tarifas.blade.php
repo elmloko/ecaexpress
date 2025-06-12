@@ -53,11 +53,11 @@
                             <th>Local</th>
                             <th>Nacional</th>
                             <th>Camiri</th>
-                            <th>Sud</th>
-                            <th>Norte</th>
-                            <th>Centro</th>
-                            <th>Euro</th>
-                            <th>Asia</th>
+                            <th>SudAmerica</th>
+                            <th>CentroAmerica</th>
+                            <th>NorteAmerica</th>
+                            <th>Europa</th>
+                            <th>Asia/Africa</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -71,8 +71,8 @@
                                 <td>{{ $tarifa->nacional }}</td>
                                 <td>{{ $tarifa->camiri }}</td>
                                 <td>{{ $tarifa->sud }}</td>
-                                <td>{{ $tarifa->norte }}</td>
                                 <td>{{ $tarifa->centro }}</td>
+                                <td>{{ $tarifa->norte }}</td>
                                 <td>{{ $tarifa->euro }}</td>
                                 <td>{{ $tarifa->asia }}</td>
                                 <td>
@@ -138,7 +138,7 @@
                     </div>
 
                     <div class="row">
-                        @foreach (['local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia'] as $campo)
+                        @foreach (['local', 'nacional', 'camiri', 'sud', 'centro', 'norte', 'euro', 'asia'] as $campo)
                             <div class="col col-md-1-5 mb-3">
                                 <label>{{ ucfirst($campo) }}</label>
                                 <input type="number" step="0.01" wire:model.defer="{{ $campo }}"

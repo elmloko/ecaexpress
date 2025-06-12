@@ -92,7 +92,19 @@ class Tarifas extends Component
     public function editar($id)
     {
         $registro = Tarifario::findOrFail($id);
-        $this->fill($registro->toArray());
+
+        $this->tarifario_id = $registro->id;
+        $this->empresa      = $registro->empresa;
+        $this->peso         = $registro->peso;
+        $this->local        = $registro->local;
+        $this->nacional     = $registro->nacional;
+        $this->camiri       = $registro->camiri;
+        $this->sud          = $registro->sud;
+        $this->norte        = $registro->norte;
+        $this->centro       = $registro->centro;
+        $this->euro         = $registro->euro;
+        $this->asia         = $registro->asia;
+
         $this->modal = true;
     }
 
@@ -105,7 +117,7 @@ class Tarifas extends Component
     public function render()
     {
         $empresas = Empresa::all();
-        $pesos = Peso::all();
+        $pesos = Peso::orderBy('min', 'asc')->get();
 
         $tarifarios = Tarifario::with(['empresaDatos', 'pesoRango'])
             ->where('empresa', $this->activeEmpresaId)
