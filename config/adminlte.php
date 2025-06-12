@@ -344,13 +344,13 @@ return [
             ],
         ],
         [
-            'text' => 'Consultas Informacion',
+            'text' => 'Tarifario',
             'icon' => 'fas fa-users',
             // 'can'  => 'users.index',
             'submenu' => [
                 [
-                    'text' => 'Consulta Correspondencia',
-                    'url' => '',
+                    'text' => 'Ajustes Tarifarios',
+                    'url' => '/tarifa',
                     'icon' => 'fas fa-user',
                 ],
             ],
