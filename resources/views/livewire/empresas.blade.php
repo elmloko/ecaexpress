@@ -15,17 +15,23 @@
 
     <section class="content">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <button class="btn btn-success" wire:click="abrirModal">
-                    <i class="fas fa-plus-circle"></i> Crear Empresa
-                </button>
-
-                <div class="input-group" style="max-width: 400px;">
-                    <input type="text" class="form-control" placeholder="Buscar..." wire:model.defer="searchInput">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary btn-flat" wire:click="buscar">
-                            <i class="fas fa-search"></i>
+            <div class="card-header">
+                <div class="row w-100">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <button class="btn btn-success" wire:click="abrirModal">
+                            <i class="fas fa-plus-circle"></i> Crear Empresa
                         </button>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <div class="input-group" style="max-width: 400px;">
+                            <input type="text" class="form-control" placeholder="Buscar..."
+                                wire:model.defer="searchInput">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary btn-flat" wire:click="buscar">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,7 +46,7 @@
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>ID</th>
+
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Creado</th>
@@ -51,7 +57,6 @@
                     <tbody>
                         @forelse ($empresas as $empresa)
                             <tr>
-                                <td>{{ $empresa->id }}</td>
                                 <td>{{ $empresa->nombre }}</td>
                                 <td>{{ $empresa->tipo }}</td>
                                 <td>{{ $empresa->created_at }}</td>
@@ -60,7 +65,6 @@
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $empresa->id }})">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
-
                                     <button class="btn btn-sm btn-danger" wire:click="eliminar({{ $empresa->id }})"
                                         onclick="return confirm('¿Estás seguro de eliminar esta empresa?')">
                                         <i class="fas fa-trash-alt"></i> Eliminar
@@ -83,7 +87,8 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade @if($modal) show d-block @endif" tabindex="-1" style="background: rgba(0,0,0,0.5);" role="dialog">
+    <div class="modal fade @if ($modal) show d-block @endif" tabindex="-1"
+        style="background: rgba(0,0,0,0.5);" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -96,7 +101,9 @@
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" wire:model.defer="nombre" class="form-control" placeholder="Nombre">
-                        @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
+                        @error('nombre')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -106,7 +113,9 @@
                             <option value="ANTIGUO">ANTIGUO</option>
                             <option value="NUEVO">NUEVO</option>
                         </select>
-                        @error('tipo') <small class="text-danger">{{ $message }}</small> @enderror
+                        @error('tipo')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">

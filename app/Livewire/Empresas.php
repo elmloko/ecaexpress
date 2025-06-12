@@ -70,6 +70,14 @@ class Empresas extends Component
         $this->modal = true;
     }
 
+    public function eliminar($id)
+    {
+        $empresa = Empresa::findOrFail($id);
+        $empresa->delete();
+
+        session()->flash('message', 'Empresa eliminada correctamente.');
+    }
+
     public function render()
     {
         $empresas = Empresa::where('nombre', 'like', '%' . $this->search . '%')
