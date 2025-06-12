@@ -17,6 +17,7 @@ class Tarifas extends Component
     public $modal = false;
     public $tarifario_id;
     public $empresa, $peso, $local, $nacional, $camiri, $sud, $norte, $centro, $euro, $asia;
+    public $activeEmpresaId;
 
     protected $paginationTheme = 'bootstrap';
     protected $updatesQueryString = ['search'];
@@ -37,6 +38,13 @@ class Tarifas extends Component
     public function mount()
     {
         $this->searchInput = $this->search;
+        $this->activeEmpresaId = Empresa::first()?->id;
+    }
+
+    public function selectEmpresa($empresaId)
+    {
+        $this->activeEmpresaId = $empresaId;
+        $this->resetPage();
     }
 
     public function buscar()
@@ -48,6 +56,7 @@ class Tarifas extends Component
     public function abrirModal()
     {
         $this->reset(['tarifario_id', 'peso', 'empresa', 'local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia']);
+        $this->empresa = $this->activeEmpresaId;
         $this->modal = true;
     }
 
@@ -95,14 +104,14 @@ class Tarifas extends Component
 
     public function render()
     {
+        $empresas = Empresa::all();
+        $pesos = Peso::all();
+
         $tarifarios = Tarifario::with(['empresaDatos', 'pesoRango'])
+            ->where('empresa', $this->activeEmpresaId)
             ->whereHas('empresaDatos', fn($q) => $q->where('nombre', 'like', '%' . $this->search . '%'))
             ->orderBy('id', 'desc')
             ->paginate(10);
-
-
-        $empresas = Empresa::all();
-        $pesos = Peso::all();
 
         return view('livewire.tarifas', compact('tarifarios', 'empresas', 'pesos'));
     }

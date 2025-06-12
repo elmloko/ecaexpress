@@ -80,7 +80,7 @@ class Pesos extends Component
     {
         $pesos = Peso::where('min', 'like', '%' . $this->search . '%')
             ->orWhere('max', 'like', '%' . $this->search . '%')
-            ->orderBy('id', 'desc')
+            ->orderBy('min', 'asc')
             ->paginate(10);
 
         return view('livewire.pesos', [

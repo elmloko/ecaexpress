@@ -4,12 +4,6 @@
             <div class="col-sm-6">
                 <h1>Tarifario Registrado</h1>
             </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item active">Tarifario</li>
-                </ol>
-            </div>
         </div>
     </section>
 
@@ -35,6 +29,17 @@
                     </div>
                 </div>
             </div>
+            <!-- Pestañas de empresas -->
+            <ul class="nav nav-tabs">
+                @foreach ($empresas as $emp)
+                    <li class="nav-item">
+                        <button class="nav-link {{ $activeEmpresaId === $emp->id ? 'active' : '' }}"
+                            wire:click="selectEmpresa({{ $emp->id }})">
+                            {{ $emp->nombre }}
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
 
             <div class="card-body p-0">
                 @if (session()->has('message'))
@@ -44,7 +49,6 @@
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Empresa</th>
                             <th>Peso</th>
                             <th>Local</th>
                             <th>Nacional</th>
@@ -60,7 +64,6 @@
                     <tbody>
                         @forelse ($tarifarios as $tarifa)
                             <tr>
-                                <td>{{ $tarifa->empresaDatos ? $tarifa->empresaDatos->nombre : '—' }}</td>
                                 <td>
                                     {{ $tarifa->pesoRango ? $tarifa->pesoRango->min . ' - ' . $tarifa->pesoRango->max . ' kg' : '—' }}
                                 </td>
@@ -73,16 +76,16 @@
                                 <td>{{ $tarifa->euro }}</td>
                                 <td>{{ $tarifa->asia }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" wire:click="editar({{ $tarifa->id }})"><i
-                                            class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-warning" wire:click="editar({{ $tarifa->id }})">
+                                        <i class="fas fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger" wire:click="eliminar({{ $tarifa->id }})"
-                                        onclick="return confirm('¿Deseas eliminar este tarifario?')"><i
-                                            class="fas fa-trash-alt"></i></button>
+                                        onclick="return confirm('¿Deseas eliminar este tarifario?')">
+                                        <i class="fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center">No se encontraron registros.</td>
+                                <td colspan="10" class="text-center">No se encontraron registros.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -132,20 +135,19 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                    </div>
 
-                        <div class="row">
-                            @foreach (['local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia'] as $campo)
-                                <div class="col-md-1-5 col mb-3">
-                                    <label>{{ ucfirst($campo) }}</label>
-                                    <input type="number" step="0.01" wire:model.defer="{{ $campo }}"
-                                        class="form-control">
-                                    @error($campo)
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            @endforeach
-                        </div>
-
+                    <div class="row">
+                        @foreach (['local', 'nacional', 'camiri', 'sud', 'norte', 'centro', 'euro', 'asia'] as $campo)
+                            <div class="col col-md-1-5 mb-3">
+                                <label>{{ ucfirst($campo) }}</label>
+                                <input type="number" step="0.01" wire:model.defer="{{ $campo }}"
+                                    class="form-control">
+                                @error($campo)
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="modal-footer">
