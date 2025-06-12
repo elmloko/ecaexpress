@@ -24,8 +24,7 @@
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <div class="input-group" style="max-width: 400px;">
-                            <input type="text" class="form-control" placeholder="Buscar..."
-                                wire:model.defer="searchInput">
+                            <input type="text" class="form-control" placeholder="Buscar..." wire:model.defer="searchInput">
                             <div class="input-group-append">
                                 <button class="btn btn-primary btn-flat" wire:click="buscar">
                                     <i class="fas fa-search"></i>
@@ -46,7 +45,6 @@
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
-
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Creado</th>
@@ -100,7 +98,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
-                        <input type="text" wire:model.defer="nombre" class="form-control" placeholder="Nombre">
+                        <input type="text" wire:model.defer="nombre" class="form-control" placeholder="Nombre" style="text-transform: uppercase;">
                         @error('nombre')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -108,7 +106,7 @@
 
                     <div class="form-group">
                         <label for="tipo">Tipo</label>
-                        <select wire:model.defer="tipo" class="form-control">
+                        <select wire:model.defer="tipo" class="form-control" style="text-transform: uppercase;">
                             <option value="">-- Selecciona un tipo --</option>
                             <option value="ANTIGUO">ANTIGUO</option>
                             <option value="NUEVO">NUEVO</option>

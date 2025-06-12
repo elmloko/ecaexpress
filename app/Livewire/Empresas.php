@@ -52,7 +52,10 @@ class Empresas extends Component
 
         Empresa::updateOrCreate(
             ['id' => $this->empresa_id],
-            ['nombre' => $this->nombre, 'tipo' => $this->tipo]
+            [
+                'nombre' => strtoupper($this->nombre),
+                'tipo'   => strtoupper($this->tipo),
+            ]
         );
 
         $mensaje = $this->empresa_id ? 'Empresa actualizada correctamente.' : 'Empresa registrada correctamente.';
@@ -65,8 +68,8 @@ class Empresas extends Component
     {
         $empresa = Empresa::findOrFail($id);
         $this->empresa_id = $empresa->id;
-        $this->nombre = $empresa->nombre;
-        $this->tipo = $empresa->tipo;
+        $this->nombre = strtoupper($empresa->nombre);
+        $this->tipo = strtoupper($empresa->tipo);
         $this->modal = true;
     }
 
