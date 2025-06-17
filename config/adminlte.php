@@ -366,6 +366,28 @@ return [
             ],
         ],
         [
+            'text' => 'Todos los paquetes',
+            'icon' => 'fas fa-boxes', // Icono representativo de "paquetes"
+            // 'can'  => 'users.index',
+            'submenu' => [
+                [
+                    'text' => 'Recibir',
+                    'url'  => '/recibir',
+                    'icon' => 'fas fa-inbox', // Icono de "entrada" o recepción
+                ],
+                [
+                    'text' => 'Almacén',
+                    'url'  => '/almacen',
+                    'icon' => 'fas fa-warehouse', // Icono de almacén
+                ],
+                [
+                    'text' => 'Inventario',
+                    'url'  => '/inventario',
+                    'icon' => 'fas fa-clipboard-list', // Icono representativo de inventario
+                ],
+            ],
+        ],
+        [
             'text' => 'Rendimiento',
             'url' => '/pulse',
             'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad

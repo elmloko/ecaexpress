@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.32-MariaDB - mariadb.org binary distribution
--- SO del servidor:              Win64
--- HeidiSQL Versión:             12.11.0.7065
+-- Versión del servidor:         10.11.13-MariaDB-0ubuntu0.24.04.1 - Ubuntu 24.04
+-- SO del servidor:              debian-linux-gnu
+-- HeidiSQL Versión:             12.8.0.6908
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -139,6 +139,25 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
 
 -- Volcando datos para la tabla geca.model_has_roles: ~0 rows (aproximadamente)
 
+-- Volcando estructura para tabla geca.paquetes
+CREATE TABLE IF NOT EXISTS `paquetes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(50) DEFAULT NULL,
+  `destinatario` int(11) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `cuidad` varchar(50) DEFAULT NULL,
+  `peso` float DEFAULT NULL,
+  `user` varchar(50) DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `photo` longtext DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla geca.paquetes: ~0 rows (aproximadamente)
+
 -- Volcando estructura para tabla geca.password_reset_tokens
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   `email` varchar(255) NOT NULL,
@@ -191,9 +210,9 @@ CREATE TABLE IF NOT EXISTS `pulse_aggregates` (
   KEY `pulse_aggregates_period_bucket_index` (`period`,`bucket`),
   KEY `pulse_aggregates_type_index` (`type`),
   KEY `pulse_aggregates_period_type_aggregate_bucket_index` (`period`,`type`,`aggregate`,`bucket`)
-) ENGINE=InnoDB AUTO_INCREMENT=953 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1081 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_aggregates: ~261 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_aggregates: ~359 rows (aproximadamente)
 INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggregate`, `value`, `count`) VALUES
 	(1, 1749739620, 60, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'count', 1.00, NULL),
 	(2, 1749739320, 360, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 'count', 1.00, NULL),
@@ -482,7 +501,78 @@ INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggreg
 	(939, 1749752640, 1440, 'user_request', '1', 'count', 4.00, NULL),
 	(941, 1749752820, 60, 'user_request', '1', 'count', 1.00, NULL),
 	(945, 1749753000, 60, 'user_request', '1', 'count', 2.00, NULL),
-	(946, 1749753000, 360, 'user_request', '1', 'count', 2.00, NULL);
+	(946, 1749753000, 360, 'user_request', '1', 'count', 2.00, NULL),
+	(953, 1750103340, 60, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'count', 1.00, NULL),
+	(954, 1750103280, 360, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'count', 2.00, NULL),
+	(955, 1750102560, 1440, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'count', 2.00, NULL),
+	(956, 1750099680, 10080, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'count', 2.00, NULL),
+	(957, 1750103340, 60, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'count', 1.00, NULL),
+	(958, 1750103280, 360, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'count', 2.00, NULL),
+	(959, 1750102560, 1440, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'count', 2.00, NULL),
+	(960, 1750099680, 10080, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'count', 2.00, NULL),
+	(961, 1750103340, 60, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'max', 2167.00, NULL),
+	(962, 1750103280, 360, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'max', 2167.00, NULL),
+	(963, 1750102560, 1440, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'max', 2167.00, NULL),
+	(964, 1750099680, 10080, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'max', 2167.00, NULL),
+	(965, 1750103340, 60, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'max', 1750103357.00, NULL),
+	(966, 1750103280, 360, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'max', 1750103402.00, NULL),
+	(967, 1750102560, 1440, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'max', 1750103402.00, NULL),
+	(968, 1750099680, 10080, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'max', 1750103402.00, NULL),
+	(969, 1750103400, 60, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'count', 1.00, NULL),
+	(970, 1750103400, 60, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'count', 1.00, NULL),
+	(977, 1750103400, 60, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 'max', 1983.00, NULL),
+	(978, 1750103400, 60, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 'max', 1750103402.00, NULL),
+	(985, 1750103520, 60, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(986, 1750103280, 360, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(987, 1750102560, 1440, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(988, 1750099680, 10080, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 2.00, NULL),
+	(989, 1750103520, 60, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(990, 1750103280, 360, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(991, 1750102560, 1440, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(992, 1750099680, 10080, 'slow_user_request', '1', 'count', 2.00, NULL),
+	(993, 1750103520, 60, 'user_request', '1', 'count', 3.00, NULL),
+	(994, 1750103280, 360, 'user_request', '1', 'count', 3.00, NULL),
+	(995, 1750102560, 1440, 'user_request', '1', 'count', 3.00, NULL),
+	(996, 1750099680, 10080, 'user_request', '1', 'count', 7.00, NULL),
+	(997, 1750103520, 60, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1201.00, NULL),
+	(998, 1750103280, 360, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1201.00, NULL),
+	(999, 1750102560, 1440, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1201.00, NULL),
+	(1000, 1750099680, 10080, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1201.00, NULL),
+	(1009, 1750104060, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(1010, 1750104000, 360, 'user_request', '1', 'count', 1.00, NULL),
+	(1011, 1750104000, 1440, 'user_request', '1', 'count', 3.00, NULL),
+	(1013, 1750104960, 60, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(1014, 1750104720, 360, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(1015, 1750104000, 1440, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'count', 1.00, NULL),
+	(1016, 1750104960, 60, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(1017, 1750104720, 360, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(1018, 1750104000, 1440, 'slow_user_request', '1', 'count', 1.00, NULL),
+	(1019, 1750104960, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(1020, 1750104720, 360, 'user_request', '1', 'count', 2.00, NULL),
+	(1025, 1750104960, 60, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1106.00, NULL),
+	(1026, 1750104720, 360, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1106.00, NULL),
+	(1027, 1750104000, 1440, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 'max', 1106.00, NULL),
+	(1033, 1750106280, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(1034, 1750106160, 360, 'user_request', '1', 'count', 1.00, NULL),
+	(1035, 1750105440, 1440, 'user_request', '1', 'count', 1.00, NULL),
+	(1037, 1750186980, 60, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'count', 1.00, NULL),
+	(1038, 1750186800, 360, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'count', 1.00, NULL),
+	(1039, 1750186080, 1440, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'count', 1.00, NULL),
+	(1040, 1750180320, 10080, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'count', 1.00, NULL),
+	(1041, 1750186980, 60, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'max', 1242.00, NULL),
+	(1042, 1750186800, 360, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'max', 1242.00, NULL),
+	(1043, 1750186080, 1440, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'max', 1242.00, NULL),
+	(1044, 1750180320, 10080, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 'max', 1242.00, NULL),
+	(1045, 1750187040, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(1046, 1750186800, 360, 'user_request', '1', 'count', 2.00, NULL),
+	(1047, 1750186080, 1440, 'user_request', '1', 'count', 2.00, NULL),
+	(1048, 1750180320, 10080, 'user_request', '1', 'count', 9.00, NULL),
+	(1053, 1750189680, 60, 'user_request', '1', 'count', 4.00, NULL),
+	(1054, 1750189680, 360, 'user_request', '1', 'count', 6.00, NULL),
+	(1055, 1750188960, 1440, 'user_request', '1', 'count', 7.00, NULL),
+	(1069, 1750189800, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(1077, 1750190220, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(1078, 1750190040, 360, 'user_request', '1', 'count', 1.00, NULL);
 
 -- Volcando estructura para tabla geca.pulse_entries
 CREATE TABLE IF NOT EXISTS `pulse_entries` (
@@ -497,9 +587,9 @@ CREATE TABLE IF NOT EXISTS `pulse_entries` (
   KEY `pulse_entries_type_index` (`type`),
   KEY `pulse_entries_key_hash_index` (`key_hash`),
   KEY `pulse_entries_timestamp_type_key_hash_value_index` (`timestamp`,`type`,`key_hash`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_entries: ~177 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_entries: ~229 rows (aproximadamente)
 INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(1, 1749739626, 'slow_request', '["POST","\\/register","App\\\\Http\\\\Controllers\\\\Auth\\\\RegisteredUserController@store"]', 1036),
 	(2, 1749739626, 'slow_user_request', '1', NULL),
@@ -704,7 +794,32 @@ INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(201, 1749752763, 'user_request', '1', NULL),
 	(202, 1749752875, 'user_request', '1', NULL),
 	(203, 1749753006, 'user_request', '1', NULL),
-	(204, 1749753010, 'user_request', '1', NULL);
+	(204, 1749753010, 'user_request', '1', NULL),
+	(205, 1750103356, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 2167),
+	(206, 1750103357, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 1750103357),
+	(207, 1750103401, 'slow_request', '["GET","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@create"]', 1983),
+	(208, 1750103402, 'exception', '["Illuminate\\\\View\\\\ViewException","resources\\/views\\/layouts\\/guest.blade.php"]', 1750103402),
+	(209, 1750103546, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 1201),
+	(210, 1750103546, 'slow_user_request', '1', NULL),
+	(211, 1750103546, 'user_request', '1', NULL),
+	(212, 1750103547, 'user_request', '1', NULL),
+	(213, 1750103556, 'user_request', '1', NULL),
+	(214, 1750104086, 'user_request', '1', NULL),
+	(215, 1750104964, 'slow_request', '["POST","\\/login","App\\\\Http\\\\Controllers\\\\Auth\\\\AuthenticatedSessionController@store"]', 1106),
+	(216, 1750104964, 'slow_user_request', '1', NULL),
+	(217, 1750104964, 'user_request', '1', NULL),
+	(218, 1750104965, 'user_request', '1', NULL),
+	(219, 1750106333, 'user_request', '1', NULL),
+	(220, 1750187039, 'slow_request', '["GET","\\/tarifa","App\\\\Http\\\\Controllers\\\\TarifaController@getTarifas"]', 1242),
+	(221, 1750187043, 'user_request', '1', NULL),
+	(222, 1750187043, 'user_request', '1', NULL),
+	(223, 1750189685, 'user_request', '1', NULL),
+	(224, 1750189691, 'user_request', '1', NULL),
+	(225, 1750189694, 'user_request', '1', NULL),
+	(226, 1750189696, 'user_request', '1', NULL),
+	(227, 1750189828, 'user_request', '1', NULL),
+	(228, 1750189838, 'user_request', '1', NULL),
+	(229, 1750190233, 'user_request', '1', NULL);
 
 -- Volcando estructura para tabla geca.pulse_values
 CREATE TABLE IF NOT EXISTS `pulse_values` (
@@ -762,7 +877,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla geca.sessions: ~1 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('XzFMItKiHT3dzc91P7WCqs2FZcHH5BzaIgV96Q4W', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzlyVmQ5Wlg3SjlqUzljWXNLUEtQV3hLQ1VKWnpEZ2NmTmVjdG01diI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NzoibWVzc2FnZSI7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3Blc28iO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1749753010);
+	('ooJ3Fk6hyb9GpiTvzTJNIqShLPAx7plRUBcufGX0', 1, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoidnBwbDlJajdNeHRLUUVLQ21Bb1R0MERZRXFuRUNHVVNSTmxyeFFvVyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI5OiJodHRwOi8vbG9jYWxob3N0OjgwMDYvcmVjaWJpciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTg6ImZsYXNoZXI6OmVudmVsb3BlcyI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1750190233);
 
 -- Volcando estructura para tabla geca.tarifario
 CREATE TABLE IF NOT EXISTS `tarifario` (
@@ -800,7 +915,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.users: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla geca.users: ~1 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Marco Antonio Espinoza Rojas', 'marco.espinoza@correos.gob.bo', NULL, '$2y$12$6o996n9VkbL6kW7yTLini.kURmIXU/nSmEfgk8afXS3bt1ntpFjji', NULL, '2025-06-12 18:47:07', '2025-06-12 18:47:07', NULL);
 

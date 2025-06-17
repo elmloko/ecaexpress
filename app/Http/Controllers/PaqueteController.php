@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PaqueteController extends Controller
+{
+    public function getAlmacen ()
+    {
+        return view('paquete.almacen');
+    }
+    public function getInventario ()
+    {
+        return view('paquete.inventario');
+    }
+    public function getRecibir ()
+    {
+        return view('paquete.recibir');
+    }
+}
