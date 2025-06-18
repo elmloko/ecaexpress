@@ -16,9 +16,13 @@
     <section class="content">
         <div class="card">
             <div class="card-header row">
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex">
                     <button class="btn btn-success" wire:click="abrirModal">
                         <i class="fas fa-plus-circle"></i> Crear Paquete
+                    </button>
+                    <button class="btn btn-danger ml-2" wire:click="darBajaSeleccionados"
+                        onclick="return confirm('¿Estás seguro de eliminar los paquetes seleccionados?')">
+                        <i class="fas fa-box-open"></i> Dar de baja seleccionados
                     </button>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
@@ -42,6 +46,10 @@
                 <table class="table table-striped mb-0">
                     <thead>
                         <tr>
+                            <th>
+                                <input type="checkbox" wire:click="toggleSelectAll"
+                                    @if ($selectAll) checked @endif>
+                            </th>
                             <th>Código</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
@@ -53,6 +61,9 @@
                     <tbody>
                         @forelse ($paquetes as $p)
                             <tr>
+                                <td>
+                                    <input type="checkbox" wire:model="selected" value="{{ $p->id }}">
+                                </td>
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
@@ -62,15 +73,11 @@
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
-                                    <button class="btn btn-sm btn-danger" wire:click="eliminar({{ $p->id }})"
-                                        onclick="return confirm('¿Estás seguro de eliminar este paquete?')">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">No hay resultados.</td>
+                                <td colspan="7" class="text-center">No hay resultados.</td>
                             </tr>
                         @endforelse
                     </tbody>
