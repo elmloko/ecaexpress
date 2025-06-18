@@ -17,9 +17,9 @@
         <div class="card">
             <div class="card-header row">
                 <div class="col-md-6 d-flex">
-                    <button class="btn btn-success" wire:click="abrirModal">
+                    {{-- <button class="btn btn-success" wire:click="abrirModal">
                         <i class="fas fa-plus-circle"></i> Crear Paquete
-                    </button>
+                    </button> --}}
                     <button class="btn btn-danger ml-2" wire:click="darBajaSeleccionados"
                         onclick="return confirm('¿Estás seguro de eliminar los paquetes seleccionados?')">
                         <i class="fas fa-box-open"></i> Dar de baja

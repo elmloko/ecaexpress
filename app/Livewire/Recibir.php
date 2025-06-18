@@ -1,10 +1,12 @@
 <?php
+// app/Livewire/Recibir.php
 
 namespace App\Livewire;
 
 use App\Models\Paquete;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class Recibir extends Component
 {
@@ -15,7 +17,24 @@ class Recibir extends Component
     public $selectAll = false;
     public $selected = [];
 
+    // Para el modal de Crear/Editar
+    public $modal = false;
+    public $paquete_id;
+    public $codigo;
+    public $destinatario;
+    public $cuidad;
+    public $peso;
+    public $observacion;
+
     protected $paginationTheme = 'bootstrap';
+
+    protected $rules = [
+        'codigo'       => 'required|string|max:50',
+        'destinatario' => 'required|string|max:100',
+        'cuidad'       => 'nullable|string|max:50',
+        'peso'         => 'nullable|numeric',
+        'observacion'  => 'nullable|string|max:255',
+    ];
 
     public function mount()
     {
@@ -31,7 +50,6 @@ class Recibir extends Component
     public function toggleSelectAll()
     {
         $this->selectAll = ! $this->selectAll;
-
         if ($this->selectAll) {
             $this->selected = Paquete::where('estado', 'RECIBIDO')
                 ->where(function ($q) {
@@ -55,15 +73,74 @@ class Recibir extends Component
             return;
         }
 
-        // Marcar como ALMACEN
         Paquete::whereIn('id', $this->selected)
             ->update(['estado' => 'ALMACEN']);
 
-        // Limpiar selección y estado de "select all"
         $this->selected  = [];
         $this->selectAll = false;
 
         session()->flash('message', 'Paquetes recibidos y marcados como ALMACEN correctamente.');
+    }
+
+    public function eliminarPaquete($id)
+    {
+        $p = Paquete::findOrFail($id);
+        $p->forceDelete();
+        $this->resetPage();
+        session()->flash('message', 'Paquete eliminado permanentemente.');
+    }
+
+    // --- Lógica Crear / Editar ---
+    public function abrirModal()
+    {
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
+        $this->modal = true;
+    }
+
+    public function cerrarModal()
+    {
+        $this->modal = false;
+    }
+
+    public function guardar()
+    {
+        $this->validate();
+
+        $data = [
+            'codigo'       => strtoupper($this->codigo),
+            'destinatario' => strtoupper($this->destinatario),
+            'cuidad'       => strtoupper($this->cuidad),
+            'peso'         => $this->peso,
+            'observacion'  => strtoupper($this->observacion),
+        ];
+
+        if ($this->paquete_id) {
+            // Edición: mantenemos estado y usuario actuales
+            $model = Paquete::findOrFail($this->paquete_id);
+            $model->update($data);
+            session()->flash('message', 'Paquete actualizado.');
+        } else {
+            // Nuevo: por defecto lo marcamos como RECIBIDO
+            $data['estado'] = 'RECIBIDO';
+            $data['user']   = Auth::user()->name;
+            Paquete::create($data);
+            session()->flash('message', 'Paquete registrado como RECIBIDO.');
+        }
+
+        $this->cerrarModal();
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
+    }
+
+    public function editar($id)
+    {
+        $p = Paquete::findOrFail($id);
+        $this->paquete_id  = $p->id;
+        $this->codigo      = $p->codigo;
+        $this->destinatario = $p->destinatario;
+        $this->cuidad      = $p->cuidad;
+        $this->peso        = $p->peso;
+        $this->observacion = $p->observacion;
+        $this->modal       = true;
     }
 
     public function render()
