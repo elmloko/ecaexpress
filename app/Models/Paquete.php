@@ -15,7 +15,8 @@ class Paquete extends Model
         'codigo',
         'destinatario',
         'estado',
-        'cuidad',   
+        'cuidad',  
+        'precio',
         'peso',
         'user',
         'observacion',
@@ -24,6 +25,7 @@ class Paquete extends Model
 
     protected $casts = [
         'peso' => 'float',
+        'precio' => 'float',
     ];
 
     protected $dates = [

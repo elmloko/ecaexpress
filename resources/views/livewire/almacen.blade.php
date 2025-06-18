@@ -51,9 +51,11 @@
                                     @if ($selectAll) checked @endif>
                             </th>
                             <th>Código</th>
+                            <th>Empresa</th>
+                            <th>Peso</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
-                            <th>Peso</th>
+                            <th>Observaciones</th>
                             <th>Usuario</th>
                             <th>Acciones</th>
                         </tr>
@@ -65,9 +67,11 @@
                                     <input type="checkbox" wire:model="selected" value="{{ $p->id }}">
                                 </td>
                                 <td>{{ $p->codigo }}</td>
+                                <td>{{ $p->destinatario }}</td>
+                                <td>{{ $p->peso }} kg</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
-                                <td>{{ $p->peso }} kg</td>
+                                <td>{{ $p->observaciones }}</td>
                                 <td>{{ $p->user }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">

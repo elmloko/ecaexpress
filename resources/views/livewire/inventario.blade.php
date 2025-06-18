@@ -41,10 +41,13 @@
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Destinatario</th>
+                            <th>Empresa</th>
                             <th>Ciudad</th>
                             <th>Peso</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
                             <th>Observación</th>
+                            <th>Fecha Baja</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -55,7 +58,10 @@
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->peso }} kg</td>
+                                <td>{{ $p->precio }} Bs</td>
+                                <td>{{ $p->estado }}</td>
                                 <td>{{ $p->observacion }}</td>
+                                <td>{{ $p->deleted_at }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
                                         <i class="fas fa-edit"></i> Editar
