@@ -56,7 +56,6 @@
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observaciones</th>
-                            <th>Usuario</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -72,7 +71,6 @@
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->observaciones }}</td>
-                                <td>{{ $p->user }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
                                         <i class="fas fa-edit"></i> Editar
