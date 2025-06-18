@@ -22,7 +22,7 @@
                     </button>
                     <button class="btn btn-danger ml-2" wire:click="darBajaSeleccionados"
                         onclick="return confirm('¿Estás seguro de eliminar los paquetes seleccionados?')">
-                        <i class="fas fa-box-open"></i> Dar de baja seleccionados
+                        <i class="fas fa-box-open"></i> Dar de baja
                     </button>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
