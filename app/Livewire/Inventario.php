@@ -6,6 +6,9 @@ use App\Models\Paquete;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\PaquetesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class Inventario extends Component
 {
@@ -13,6 +16,9 @@ class Inventario extends Component
 
     public $search = '';
     public $searchInput = '';
+    public $dateFrom;
+    public $dateTo;
+
     public $modal = false;
     public $paquete_id;
     public $codigo;
@@ -34,6 +40,9 @@ class Inventario extends Component
     public function mount()
     {
         $this->searchInput = $this->search;
+        // Inicializar fechas al mes actual por defecto
+        $this->dateFrom = Carbon::now()->startOfMonth()->toDateString();
+        $this->dateTo   = Carbon::now()->endOfMonth()->toDateString();
     }
 
     public function buscar()
@@ -42,6 +51,19 @@ class Inventario extends Component
         $this->resetPage();
     }
 
+    public function exportarExcel()
+    {
+        // Validar fechas
+        $from = Carbon::parse($this->dateFrom)->startOfDay();
+        $to   = Carbon::parse($this->dateTo)->endOfDay();
+
+        return Excel::download(
+            new PaquetesExport($this->search, $from, $to),
+            "inventario_{$this->dateFrom}_a_{$this->dateTo}.xlsx"
+        );
+    }
+
+    // Resto de métodos (abrirModal, cerrarModal, guardar, editar, restaurar) idénticos
     public function abrirModal()
     {
         $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
@@ -67,10 +89,7 @@ class Inventario extends Component
             'user'         => Auth::user()->name,
         ];
 
-        Paquete::updateOrCreate(
-            ['id' => $this->paquete_id],
-            $data
-        );
+        Paquete::updateOrCreate(['id' => $this->paquete_id], $data);
 
         session()->flash(
             'message',
@@ -85,7 +104,6 @@ class Inventario extends Component
     public function editar($id)
     {
         $p = Paquete::findOrFail($id);
-
         $this->paquete_id   = $p->id;
         $this->codigo       = $p->codigo;
         $this->destinatario = $p->destinatario;
@@ -108,14 +126,17 @@ class Inventario extends Component
 
     public function render()
     {
-        // Mostrar solo paquetes eliminados (soft deletes) en Inventario
+        $from = Carbon::parse($this->dateFrom)->startOfDay();
+        $to   = Carbon::parse($this->dateTo)->endOfDay();
+
         $paquetes = Paquete::onlyTrashed()
             ->where('estado', 'INVENTARIO')
-            ->where(function ($query) {
-                $query->where('codigo', 'like', "%{$this->search}%")
-                    ->orWhere('destinatario', 'like', "%{$this->search}%")
-                    ->orWhere('cuidad', 'like', "%{$this->search}%");
+            ->where(function ($q) {
+                $q->where('codigo', 'like', "%{$this->search}%")
+                  ->orWhere('destinatario', 'like', "%{$this->search}%")
+                  ->orWhere('cuidad', 'like', "%{$this->search}%");
             })
+            ->whereBetween('deleted_at', [$from, $to])
             ->orderBy('deleted_at', 'desc')
             ->paginate(10);
 

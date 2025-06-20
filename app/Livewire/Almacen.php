@@ -6,6 +6,9 @@ use App\Models\Paquete;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\AlmacenExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class Almacen extends Component
 {
@@ -13,6 +16,10 @@ class Almacen extends Component
 
     public $search = '';
     public $searchInput = '';
+
+    public $dateFrom;
+    public $dateTo;
+
     public $modal = false;
     public $paquete_id, $codigo, $destinatario, $estado, $cuidad, $peso, $user, $observacion;
 
@@ -33,6 +40,9 @@ class Almacen extends Component
     public function mount()
     {
         $this->searchInput = $this->search;
+        // Por defecto, rango: primeros y últimos días del mes actual
+        $this->dateFrom = Carbon::now()->startOfMonth()->toDateString();
+        $this->dateTo   = Carbon::now()->endOfMonth()->toDateString();
     }
 
     public function buscar()
@@ -41,9 +51,23 @@ class Almacen extends Component
         $this->resetPage();
     }
 
+    public function exportarExcel()
+    {
+        $from = Carbon::parse($this->dateFrom)->startOfDay();
+        $to   = Carbon::parse($this->dateTo)->endOfDay();
+
+        return Excel::download(
+            new AlmacenExport($this->search, $from, $to),
+            "paquetes_{$this->dateFrom}_a_{$this->dateTo}.xlsx"
+        );
+    }
+
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'estado', 'cuidad', 'peso', 'user', 'observacion']);
+        $this->reset([
+            'paquete_id','codigo','destinatario','estado',
+            'cuidad','peso','user','observacion'
+        ]);
         $this->modal = true;
     }
 
@@ -77,23 +101,30 @@ class Almacen extends Component
             $data
         );
 
-        session()->flash('message', $this->paquete_id ? 'Paquete actualizado.' : 'Paquete registrado.');
+        session()->flash(
+            'message',
+            $this->paquete_id ? 'Paquete actualizado.' : 'Paquete registrado.'
+        );
+
         $this->cerrarModal();
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'estado', 'cuidad', 'peso', 'user', 'observacion']);
+        $this->reset([
+            'paquete_id','codigo','destinatario','estado',
+            'cuidad','peso','user','observacion'
+        ]);
     }
 
     public function editar($id)
     {
         $p = Paquete::findOrFail($id);
-        $this->paquete_id  = $p->id;
-        $this->codigo      = $p->codigo;
+        $this->paquete_id   = $p->id;
+        $this->codigo       = $p->codigo;
         $this->destinatario = $p->destinatario;
-        $this->estado      = $p->estado;
-        $this->cuidad      = $p->cuidad;
-        $this->peso        = $p->peso;
-        $this->user        = $p->user;
-        $this->observacion = $p->observacion;
-        $this->modal       = true;
+        $this->estado       = $p->estado;
+        $this->cuidad       = $p->cuidad;
+        $this->peso         = $p->peso;
+        $this->user         = $p->user;
+        $this->observacion  = $p->observacion;
+        $this->modal        = true;
     }
 
     public function toggleSelectAll()
@@ -101,14 +132,13 @@ class Almacen extends Component
         $this->selectAll = ! $this->selectAll;
 
         if ($this->selectAll) {
-            $this->selected = Paquete::where(function ($q) {
-                $q->where('codigo', 'like', '%' . $this->search . '%')
-                    ->orWhere('estado', 'like', '%' . $this->search . '%');
-            })
-                ->orderBy('id', 'desc')
-                ->paginate(10)
-                ->pluck('id')
-                ->toArray();
+            $this->selected = Paquete::where('estado', 'ALMACEN')
+                ->where(function ($q) {
+                    $q->where('codigo', 'like', "%{$this->search}%")
+                      ->orWhere('cuidad', 'like', "%{$this->search}%")
+                      ->orWhere('observacion', 'like', "%{$this->search}%");
+                })
+                ->pluck('id')->toArray();
         } else {
             $this->selected = [];
         }
@@ -121,29 +151,30 @@ class Almacen extends Component
             return;
         }
 
-        // Primero marcamos como INVENTARIO
+        // Marcar como INVENTARIO y luego soft-delete
         Paquete::whereIn('id', $this->selected)
             ->update(['estado' => 'INVENTARIO']);
-
-        // Después los eliminamos definitivamente
         Paquete::whereIn('id', $this->selected)
             ->delete();
 
-        // Limpiamos selección y estado de "select all"
         $this->selected  = [];
         $this->selectAll = false;
 
-        session()->flash('message', 'Paquetes movidos a INVENTARIO y eliminados correctamente.');
+        session()->flash('message', 'Paquetes movidos a Inventario y eliminados.');
     }
 
     public function render()
     {
-        $paquetes = Paquete::where('estado', 'ALMACEN')               // solo paquetes en ALMACEN
-            ->where(function ($query) {
-                $query->where('codigo', 'like', '%' . $this->search . '%')
-                    ->orWhere('cuidad', 'like', '%' . $this->search . '%')
-                    ->orWhere('observacion', 'like', '%' . $this->search . '%');
+        $from = Carbon::parse($this->dateFrom)->startOfDay();
+        $to   = Carbon::parse($this->dateTo)->endOfDay();
+
+        $paquetes = Paquete::where('estado', 'ALMACEN')
+            ->where(function ($q) {
+                $q->where('codigo', 'like', "%{$this->search}%")
+                  ->orWhere('cuidad', 'like', "%{$this->search}%")
+                  ->orWhere('observacion', 'like', "%{$this->search}%");
             })
+            ->whereBetween('created_at', [$from, $to])
             ->orderBy('id', 'desc')
             ->paginate(10);
 

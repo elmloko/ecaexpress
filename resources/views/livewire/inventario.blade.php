@@ -17,7 +17,17 @@
         <div class="card">
             <div class="card-header row">
                 <div class="col-md-6 d-flex">
-                    
+                    <div class="col-md-3">
+                        <input type="date" wire:model="dateFrom" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" wire:model="dateTo" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success btn-flat" wire:click="exportarExcel">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <div class="input-group" style="max-width: 400px;">

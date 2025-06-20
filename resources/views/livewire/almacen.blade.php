@@ -20,6 +20,18 @@
                     {{-- <button class="btn btn-success" wire:click="abrirModal">
                         <i class="fas fa-plus-circle"></i> Crear Paquete
                     </button> --}}
+                    <div class="col-md-3">
+                        <input type="date" wire:model="dateFrom" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" wire:model="dateTo" class="form-control">
+                    </div>
+                    <!-- Botón Exportar -->
+                    <div class="col-md-2">
+                        <button class="btn btn-success" wire:click="exportarExcel">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                    </div>
                     <button class="btn btn-danger ml-2" wire:click="darBajaSeleccionados"
                         onclick="return confirm('¿Estás seguro de eliminar los paquetes seleccionados?')">
                         <i class="fas fa-box-open"></i> Dar de baja
