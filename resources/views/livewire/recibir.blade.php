@@ -55,6 +55,7 @@
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observación</th>
+                            <th>Fecha recepcion</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -70,6 +71,7 @@
                                 <td>{{ $p->destino }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
+                                <td>{{ $p->created_at }}</td>
                                 <td>{{ $p->observacion }}</td>
                                 <td class="d-flex">
                                     <button class="btn btn-sm btn-warning mr-1"
@@ -187,6 +189,47 @@
                         {{ $paquete_id ? 'Actualizar' : 'Guardar' }}
                     </button>
                     <button type="button" class="btn btn-secondary" wire:click="cerrarModal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Asignar Destino -->
+    <div class="modal fade @if ($modalDestino) show d-block @endif" tabindex="-1"
+        style="background: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Asignar Destino</h5>
+                    <button type="button" class="close" wire:click="$set('modalDestino', false)">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Destino</label>
+                        <select wire:model.defer="destino" class="form-control" style="text-transform: uppercase;">
+                            <option value="">SELECCIONE...</option>
+                            <option value="local">LOCAL</option>
+                            <option value="nacional">NACIONAL</option>
+                            <option value="camiri">CAMIRI</option>
+                            <option value="sud">SUD AMÉRICA</option>
+                            <option value="centro">CENTRO AMÉRICA Y CARIBE</option>
+                            <option value="norte">NORTE AMÉRICA</option>
+                            <option value="euro">EUROPA Y ÁFRICA</option>
+                            <option value="asia">ASIA Y OCEANÍA</option>
+                        </select>
+                        @error('destino')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="asignarDestino" class="btn btn-primary">
+                        Guardar Destino
+                    </button>
+                    <button type="button" class="btn btn-secondary" wire:click="$set('modalDestino', false)">
+                        Cancelar
+                    </button>
                 </div>
             </div>
         </div>

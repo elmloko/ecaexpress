@@ -18,8 +18,8 @@ class Recibir extends Component
     public $searchInput = '';
     public $selectAll = false;
     public $selected = [];
-
-    // Para el modal de Crear/Editar
+    public $modalDestino     = false;
+    public $paqueteDestinoId = null;
     public $modal = false;
     public $paquete_id;
     public $codigo;
@@ -64,30 +64,44 @@ class Recibir extends Component
                 CURLOPT_IPRESOLVE    => CURL_IPRESOLVE_V4,
             ],
         ])
-            ->withToken(config('services.correos.token'))  // ← aquí
+            ->withToken(config('services.correos.token'))
             ->acceptJson()
             ->get($url);
 
         if (! $response->successful()) {
-            session()->flash('message', "Error API HTTP {$response->status()}");
+            session()->flash('message', "Paquete no encontrado o error API ({$response->status()}).");
             return;
         }
 
         $data = $response->json();
 
-        $paquete = \App\Models\Paquete::updateOrCreate(
+        // Actualizamos o creamos el paquete SIN asignar 'destino'
+        $paquete = Paquete::updateOrCreate(
             ['codigo' => $data['CODIGO']],
             [
                 'destinatario' => strtoupper($data['DESTINATARIO']),
-                'estado'       => 'RECIBIDO',                  // <— forzamos RECIBIDO
+                'estado'       => 'RECIBIDO',
                 'cuidad'       => strtoupper($data['CUIDAD']),
                 'peso'         => floatval($data['PESO']),
-                'user'         => Auth::user()->name,          // <— el usuario logueado
+                'user'         => Auth::user()->name,
+                // ¡ojo! no ponemos 'destino' aquí
             ]
         );
 
-        session()->flash('message', "Paquete {$paquete->codigo} guardado o actualizado.");
-        $this->reset(['searchInput', 'search']);
+        $this->paqueteDestinoId = $paquete->id;
+        $this->modalDestino     = true;
+    }
+
+    public function asignarDestino()
+    {
+        $this->validateOnly('destino');
+
+        Paquete::findOrFail($this->paqueteDestinoId)
+            ->update(['destino' => strtoupper($this->destino)]);
+
+        session()->flash('message', "Destino asignado al paquete {$this->paqueteDestinoId}.");
+        $this->modalDestino     = false;
+        $this->reset(['destino', 'paqueteDestinoId', 'searchInput', 'search']);
         $this->resetPage();
     }
 
