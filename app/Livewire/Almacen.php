@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\AlmacenExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF; 
 use Carbon\Carbon;
 
 class Almacen extends Component
@@ -65,8 +66,14 @@ class Almacen extends Component
     public function abrirModal()
     {
         $this->reset([
-            'paquete_id','codigo','destinatario','estado',
-            'cuidad','peso','user','observacion'
+            'paquete_id',
+            'codigo',
+            'destinatario',
+            'estado',
+            'cuidad',
+            'peso',
+            'user',
+            'observacion'
         ]);
         $this->modal = true;
     }
@@ -108,8 +115,14 @@ class Almacen extends Component
 
         $this->cerrarModal();
         $this->reset([
-            'paquete_id','codigo','destinatario','estado',
-            'cuidad','peso','user','observacion'
+            'paquete_id',
+            'codigo',
+            'destinatario',
+            'estado',
+            'cuidad',
+            'peso',
+            'user',
+            'observacion'
         ]);
     }
 
@@ -135,8 +148,8 @@ class Almacen extends Component
             $this->selected = Paquete::where('estado', 'ALMACEN')
                 ->where(function ($q) {
                     $q->where('codigo', 'like', "%{$this->search}%")
-                      ->orWhere('cuidad', 'like', "%{$this->search}%")
-                      ->orWhere('observacion', 'like', "%{$this->search}%");
+                        ->orWhere('cuidad', 'like', "%{$this->search}%")
+                        ->orWhere('observacion', 'like', "%{$this->search}%");
                 })
                 ->pluck('id')->toArray();
         } else {
@@ -151,16 +164,23 @@ class Almacen extends Component
             return;
         }
 
-        // Marcar como INVENTARIO y luego soft-delete
-        Paquete::whereIn('id', $this->selected)
-            ->update(['estado' => 'INVENTARIO']);
-        Paquete::whereIn('id', $this->selected)
-            ->delete();
+        // 1) Obtener los paquetes a procesar
+        $packages = Paquete::whereIn('id', $this->selected)->get();
 
+        // 2) Marcar como INVENTARIO y soft-delete
+        Paquete::whereIn('id', $this->selected)->update(['estado' => 'INVENTARIO']);
+        Paquete::whereIn('id', $this->selected)->delete();
+
+        // 3) Reiniciar selección
         $this->selected  = [];
         $this->selectAll = false;
 
-        session()->flash('message', 'Paquetes movidos a Inventario y eliminados.');
+        // 4) Generar y forzar descarga de PDF
+        $pdf = PDF::loadView('pdf.despacho', ['packages' => $packages]);
+        return response()->streamDownload(
+            fn() => print($pdf->output()),
+            'despacho_' . now()->format('Ymd_His') . '.pdf'
+        );
     }
 
     public function render()
@@ -171,8 +191,8 @@ class Almacen extends Component
         $paquetes = Paquete::where('estado', 'ALMACEN')
             ->where(function ($q) {
                 $q->where('codigo', 'like', "%{$this->search}%")
-                  ->orWhere('cuidad', 'like', "%{$this->search}%")
-                  ->orWhere('observacion', 'like', "%{$this->search}%");
+                    ->orWhere('cuidad', 'like', "%{$this->search}%")
+                    ->orWhere('observacion', 'like', "%{$this->search}%");
             })
             ->whereBetween('created_at', [$from, $to])
             ->orderBy('id', 'desc')

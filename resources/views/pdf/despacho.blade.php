@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manifiesto Despacho</title>
+    <style>
+        @page {
+            size: landscape;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            line-height: .8;
+        }
+
+        thead {
+            background-color: #f2f2f2;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            line-height: 0.5;
+        }
+
+        .header .logo {
+            /* Mantén el tamaño que ya tengas */
+        }
+
+        .header .title {
+            flex: 1;
+            /* Ocupa todo el espacio sobrante */
+            text-align: center;
+            /* Centra el contenido */
+        }
+
+        .title h2,
+        .title h3 {
+            margin: 0;
+            line-height: .8;
+            margin-bottom: 10px;
+        }
+
+        .first-table tfoot td {
+            border: 1px solid #000;
+            padding: 5px;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div><img src="{{ public_path('images/images.png') }}" width="150" height="50"></div>
+        <div class="title">
+            <h2>Manifiesto de Entrega</h2>
+            <h2>Envíos de Correspondencia Agrupada / Pliegos</h2>
+            <h3>AGENCIA BOLIVIANA DE CORREOS</h3>
+        </div>
+    </div>
+    <table style="margin-top:10px; border:none;">
+        <tr>
+            <td style="border:none; text-align:left;">
+                <strong>Usuario:</strong> {{ auth()->user()->name }}
+            </td>
+            <td style="border:none; text-align:left;">
+                <strong>Regional:</strong> {{ auth()->user()->city }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border:none; text-align:left;">
+                <strong>Fecha:</strong> {{ now()->format('Y-m-d H:i') }}
+            </td>
+            <td style="border:none;"></td>
+        </tr>
+    </table>
+
+    <table class="first-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Código</th>
+                <th>Destinatario</th>
+                <th>Peso (kg)</th>
+                <th>Precio (Bs)</th>
+                <th>Estado</th>
+                <th>Ciudad</th>
+                <th>Observación</th>
+                <th>Fecha Ingreso</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($packages as $i => $pkg)
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $pkg->codigo }}</td>
+                    <td>{{ $pkg->destinatario }}</td>
+                    <td>{{ number_format($pkg->peso, 2) }}</td>
+                    <td>{{ number_format($pkg->precio, 2) }}</td>
+                    <td>{{ $pkg->estado }}</td>
+                    <td>{{ $pkg->cuidad }}</td>
+                    <td>{{ $pkg->observacion }}</td>
+                    <td>{{ $pkg->created_at->format('Y-m-d') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right; font-weight: bold;">
+                    Total Precio (Bs):
+                </td>
+                <td style="font-weight: bold;">
+                    {{ number_format($packages->sum('precio'), 2) }}
+                </td>
+                {{-- ajusta colspan para cubrir las demás columnas --}}
+                <td colspan="4"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <br>
+    <table style="border:none; width:100%; text-align:center;">
+        <tr>
+            <td style="border:none;">__________________________<br>RECIBIDO POR</td>
+            <td style="border:none;">__________________________<br>ENTREGADO POR<br>{{ auth()->user()->name }}</td>
+        </tr>
+    </table>
+</body>
+
+</html>
