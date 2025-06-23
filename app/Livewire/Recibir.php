@@ -75,6 +75,15 @@ class Recibir extends Component
 
         $data = $response->json();
 
+        if (
+            ($data['VENTANILLA']) !== 'ECA' ||
+            ($data['ESTADO']) !== 'DESPACHO' ||
+            strtoupper($data['CUIDAD']) !== strtoupper(Auth::user()->city)
+        ) {
+            session()->flash('message', 'El paquete no cumple con los criterios de Ventanilla, Estado o Ciudad.');
+            return;
+        }
+
         // Actualizamos o creamos el paquete SIN asignar 'destino'
         $paquete = Paquete::updateOrCreate(
             ['codigo' => $data['CODIGO']],
@@ -84,7 +93,6 @@ class Recibir extends Component
                 'cuidad'       => strtoupper($data['CUIDAD']),
                 'peso'         => floatval($data['PESO']),
                 'user'         => Auth::user()->name,
-                // ¡ojo! no ponemos 'destino' aquí
             ]
         );
 
