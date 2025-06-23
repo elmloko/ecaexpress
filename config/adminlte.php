@@ -388,6 +388,11 @@ return [
             ],
         ],
         [
+            'text' => 'Eventos',
+            'url' => '/eventos',
+            'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad
+        ],
+        [
             'text' => 'Rendimiento',
             'url' => '/pulse',
             'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad

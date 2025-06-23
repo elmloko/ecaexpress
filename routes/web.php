@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TarifaController;
 use App\Http\Controllers\PaqueteController;
+use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -18,6 +19,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/eventos', [EventoController::class, 'getEventos']);
+
     Route::get('/almacen', [PaqueteController::class, 'getAlmacen']);
     Route::get('/recibir', [PaqueteController::class, 'getRecibir']);
     Route::get('/inventario', [PaqueteController::class, 'getInventario']);
