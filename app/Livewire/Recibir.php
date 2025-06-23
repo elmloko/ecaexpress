@@ -5,6 +5,8 @@ namespace App\Livewire;
 
 use App\Models\Paquete;
 use App\Models\Empresa;
+use App\Models\Peso;
+use App\Models\Tarifario;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -139,13 +141,46 @@ class Recibir extends Component
             return;
         }
 
-        Paquete::whereIn('id', $this->selected)
-            ->update(['estado' => 'ALMACEN']);
+        foreach ($this->selected as $id) {
+            /** @var Paquete $paquete */
+            $paquete = Paquete::find($id);
+
+            // 1. Buscar empresa
+            $empresaModel = Empresa::whereRaw('UPPER(nombre) = ?', [strtoupper($paquete->destinatario)])->first();
+
+            // 2. Buscar categoría de peso
+            $pesoCat = Peso::where('min', '<=', $paquete->peso)
+                ->where('max', '>=', $paquete->peso)
+                ->first();
+
+            $precio = 0;
+
+            if ($empresaModel && $pesoCat) {
+                // 3. Obtener tarifa
+                $tarifa = Tarifario::where('empresa', $empresaModel->id)
+                    ->where('peso', $pesoCat->id)
+                    ->first();
+
+                if ($tarifa) {
+                    // 4. Leer columna según destino
+                    $col = strtolower($paquete->destino);
+                    if (isset($tarifa->$col)) {
+                        $precio = $tarifa->$col;
+                    }
+                }
+            }
+
+            // 5. Actualizar paquete
+            $paquete->update([
+                'estado' => 'ALMACEN',
+                'precio' => $precio,
+            ]);
+        }
 
         $this->selected  = [];
         $this->selectAll = false;
-
         session()->flash('message', 'Paquetes recibidos y marcados como ALMACEN correctamente.');
+        $this->resetPage();
     }
 
     public function eliminarPaquete($id)

@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <div class="input-group" style="max-width: 400px;">
-                        <input type="text" class="form-control" placeholder="Buscar..."
+                        <input type="text" class="form-control" placeholder="Buscar Codigos..."
                             wire:model.defer="searchInput">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-flat" wire:click="buscar">
