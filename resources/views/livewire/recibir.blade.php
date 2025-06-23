@@ -51,6 +51,7 @@
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Peso</th>
+                            <th>Destino</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observación</th>
@@ -66,6 +67,7 @@
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->peso }} kg</td>
+                                <td>{{ $p->destino }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->observacion }}</td>
@@ -122,16 +124,49 @@
                             </div>
                             <div class="form-group">
                                 <label>Empresa</label>
-                                <input type="text" wire:model.defer="destinatario" class="form-control"
+                                <select wire:model.defer="destinatario" class="form-control"
                                     style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    @foreach ($empresas as $empresa)
+                                        <option value="{{ strtoupper($empresa->nombre) }}">
+                                            {{ strtoupper($empresa->nombre) }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 @error('destinatario')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Ciudad</label>
-                                <input type="text" wire:model.defer="cuidad" class="form-control"
+                                <label>Departamento</label>
+                                <select wire:model.defer="departamento" class="form-control"
                                     style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    <option value="BENI">BENI</option>
+                                    <option value="CHUQUISACA">CHUQUISACA</option>
+                                    <option value="COCHABAMBA">COCHABAMBA</option>
+                                    <option value="LA PAZ">LA PAZ</option>
+                                    <option value="ORURO">ORURO</option>
+                                    <option value="PANDO">PANDO</option>
+                                    <option value="POTOSI">POTOSI</option>
+                                    <option value="SANTA CRUZ">SANTA CRUZ</option>
+                                    <option value="TARIJA">TARIJA</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Destino</label>
+                                <select wire:model.defer="destino" class="form-control"
+                                    style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    <option value="local">LOCAL</option>
+                                    <option value="nacional">NACIONAL</option>
+                                    <option value="camiri">CAMIRI</option>
+                                    <option value="sud">SUD AMERICA</option>
+                                    <option value="centro">CENTRO AMERICA Y CARIBE</option>
+                                    <option value="norte">NORTE AMERICA</option>
+                                    <option value="euro">EUROPA Y AFRICA</option>
+                                    <option value="asia">ASIA Y OCEANIA</option>
+                                </select>
                             </div>
                         </div>
                         <!-- Columna derecha -->

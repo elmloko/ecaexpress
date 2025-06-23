@@ -15,8 +15,9 @@ class Paquete extends Model
         'codigo',
         'destinatario',
         'estado',
-        'cuidad',  
+        'cuidad',
         'precio',
+        'destino',
         'peso',
         'user',
         'observacion',
@@ -33,4 +34,8 @@ class Paquete extends Model
         'updated_at',
         'deleted_at',
     ];
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

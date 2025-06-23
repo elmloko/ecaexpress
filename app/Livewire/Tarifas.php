@@ -69,25 +69,29 @@ class Tarifas extends Component
     {
         $this->validate();
 
+        // Prepara los datos reemplazando "" por null
+        $data = [
+            'peso'     => $this->peso,
+            'empresa'  => $this->empresa,
+            'local'    => $this->local  === '' ? null : $this->local,
+            'nacional' => $this->nacional === '' ? null : $this->nacional,
+            'camiri'   => $this->camiri   === '' ? null : $this->camiri,
+            'sud'      => $this->sud      === '' ? null : $this->sud,
+            'norte'    => $this->norte    === '' ? null : $this->norte,
+            'centro'   => $this->centro   === '' ? null : $this->centro,
+            'euro'     => $this->euro     === '' ? null : $this->euro,
+            'asia'     => $this->asia     === '' ? null : $this->asia,
+        ];
+
         Tarifario::updateOrCreate(
             ['id' => $this->tarifario_id],
-            [
-                'peso'     => $this->peso,
-                'empresa'  => $this->empresa,
-                'local'    => $this->local,
-                'nacional' => $this->nacional,
-                'camiri'   => $this->camiri,
-                'sud'      => $this->sud,
-                'norte'    => $this->norte,
-                'centro'   => $this->centro,
-                'euro'     => $this->euro,
-                'asia'     => $this->asia,
-            ]
+            $data
         );
 
         session()->flash('message', $this->tarifario_id ? 'Tarifario actualizado.' : 'Tarifario registrado.');
         $this->cerrarModal();
     }
+
 
     public function editar($id)
     {
@@ -123,7 +127,7 @@ class Tarifas extends Component
             ->where('empresa', $this->activeEmpresaId)
             ->whereHas('empresaDatos', fn($q) => $q->where('nombre', 'like', '%' . $this->search . '%'))
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(100);
 
         return view('livewire.tarifas', compact('tarifarios', 'empresas', 'pesos'));
     }

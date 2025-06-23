@@ -4,6 +4,7 @@
 namespace App\Livewire;
 
 use App\Models\Paquete;
+use App\Models\Empresa;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class Recibir extends Component
     public $destinatario;
     public $cuidad;
     public $peso;
+    public $destino;
     public $observacion;
 
     protected $paginationTheme = 'bootstrap';
@@ -33,6 +35,7 @@ class Recibir extends Component
         'destinatario' => 'required|string|max:100',
         'cuidad'       => 'nullable|string|max:50',
         'peso'         => 'nullable|numeric',
+        'destino'      => 'required|string|max:50',
         'observacion'  => 'nullable|string|max:255',
     ];
 
@@ -93,7 +96,7 @@ class Recibir extends Component
     // --- Lógica Crear / Editar ---
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'destino', 'observacion']);
         $this->modal = true;
     }
 
@@ -110,6 +113,7 @@ class Recibir extends Component
             'codigo'       => strtoupper($this->codigo),
             'destinatario' => strtoupper($this->destinatario),
             'cuidad'       => strtoupper($this->cuidad),
+            'destino'       => strtoupper($this->destino),
             'peso'         => $this->peso,
             'observacion'  => strtoupper($this->observacion),
         ];
@@ -138,6 +142,7 @@ class Recibir extends Component
         $this->codigo      = $p->codigo;
         $this->destinatario = $p->destinatario;
         $this->cuidad      = $p->cuidad;
+        $this->destino      = $p->destino;
         $this->peso        = $p->peso;
         $this->observacion = $p->observacion;
         $this->modal       = true;
@@ -154,6 +159,9 @@ class Recibir extends Component
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        return view('livewire.recibir', compact('paquetes'));
+        // Carga todas las empresas ordenadas por nombre
+        $empresas = Empresa::orderBy('nombre')->get();
+
+        return view('livewire.recibir', compact('paquetes', 'empresas'));
     }
 }
