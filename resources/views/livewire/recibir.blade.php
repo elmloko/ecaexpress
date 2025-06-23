@@ -68,7 +68,7 @@
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->peso }} kg</td>
-                                <td>{{ $p->destino }}</td>
+                                <td>{{ strtoupper($p->destino) }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->created_at }}</td>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Departamento</label>
-                                <select wire:model.defer="departamento" class="form-control"
+                                <select wire:model.defer="cuidad" class="form-control"
                                     style="text-transform: uppercase;">
                                     <option value="">SELECCIONE...</option>
                                     <option value="BENI">BENI</option>

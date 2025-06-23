@@ -65,6 +65,7 @@
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Peso</th>
+                            <th>Precio</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observaciones</th>
@@ -80,6 +81,7 @@
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->peso }} kg</td>
+                                <td>{{ $p->precio }} Bs</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->observaciones }}</td>

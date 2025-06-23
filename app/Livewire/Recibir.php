@@ -107,7 +107,7 @@ class Recibir extends Component
         $this->validateOnly('destino');
 
         Paquete::findOrFail($this->paqueteDestinoId)
-            ->update(['destino' => strtoupper($this->destino)]);
+            ->update(['destino' => $this->destino]);
 
         session()->flash('message', "Destino asignado al paquete {$this->paqueteDestinoId}.");
         $this->modalDestino     = false;
@@ -211,7 +211,7 @@ class Recibir extends Component
             'codigo'       => strtoupper($this->codigo),
             'destinatario' => strtoupper($this->destinatario),
             'cuidad'       => strtoupper($this->cuidad),
-            'destino'       => strtoupper($this->destino),
+            'destino'       => $this->destino,
             'peso'         => $this->peso,
             'observacion'  => strtoupper($this->observacion),
         ];
