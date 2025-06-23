@@ -8,6 +8,7 @@ use App\Models\Empresa;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class Recibir extends Component
 {
@@ -46,7 +47,47 @@ class Recibir extends Component
 
     public function buscar()
     {
-        $this->search = $this->searchInput;
+        $this->search = trim($this->searchInput);
+
+        if (! $this->search) {
+            session()->flash('message', 'Debe ingresar un código para buscar.');
+            return;
+        }
+
+        $url = config('services.correos.url') . '/' . $this->search;
+
+        $response = Http::withOptions([
+            'verify'           => false,
+            'curl'             => [
+                CURLOPT_SSLVERSION   => CURL_SSLVERSION_TLSv1_2,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_IPRESOLVE    => CURL_IPRESOLVE_V4,
+            ],
+        ])
+            ->withToken(config('services.correos.token'))  // ← aquí
+            ->acceptJson()
+            ->get($url);
+
+        if (! $response->successful()) {
+            session()->flash('message', "Error API HTTP {$response->status()}");
+            return;
+        }
+
+        $data = $response->json();
+
+        $paquete = \App\Models\Paquete::updateOrCreate(
+            ['codigo' => $data['CODIGO']],
+            [
+                'destinatario' => strtoupper($data['DESTINATARIO']),
+                'estado'       => 'RECIBIDO',                  // <— forzamos RECIBIDO
+                'cuidad'       => strtoupper($data['CUIDAD']),
+                'peso'         => floatval($data['PESO']),
+                'user'         => Auth::user()->name,          // <— el usuario logueado
+            ]
+        );
+
+        session()->flash('message', "Paquete {$paquete->codigo} guardado o actualizado.");
+        $this->reset(['searchInput', 'search']);
         $this->resetPage();
     }
 

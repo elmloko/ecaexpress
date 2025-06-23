@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    
+    'correos' => [
+        'url'   => env('CORREOS_API_URL'),
+        'token' => env('CORREOS_API_TOKEN'),
+    ],
+
 
 ];
