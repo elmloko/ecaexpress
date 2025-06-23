@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Paquete;
+use App\Models\Evento;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +92,13 @@ class Inventario extends Component
 
         Paquete::updateOrCreate(['id' => $this->paquete_id], $data);
 
+        Evento::create([
+            'accion'      => 'EDICION',
+            'descripcion' => 'Paquete Editado',
+            'user_id'     => Auth::user()->name,
+            'codigo'      => $data['codigo'],
+        ]);
+
         session()->flash(
             'message',
             $this->paquete_id
@@ -120,6 +128,13 @@ class Inventario extends Component
         $p->estado = 'ALMACEN';
         $p->save();
 
+        Evento::create([
+            'accion'      => 'ALTA',
+            'descripcion' => 'Paquete Restaurado a Almacen',
+            'user_id'     => Auth::user()->name,
+            'codigo'      => $p->codigo,
+        ]);
+
         session()->flash('message', 'Paquete restaurado y dado de alta.');
         $this->resetPage();
     }
@@ -133,8 +148,8 @@ class Inventario extends Component
             ->where('estado', 'INVENTARIO')
             ->where(function ($q) {
                 $q->where('codigo', 'like', "%{$this->search}%")
-                  ->orWhere('destinatario', 'like', "%{$this->search}%")
-                  ->orWhere('cuidad', 'like', "%{$this->search}%");
+                    ->orWhere('destinatario', 'like', "%{$this->search}%")
+                    ->orWhere('cuidad', 'like', "%{$this->search}%");
             })
             ->whereBetween('deleted_at', [$from, $to])
             ->orderBy('deleted_at', 'desc')

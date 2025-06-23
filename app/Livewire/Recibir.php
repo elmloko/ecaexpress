@@ -7,6 +7,7 @@ use App\Models\Paquete;
 use App\Models\Empresa;
 use App\Models\Peso;
 use App\Models\Tarifario;
+use App\Models\Evento;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -97,6 +98,12 @@ class Recibir extends Component
                 'user'         => Auth::user()->name,
             ]
         );
+        Evento::create([
+            'accion' => 'ENCONTRADO',
+            'descripcion' => 'Paquete Registrado',
+            'user_id' => Auth::user()->name,
+            'codigo' => $paquete->codigo,
+        ]);
 
         $this->paqueteDestinoId = $paquete->id;
         $this->modalDestino     = true;
@@ -177,6 +184,13 @@ class Recibir extends Component
             ]);
         }
 
+        Evento::create([
+            'accion' => 'RECIBIDO',
+            'descripcion' => 'Paquete Recibido',
+            'user_id' => Auth::user()->name,
+            'codigo' => $paquete->codigo,
+        ]);
+
         $this->selected  = [];
         $this->selectAll = false;
         session()->flash('message', 'Paquetes recibidos y marcados como ALMACEN correctamente.');
@@ -189,6 +203,13 @@ class Recibir extends Component
         $p->forceDelete();
         $this->resetPage();
         session()->flash('message', 'Paquete eliminado permanentemente.');
+
+        Evento::create([
+            'accion' => 'ELIMINADO',
+            'descripcion' => 'Paquete Eliminado',
+            'user_id' => Auth::user()->name,
+            'codigo' => $p->codigo,
+        ]);
     }
 
     // --- Lógica Crear / Editar ---
@@ -211,27 +232,42 @@ class Recibir extends Component
             'codigo'       => strtoupper($this->codigo),
             'destinatario' => strtoupper($this->destinatario),
             'cuidad'       => strtoupper($this->cuidad),
-            'destino'       => $this->destino,
+            'destino'      => $this->destino,
             'peso'         => $this->peso,
             'observacion'  => strtoupper($this->observacion),
         ];
 
         if ($this->paquete_id) {
-            // Edición: mantenemos estado y usuario actuales
+            // Edición
             $model = Paquete::findOrFail($this->paquete_id);
             $model->update($data);
             session()->flash('message', 'Paquete actualizado.');
+
+            Evento::create([
+                'accion'      => 'EDICION',
+                'descripcion' => 'Paquete Editado',
+                'user_id'     => Auth::user()->name,
+                'codigo'      => $data['codigo'],
+            ]);
         } else {
-            // Nuevo: por defecto lo marcamos como RECIBIDO
+            // Creación
             $data['estado'] = 'RECIBIDO';
             $data['user']   = Auth::user()->name;
             Paquete::create($data);
             session()->flash('message', 'Paquete registrado como RECIBIDO.');
+
+            Evento::create([
+                'accion'      => 'CREACION',
+                'descripcion' => 'Paquete Creado',
+                'user_id'     => Auth::user()->name,
+                'codigo'      => $data['codigo'],
+            ]);
         }
 
         $this->cerrarModal();
         $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
     }
+
 
     public function editar($id)
     {

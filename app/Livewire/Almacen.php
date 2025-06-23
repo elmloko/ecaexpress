@@ -3,12 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Paquete;
+use App\Models\Evento;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\AlmacenExport;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF; 
+use PDF;
 use Carbon\Carbon;
 
 class Almacen extends Component
@@ -108,6 +109,13 @@ class Almacen extends Component
             $data
         );
 
+        Evento::create([
+            'accion'      => 'EDICION',
+            'descripcion' => 'Paquete Editado',
+            'user_id'     => Auth::user()->name,
+            'codigo'      => $data['codigo'],
+        ]);
+
         session()->flash(
             'message',
             $this->paquete_id ? 'Paquete actualizado.' : 'Paquete registrado.'
@@ -171,17 +179,28 @@ class Almacen extends Component
         Paquete::whereIn('id', $this->selected)->update(['estado' => 'INVENTARIO']);
         Paquete::whereIn('id', $this->selected)->delete();
 
-        // 3) Reiniciar selección
+        // 3) Registrar un evento por cada paquete
+        foreach ($packages as $pkg) {
+            Evento::create([
+                'accion'      => 'ENTREGADO',
+                'descripcion' => 'Paquete Entregado',
+                'user_id'     => Auth::user()->name,
+                'codigo'      => $pkg->codigo,
+            ]);
+        }
+
+        // 4) Reiniciar selección
         $this->selected  = [];
         $this->selectAll = false;
 
-        // 4) Generar y forzar descarga de PDF
+        // 5) Generar y forzar descarga de PDF
         $pdf = PDF::loadView('pdf.despacho', ['packages' => $packages]);
         return response()->streamDownload(
             fn() => print($pdf->output()),
             'despacho_' . now()->format('Ymd_His') . '.pdf'
         );
     }
+
 
     public function render()
     {
