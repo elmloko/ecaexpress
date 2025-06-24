@@ -26,4 +26,8 @@ class PaqueteController extends Controller
     {
         return view('paquete.despacho');
     }
+        public function getTodos ()
+    {
+        return view('paquete.todos');
+    }
 }
