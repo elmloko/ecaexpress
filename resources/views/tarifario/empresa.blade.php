@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'EMPRESAS')
+@section('title', 'Empresas')
 @section('template_title')
     Paqueteria Postal
 @endsection

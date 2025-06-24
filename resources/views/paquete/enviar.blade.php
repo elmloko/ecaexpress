@@ -1,9 +1,9 @@
 @extends('adminlte::page')
-@section('title', 'Inventario')
+@section('title', 'Enviar')
 @section('template_title')
     Paqueteria Postal
 @endsection
 
 @section('content')
-    @livewire('inventario')
+    @livewire('enviar')
 @endsection

@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/almacen', [PaqueteController::class, 'getAlmacen']);
     Route::get('/recibir', [PaqueteController::class, 'getRecibir']);
     Route::get('/inventario', [PaqueteController::class, 'getInventario']);
+    Route::get('/enviar', [PaqueteController::class, 'getEnviar']);
 
     Route::get('/tarifa', [TarifaController::class, 'getTarifas']);
     Route::get('/peso', [TarifaController::class, 'getPesos']);

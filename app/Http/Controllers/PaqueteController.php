@@ -18,4 +18,8 @@ class PaqueteController extends Controller
     {
         return view('paquete.recibir');
     }
+    public function getEnviar ()
+    {
+        return view('paquete.enviar');
+    }
 }

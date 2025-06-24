@@ -371,6 +371,11 @@ return [
             // 'can'  => 'users.index',
             'submenu' => [
                 [
+                    'text' => 'Enviar',
+                    'url'  => '/enviar',
+                    'icon' => 'fas fa-paper-plane', // Icono de "enviar"
+                ],
+                [
                     'text' => 'Recibir',
                     'url'  => '/recibir',
                     'icon' => 'fas fa-inbox', // Icono de "entrada" o recepción
@@ -389,8 +394,8 @@ return [
         ],
         [
             'text' => 'Eventos',
-            'url' => '/eventos',
-            'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad
+            'url'  => '/eventos',
+            'icon' => 'fas fa-calendar-alt', // Ícono de "eventos"
         ],
         [
             'text' => 'Rendimiento',

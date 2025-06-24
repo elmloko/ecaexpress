@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Tarifario;
 use App\Models\Empresa;
+use App\Models\Evento;
 use App\Models\Peso;
 
 class Tarifas extends Component
@@ -91,7 +92,6 @@ class Tarifas extends Component
         session()->flash('message', $this->tarifario_id ? 'Tarifario actualizado.' : 'Tarifario registrado.');
         $this->cerrarModal();
     }
-
 
     public function editar($id)
     {

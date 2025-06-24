@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Usuarios')
+@section('title', 'Eventos')
 @section('template_title')
     Paqueteria Postal
 @endsection
