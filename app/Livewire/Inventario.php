@@ -111,7 +111,9 @@ class Inventario extends Component
 
     public function editar($id)
     {
-        $p = Paquete::findOrFail($id);
+        // Incluimos también los soft-deleted
+        $p = Paquete::withTrashed()->findOrFail($id);
+
         $this->paquete_id   = $p->id;
         $this->codigo       = $p->codigo;
         $this->destinatario = $p->destinatario;
