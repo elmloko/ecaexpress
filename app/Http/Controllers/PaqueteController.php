@@ -22,4 +22,8 @@ class PaqueteController extends Controller
     {
         return view('paquete.enviar');
     }
+    public function getDespacho ()
+    {
+        return view('paquete.despacho');
+    }
 }

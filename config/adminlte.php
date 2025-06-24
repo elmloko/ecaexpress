@@ -376,6 +376,11 @@ return [
                     'icon' => 'fas fa-paper-plane', // Icono de "enviar"
                 ],
                 [
+                    'text' => 'Despacho',
+                    'url'  => '/despacho',
+                    'icon' => 'fas fa-shipping-fast', // Ícono de "despacho/envío rápido"
+                ],
+                [
                     'text' => 'Recibir',
                     'url'  => '/recibir',
                     'icon' => 'fas fa-inbox', // Icono de "entrada" o recepción
