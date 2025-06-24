@@ -58,7 +58,9 @@
                             <th>Estado</th>
                             <th>Observación</th>
                             <th>Fecha Baja</th>
-                            <th>Acciones</th>
+                            @hasrole('Administrador')
+                                <th>Acciones</th>
+                            @endhasrole
                         </tr>
                     </thead>
                     <tbody>
@@ -73,13 +75,15 @@
                                 <td>{{ $p->observacion }}</td>
                                 <td>{{ $p->deleted_at }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </button>
-                                    <button class="btn btn-sm btn-success" wire:click="restaurar({{ $p->id }})">
-                                        <i class="fas fa-undo"></i>
-                                        Alta
-                                    </button>
+                                    @hasrole('Administrador')
+                                        <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </button>
+                                        <button class="btn btn-sm btn-success" wire:click="restaurar({{ $p->id }})">
+                                            <i class="fas fa-undo"></i>
+                                            Alta
+                                        </button>
+                                    @endhasrole
                                 </td>
                             </tr>
                         @empty

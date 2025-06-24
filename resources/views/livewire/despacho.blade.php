@@ -76,10 +76,12 @@
                                     <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
-                                    <button class="btn btn-sm btn-success" wire:click="restaurar({{ $p->id }})">
-                                        <i class="fas fa-undo"></i>
-                                        Alta
-                                    </button>
+                                    @hasrole('Administrador')
+                                        <button class="btn btn-sm btn-success" wire:click="restaurar({{ $p->id }})">
+                                            <i class="fas fa-trash-restore-alt"></i>
+                                            Restaurar
+                                        </button>
+                                    @endhasrole
                                 </td>
                             </tr>
                         @empty

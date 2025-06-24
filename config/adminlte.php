@@ -319,7 +319,7 @@ return [
         [
             'text' => 'Gestion Usuarios',
             'icon' => 'fas fa-users',
-            // 'can'  => 'users.index',
+            'can'  => 'usuarios',
             'submenu' => [
                 [
                     'text' => 'Personal AGBC',
@@ -346,7 +346,7 @@ return [
         [
             'text' => 'Tarifario',
             'icon'   => 'fas fa-money-check-alt',
-            // 'can'  => 'users.index',
+            'can'  => 'tarifario',
             'submenu' => [
                 [
                     'text' => 'Ajustes Tarifarios',
@@ -371,29 +371,40 @@ return [
             // 'can'  => 'users.index',
             'submenu' => [
                 [
+                    'text' => 'Todos los paquetes',
+                    'url'  => '/todos',
+                    'icon' => 'fas fa-paper-plane', // Icono de "enviar"
+                    'can'  => 'visor',
+                ],
+                [
                     'text' => 'Enviar',
                     'url'  => '/enviar',
                     'icon' => 'fas fa-paper-plane', // Icono de "enviar"
+                    'can'  => 'enviar',
                 ],
                 [
                     'text' => 'Despacho',
                     'url'  => '/despacho',
                     'icon' => 'fas fa-shipping-fast', // Ícono de "despacho/envío rápido"
+                    'can'  => 'enviar',
                 ],
                 [
                     'text' => 'Recibir',
                     'url'  => '/recibir',
                     'icon' => 'fas fa-inbox', // Icono de "entrada" o recepción
+                    'can'  => 'recibir',
                 ],
                 [
                     'text' => 'Almacén',
                     'url'  => '/almacen',
                     'icon' => 'fas fa-warehouse', // Icono de almacén
+                    'can'  => 'recibir',
                 ],
                 [
                     'text' => 'Inventario',
                     'url'  => '/inventario',
                     'icon' => 'fas fa-clipboard-list', // Icono representativo de inventario
+                    'can'  => 'recibir',
                 ],
             ],
         ],
@@ -401,16 +412,19 @@ return [
             'text' => 'Eventos',
             'url'  => '/eventos',
             'icon' => 'fas fa-calendar-alt', // Ícono de "eventos"
+            'can'  => 'visor',
         ],
         [
             'text' => 'Rendimiento',
             'url' => '/pulse',
             'icon' => 'fas fa-tachometer-alt', // Ícono de rendimiento o velocidad
+            'can'  => 'usuarios',
         ],
         [
             'text' => 'Logs',
             'url' => '/log-viewer',
             'icon' => 'fas fa-file-alt', // Ícono de archivo o registro
+            'can'  => 'usuarios',
         ],
     ],
 

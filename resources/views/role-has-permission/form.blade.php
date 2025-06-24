@@ -1,18 +1,55 @@
 <div class="box box-info padding-1">
     <div class="box-body">
+        {{-- Selector de Permiso --}}
         <div class="form-group">
-            {{ Form::label('permission_id') }}
-            {{ Form::select('permission_id', \App\Models\Permission::pluck('name', 'id'), $roleHasPermission->permission_id, ['class' => 'form-control' . ($errors->has('permission_id') ? ' is-invalid' : ''), 'placeholder' => 'Permission Id']) }}
-            {!! $errors->first('permission_id', '<div class="invalid-feedback">:message</div>') !!}
+            <label for="permission_id">Permiso</label>
+            <select
+                name="permission_id"
+                id="permission_id"
+                class="form-control @error('permission_id') is-invalid @enderror"
+            >
+                <option value="">{{ __('Selecciona un permiso') }}</option>
+                @foreach(\App\Models\Permission::pluck('name', 'id') as $id => $name)
+                    <option
+                        value="{{ $id }}"
+                        {{ old('permission_id', $roleHasPermission->permission_id) == $id ? 'selected' : '' }}
+                    >
+                        {{ $name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('permission_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-        
+
+        {{-- Selector de Rol --}}
         <div class="form-group">
-            {{ Form::label('role_id') }}
-            {{ Form::select('role_id', \App\Models\Role::pluck('name', 'id'), $roleHasPermission->role_id, ['class' => 'form-control' . ($errors->has('role_id') ? ' is-invalid' : ''), 'placeholder' => 'Role Id']) }}
-            {!! $errors->first('role_id', '<div class="invalid-feedback">:message</div>') !!}
+            <label for="role_id">Rol</label>
+            <select
+                name="role_id"
+                id="role_id"
+                class="form-control @error('role_id') is-invalid @enderror"
+            >
+                <option value="">{{ __('Selecciona un rol') }}</option>
+                @foreach(\App\Models\Role::pluck('name', 'id') as $id => $name)
+                    <option
+                        value="{{ $id }}"
+                        {{ old('role_id', $roleHasPermission->role_id) == $id ? 'selected' : '' }}
+                    >
+                        {{ $name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('role_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
     </div>
-    <div class="box-footer mt20">
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+
+    <div class="box-footer mt20 text-right">
+        <button type="submit" class="btn btn-primary">
+            {{ __('Submit') }}
+        </button>
     </div>
 </div>

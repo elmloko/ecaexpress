@@ -78,11 +78,13 @@
                                         wire:click="editar({{ $p->id }})">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger"
-                                        wire:click="eliminarPaquete({{ $p->id }})"
-                                        onclick="return confirm('¿Eliminar este paquete de forma permanente?')">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                    @hasrole('Administrador')
+                                        <button class="btn btn-sm btn-danger"
+                                            wire:click="eliminarPaquete({{ $p->id }})"
+                                            onclick="return confirm('¿Eliminar este paquete de forma permanente?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    @endhasrole
                                 </td>
                             </tr>
                         @empty
