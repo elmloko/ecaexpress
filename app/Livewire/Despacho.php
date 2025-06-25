@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Paquete;
+use App\Models\Empresa;
+use App\Models\Peso;
+use App\Models\Tarifario;
 use App\Models\Evento;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -163,6 +166,8 @@ class Despacho extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('livewire.despacho', compact('paquetes'));
+        $empresas = Empresa::orderBy('nombre')->get();
+
+        return view('livewire.despacho', compact('paquetes', 'empresas'));
     }
 }
