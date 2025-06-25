@@ -71,8 +71,8 @@
                                 <td>{{ strtoupper($p->destino) }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->cuidad }}</td>
-                                <td>{{ $p->created_at }}</td>
                                 <td>{{ $p->observacion }}</td>
+                                <td>{{ $p->created_at }}</td>
                                 <td class="d-flex">
                                     <button class="btn btn-sm btn-warning mr-1"
                                         wire:click="editar({{ $p->id }})">
