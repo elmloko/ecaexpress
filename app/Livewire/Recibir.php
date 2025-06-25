@@ -31,6 +31,7 @@ class Recibir extends Component
     public $peso;
     public $destino;
     public $observacion;
+    public $certificacion = false;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -41,6 +42,7 @@ class Recibir extends Component
         'peso'         => 'nullable|numeric',
         'destino'      => 'required|string|max:50',
         'observacion'  => 'nullable|string|max:255',
+        'certificacion' => 'boolean',
     ];
 
     public function mount()
@@ -177,6 +179,11 @@ class Recibir extends Component
                 }
             }
 
+            if ($paquete->certificacion) {
+                $precio += 8;
+            }
+
+
             // 5. Actualizar paquete
             $paquete->update([
                 'estado' => 'ALMACEN',
@@ -215,13 +222,27 @@ class Recibir extends Component
     // --- Lógica Crear / Editar ---
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'destino', 'observacion']);
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'destino', 'observacion', 'certificacion']);
         $this->modal = true;
     }
 
     public function cerrarModal()
     {
         $this->modal = false;
+    }
+
+    public function editar($id)
+    {
+        $p = Paquete::findOrFail($id);
+        $this->paquete_id  = $p->id;
+        $this->codigo      = $p->codigo;
+        $this->destinatario = $p->destinatario;
+        $this->cuidad      = $p->cuidad;
+        $this->destino      = $p->destino;
+        $this->peso        = $p->peso;
+        $this->observacion = $p->observacion;
+        $this->modal       = true;
+        $this->certificacion = (bool) $p->certificacion;
     }
 
     public function guardar()
@@ -235,6 +256,7 @@ class Recibir extends Component
             'destino'      => $this->destino,
             'peso'         => $this->peso,
             'observacion'  => strtoupper($this->observacion),
+            'certificacion' => $this->certificacion ? 1 : 0,
         ];
 
         if ($this->paquete_id) {
@@ -265,21 +287,7 @@ class Recibir extends Component
         }
 
         $this->cerrarModal();
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion']);
-    }
-
-
-    public function editar($id)
-    {
-        $p = Paquete::findOrFail($id);
-        $this->paquete_id  = $p->id;
-        $this->codigo      = $p->codigo;
-        $this->destinatario = $p->destinatario;
-        $this->cuidad      = $p->cuidad;
-        $this->destino      = $p->destino;
-        $this->peso        = $p->peso;
-        $this->observacion = $p->observacion;
-        $this->modal       = true;
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'observacion', 'certificacion']);
     }
 
     public function render()

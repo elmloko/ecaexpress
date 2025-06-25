@@ -22,6 +22,7 @@ class Paquete extends Model
         'user',
         'observacion',
         'photo',
+        'certificacion',
     ];
 
     protected $casts = [
