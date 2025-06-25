@@ -4,6 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Paquete;
 use App\Models\Evento;
+use App\Models\Empresa;
+use App\Models\Peso;
+use App\Models\Tarifario;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +24,18 @@ class Almacen extends Component
 
     public $dateFrom;
     public $dateTo;
-
+    public $paquete_id;
+    public $codigo;
+    public $destinatario;
+    public $destino;
+    public $cuidad;
+    public $peso;
+    public $observacion;
     public $modal = false;
-    public $paquete_id, $codigo, $destinatario, $estado, $cuidad, $peso, $user, $observacion;
-
+    
     // checkbox
     public $selectAll = false;
+    public $certificacion = false;
     public $selected = [];
 
     protected $paginationTheme = 'bootstrap';
@@ -37,6 +46,8 @@ class Almacen extends Component
         'cuidad'       => 'nullable|string|max:50',
         'peso'         => 'nullable|numeric',
         'observacion'  => 'nullable|string|max:255',
+        'destino'      => 'required|string|max:50',
+        'certificacion' => 'boolean',
     ];
 
     public function mount()
@@ -72,6 +83,7 @@ class Almacen extends Component
             'destinatario',
             'estado',
             'cuidad',
+            'destino',
             'peso',
             'user',
             'observacion'
@@ -84,68 +96,99 @@ class Almacen extends Component
         $this->modal = false;
     }
 
-    public function guardar()
-    {
-        $this->validate();
+public function guardar()
+{
+    $this->validate();
 
-        $data = [
-            'codigo'       => strtoupper($this->codigo),
-            'destinatario' => strtoupper($this->destinatario),
-            'cuidad'       => strtoupper($this->cuidad),
-            'peso'         => $this->peso,
-            'observacion'  => strtoupper($this->observacion),
-        ];
+    // 1. Datos base, incluyendo certificación
+    $data = [
+        'codigo'        => strtoupper($this->codigo),
+        'destinatario'  => strtoupper($this->destinatario),
+        'cuidad'        => strtoupper($this->cuidad),
+        'peso'          => $this->peso,
+        'observacion'   => strtoupper($this->observacion),
+        'certificacion' => $this->certificacion ? 1 : 0,
+        'estado'        => 'ALMACEN',
+        'user'          => Auth::user()->name,
+    ];
 
-        if ($this->paquete_id) {
-            $data['estado'] = strtoupper($this->estado);
-            $data['user']   = strtoupper($this->user);
-        } else {
-            $data['estado'] = 'ALMACEN';
-            $data['user']   = Auth::user()->name;
+    // 2. Crear o actualizar el paquete
+    $paquete = Paquete::updateOrCreate(
+        ['id' => $this->paquete_id],
+        $data
+    );
+
+    // 3. Cálculo de precio basado en Empresa, Peso, Destino y Certificación
+    $precio = 0;
+
+    // 3.1. Buscar la empresa (nombres en mayúsculas)
+    $empresaModel = Empresa::whereRaw(
+        'UPPER(nombre) = ?',
+        [strtoupper($paquete->destinatario)]
+    )->first();
+
+    // 3.2. Categoría de peso
+    $pesoCat = Peso::where('min', '<=', $paquete->peso)
+                   ->where('max', '>=', $paquete->peso)
+                   ->first();
+
+    if ($empresaModel && $pesoCat) {
+        // 3.3. Obtener la tarifa correspondiente
+        $tarifa = Tarifario::where('empresa', $empresaModel->id)
+                           ->where('peso', $pesoCat->id)
+                           ->first();
+
+        if ($tarifa) {
+            // 3.4. Columna según destino (asegúrate de tener el campo 'destino' en tu tabla)
+            $col = strtolower($paquete->destino);
+            if (isset($tarifa->$col)) {
+                $precio = $tarifa->$col;
+            }
         }
-
-        Paquete::updateOrCreate(
-            ['id' => $this->paquete_id],
-            $data
-        );
-
-        Evento::create([
-            'accion'      => 'EDICION',
-            'descripcion' => 'Paquete Editado',
-            'user_id'     => Auth::user()->name,
-            'codigo'      => $data['codigo'],
-        ]);
-
-        session()->flash(
-            'message',
-            $this->paquete_id ? 'Paquete actualizado.' : 'Paquete registrado.'
-        );
-
-        $this->cerrarModal();
-        $this->reset([
-            'paquete_id',
-            'codigo',
-            'destinatario',
-            'estado',
-            'cuidad',
-            'peso',
-            'user',
-            'observacion'
-        ]);
     }
+
+    // 3.5. Agregar cargo de certificación si aplica
+    if ($paquete->certificacion) {
+        $precio += 8;
+    }
+
+    // 4. Actualizar el precio en el modelo
+    $paquete->update(['precio' => $precio]);
+
+    // 5. Registrar el evento
+    Evento::create([
+        'accion'      => 'EDICION',
+        'descripcion' => 'Paquete editado y precio recalculado',
+        'user_id'     => Auth::user()->name,
+        'codigo'      => $data['codigo'],
+    ]);
+
+    // 6. Mensaje y cierre de modal
+    session()->flash(
+        'message',
+        $this->paquete_id
+            ? 'Paquete actualizado en Inventario.'
+            : 'Paquete agregado a Inventario.'
+    );
+
+    $this->cerrarModal();
+}
+
 
     public function editar($id)
     {
-        $p = Paquete::findOrFail($id);
+        // Incluimos también los soft-deleted
+        $p = Paquete::withTrashed()->findOrFail($id);
+
         $this->paquete_id   = $p->id;
         $this->codigo       = $p->codigo;
         $this->destinatario = $p->destinatario;
-        $this->estado       = $p->estado;
+        $this->destino       = $p->destino;
         $this->cuidad       = $p->cuidad;
         $this->peso         = $p->peso;
-        $this->user         = $p->user;
         $this->observacion  = $p->observacion;
         $this->modal        = true;
+        $this->certificacion = (bool) $p->certificacion;
     }
 
     public function toggleSelectAll()
@@ -217,6 +260,9 @@ class Almacen extends Component
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        return view('livewire.almacen', compact('paquetes'));
+        $empresas = Empresa::orderBy('nombre')->get();
+
+
+        return view('livewire.almacen', compact('paquetes', 'empresas'));
     }
 }

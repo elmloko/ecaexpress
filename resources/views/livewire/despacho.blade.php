@@ -180,6 +180,13 @@
                                     <label>Observación</label>
                                     <textarea wire:model.defer="observacion" class="form-control" rows="4" style="text-transform: uppercase;"></textarea>
                                 </div>
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="certificacion"
+                                        wire:model.defer="certificacion">
+                                    <label class="form-check-label" for="certificacion">
+                                        Taza de Certificación (8 Bs.)
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
