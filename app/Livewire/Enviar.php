@@ -109,6 +109,7 @@ class Enviar extends Component
                 'cuidad'       => strtoupper($data['CUIDAD']),
                 'peso'         => floatval($data['PESO']),
                 'user'         => Auth::user()->name,
+                'cantidad'     => 1,
             ]
         );
 
@@ -163,7 +164,6 @@ class Enviar extends Component
         }
 
         foreach ($this->selected as $id) {
-            /** @var Paquete $paquete */
             $paquete = Paquete::find($id);
 
             // 1. Buscar empresa
@@ -174,7 +174,7 @@ class Enviar extends Component
                 ->where('max', '>=', $paquete->peso)
                 ->first();
 
-            $precio = 0;
+            $precioUnitario = 0;
 
             if ($empresaModel && $pesoCat) {
                 // 3. Obtener tarifa
@@ -183,22 +183,25 @@ class Enviar extends Component
                     ->first();
 
                 if ($tarifa) {
-                    // 4. Leer columna según destino
                     $col = strtolower($paquete->destino);
                     if (isset($tarifa->$col)) {
-                        $precio = $tarifa->$col;
+                        $precioUnitario = $tarifa->$col;
                     }
                 }
             }
 
+            // 4. Extra certificación
             if ($paquete->certificacion) {
-                $precio += 8;
+                $precioUnitario += 8;
             }
 
-            // 5. Actualizar paquete
+            // 5. Multiplicar por la cantidad
+            $precioFinal = $precioUnitario * $paquete->cantidad;
+
+            // 6. Actualizar paquete con precio total
             $paquete->update([
                 'estado' => 'DESPACHADO',
-                'precio' => $precio,
+                'precio' => $precioFinal,
             ]);
         }
 

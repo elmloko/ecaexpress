@@ -50,6 +50,7 @@
                 <table class="table table-striped mb-0">
                     <thead>
                         <tr>
+                            <th>Cantidad</th>
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Ciudad</th>
@@ -65,6 +66,7 @@
                     <tbody>
                         @forelse ($paquetes as $p)
                             <tr wire:key="inventario-{{ $p->id }}">
+                                <td>{{ $p->cantidad }}</td>
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->cuidad }}</td>
