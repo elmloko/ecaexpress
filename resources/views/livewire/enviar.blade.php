@@ -22,6 +22,9 @@
                     <button class="btn btn-success ml-2" wire:click="abrirModal">
                         <i class="fas fa-plus-circle"></i> Crear Paquete
                     </button>
+                    <button class="btn btn-primary" wire:click="abrirModalCantidad">
+                        <i class="fas fa-inbox"></i> Agrupar paquetes
+                    </button>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <div class="input-group" style="max-width: 400px;">
@@ -48,6 +51,7 @@
                                 <input type="checkbox" wire:click="toggleSelectAll"
                                     @if ($selectAll) checked @endif>
                             </th>
+                            <th>Cantidad</th>
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Peso</th>
@@ -65,6 +69,7 @@
                                 <td>
                                     <input type="checkbox" wire:model="selected" value="{{ $p->id }}">
                                 </td>
+                                <td>{{ $p->cantidad }}</td>
                                 <td>{{ $p->codigo }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->peso }} kg</td>
@@ -436,6 +441,128 @@
                         Guardar Destino
                     </button>
                     <button type="button" class="btn btn-secondary" wire:click="$set('modalDestino', false)">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Cantidad + Registro -->
+    <div class="modal fade @if ($modalCantidad) show d-block @endif" tabindex="-1"
+        style="background: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-lg"><!-- agrandamos un poco para todos los campos -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar y Enviar Paquetes</h5>
+                    <button type="button" class="close"
+                        wire:click="cerrarModalCantidad"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        {{-- Columna izquierda --}}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Código</label>
+                                <input type="text" wire:model.defer="codigo" class="form-control"
+                                    style="text-transform: uppercase;">
+                                @error('codigo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Empresa</label>
+                                <select wire:model.defer="destinatario" class="form-control"
+                                    style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    @foreach ($empresas as $empresa)
+                                        <option value="{{ strtoupper($empresa->nombre) }}">
+                                            {{ strtoupper($empresa->nombre) }}</option>
+                                    @endforeach
+                                </select>
+                                @error('destinatario')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Departamento</label>
+                                <select wire:model.defer="cuidad" class="form-control"
+                                    style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    <option>BENI</option>
+                                    <option>CHUQUISACA</option>
+                                    <option>COCHABAMBA</option>
+                                    <option>LA PAZ</option>
+                                    <option>ORURO</option>
+                                    <option>PANDO</option>
+                                    <option>POTOSI</option>
+                                    <option>SANTA CRUZ</option>
+                                    <option>TARIJA</option>
+                                </select>
+                                @error('cuidad')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Destino</label>
+                                <select wire:model.defer="destino" class="form-control"
+                                    style="text-transform: uppercase;">
+                                    <option value="">SELECCIONE...</option>
+                                    <option value="local">LOCAL</option>
+                                    <option value="nacional">NACIONAL</option>
+                                    <option value="camiri">CAMIRI</option>
+                                    <option value="sud">SUD AMERICA</option>
+                                    <option value="centro">CENTRO AMERICA Y CARIBE</option>
+                                    <option value="norte">NORTE AMERICA</option>
+                                    <option value="euro">EUROPA Y AFRICA</option>
+                                    <option value="asia">ASIA Y OCEANIA</option>
+                                    {{-- …más países… --}}
+                                </select>
+                                @error('destino')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- Columna derecha --}}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Peso (kg)</label>
+                                <input type="number" wire:model.defer="peso" step="0.01" class="form-control">
+                                @error('peso')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Observación</label>
+                                <textarea wire:model.defer="observacion" class="form-control" rows="3" style="text-transform: uppercase;"></textarea>
+                                @error('observacion')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="certificacion" wire:model.defer="certificacion"
+                                    class="form-check-input">
+                                <label for="certificacion" class="form-check-label">
+                                    Tasa de Certificación (8 Bs.)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    {{-- Campo Cantidad --}}
+                    <div class="form-group">
+                        <label>¿Cuántos paquetes estás enviando?</label>
+                        <input type="number" wire:model.defer="cantidad" min="1" class="form-control">
+                        @error('cantidad')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button wire:click="confirmarCantidad" class="btn btn-primary">
+                        Guardar y Enviar
+                    </button>
+                    <button type="button" class="btn btn-secondary" wire:click="cerrarModalCantidad">
                         Cancelar
                     </button>
                 </div>
