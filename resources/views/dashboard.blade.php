@@ -9,6 +9,33 @@
 
 @section('content_header')
     <h1>Dashboard</h1>
+    <form action="{{ route('dashboard.kardex') }}" method="GET" class="form-inline mt-2 mb-4">
+        <div class="form-group mr-3">
+            <label for="start_date" class="mr-1">Desde:</label>
+            <input 
+                type="date" 
+                name="start_date" 
+                id="start_date" 
+                class="form-control" 
+                value="{{ request('start_date') }}" 
+                required
+            >
+        </div>
+        <div class="form-group mr-3">
+            <label for="end_date" class="mr-1">Hasta:</label>
+            <input 
+                type="date" 
+                name="end_date" 
+                id="end_date" 
+                class="form-control" 
+                value="{{ request('end_date') }}" 
+                required
+            >
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-file-pdf"></i> Generar Kardex PDF
+        </button>
+    </form>
 @stop
 
 @section('content')

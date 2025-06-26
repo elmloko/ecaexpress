@@ -18,6 +18,9 @@ Route::get('/', function () {
 Route::middleware('auth')
     ->get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+Route::middleware('auth')
+     ->get('/dashboard/kardex', [DashboardController::class, 'kardex'])
+     ->name('dashboard.kardex');
 
 Route::middleware('auth')->group(function () {
     Route::get('/eventos', [EventoController::class, 'getEventos']);
