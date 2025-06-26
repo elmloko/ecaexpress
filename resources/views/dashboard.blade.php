@@ -1,4 +1,9 @@
+{{-- resources/views/dashboard.blade.php --}}
+
 @extends('adminlte::page')
+
+{{-- Carga automática de Chart.js --}}
+@section('plugins.Chartjs', true)
 
 @section('title', 'Dashboard')
 
@@ -7,15 +12,143 @@
 @stop
 
 @section('content')
-    @livewire('dashboard')
-    @include('footer')
-@stop
+    <div class="row">
+        {{-- Total general --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ $totalPaquetes }}</h3>
+                    <p>Total Paquetes</p>
+                </div>
+                <div class="icon"><i class="fas fa-box"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
 
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+        {{-- Enviando --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h3>{{ $totalEnviando }}</h3>
+                    <p>Enviando</p>
+                </div>
+                <div class="icon"><i class="fas fa-paper-plane"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
+
+        {{-- Despacho --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ $totalDespacho }}</h3>
+                    <p>Despacho</p>
+                </div>
+                <div class="icon"><i class="fas fa-truck"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
+
+        {{-- Recibido --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ $totalRecibido }}</h3>
+                    <p>Recibido</p>
+                </div>
+                <div class="icon"><i class="fas fa-inbox"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
+
+        {{-- Almacén --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ $totalAlmacen }}</h3>
+                    <p>Almacén</p>
+                </div>
+                <div class="icon"><i class="fas fa-warehouse"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
+
+        {{-- Inventario --}}
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3>{{ $totalInventario }}</h3>
+                    <p>Inventario</p>
+                </div>
+                <div class="icon"><i class="fas fa-list"></i></div>
+                <p class="small-box-footer">{{ now()->format('Y-m-d') }}</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Gráficos de Paquetes por Destino --}}
+    <div class="row mt-4">
+        {{-- Línea --}}
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Paquetes por Destino (Línea)</h3>
+                </div>
+                <div class="card-body" style="position: relative; height:250px;">
+                    <canvas id="destinoLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const labels = @json($destinoLabels);
+            const data   = @json($destinoTotals);
+
+            // Gráfico de línea
+            new Chart(
+                document.getElementById('destinoLineChart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Paquetes',
+                            data: data,
+                            fill: false,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                }
+            );
+
+            // Gráfico de área
+            new Chart(
+                document.getElementById('destinoAreaChart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Paquetes',
+                            data: data,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                }
+            );
+        });
+    </script>
 @stop
