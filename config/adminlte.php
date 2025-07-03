@@ -314,7 +314,7 @@ return [
         [
             'text' => 'Dashboard',
             'url' => '/dashboard',
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-tachometer-alt', 
         ],
         [
             'text' => 'Gestion Usuarios',
