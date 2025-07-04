@@ -6,4 +6,5 @@
 
 @section('content')
     @livewire('eventos')
+    @include('footer')
 @endsection

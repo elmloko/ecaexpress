@@ -6,4 +6,5 @@
 
 @section('content')
     @livewire('enviar')
+    @include('footer')
 @endsection

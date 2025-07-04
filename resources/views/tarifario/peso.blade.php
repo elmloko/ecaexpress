@@ -6,4 +6,5 @@
 
 @section('content')
 @livewire('pesos')
+@include('footer')
 @endsection

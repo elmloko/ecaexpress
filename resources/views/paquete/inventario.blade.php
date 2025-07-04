@@ -6,4 +6,5 @@
 
 @section('content')
     @livewire('inventario')
+    @include('footer')
 @endsection

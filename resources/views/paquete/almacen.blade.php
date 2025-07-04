@@ -6,4 +6,5 @@
 
 @section('content')
     @livewire('almacen')
+    @include('footer')
 @endsection

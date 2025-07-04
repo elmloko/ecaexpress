@@ -6,4 +6,5 @@
 
 @section('content')
     @livewire('todos')
+    @include('footer')
 @endsection

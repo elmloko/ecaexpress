@@ -6,4 +6,5 @@
 
 @section('content')
 @livewire('tarifas')
+@include('footer')
 @endsection

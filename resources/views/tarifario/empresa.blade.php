@@ -6,4 +6,5 @@
 
 @section('content')
 @livewire('empresas')
+@include('footer')
 @endsection
