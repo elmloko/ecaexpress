@@ -127,6 +127,7 @@
             </div>
         </div>
     </div>
+    @include('footer')
 @stop
 
 @section('js')
