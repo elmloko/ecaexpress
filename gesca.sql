@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `cache` (
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.cache: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla geca.cache: ~11 rows (aproximadamente)
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
 	('laravel_cache_laravel:pulse:Laravel\\Pulse\\Livewire\\Cache:all:1_hour', 'a:3:{i:0;O:8:"stdClass":2:{s:4:"hits";s:5:"21.00";s:6:"misses";i:0;}i:1;d:35.3296;i:2;s:19:"2025-07-09 16:27:44";}', 1752078469),
 	('laravel_cache_laravel:pulse:Laravel\\Pulse\\Livewire\\Cache:keys:1_hour', 'a:3:{i:0;O:29:"Illuminate\\Support\\Collection":2:{s:8:"\0*\0items";a:1:{i:0;O:8:"stdClass":3:{s:3:"key";s:23:"spatie.permission.cache";s:4:"hits";s:5:"21.00";s:6:"misses";i:0;}}s:28:"\0*\0escapeWhenCastingToString";b:0;}i:1;d:7.3351;i:2;s:19:"2025-07-09 16:27:45";}', 1752078470),
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `empresa` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla geca.empresa: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla geca.empresa: ~10 rows (aproximadamente)
 INSERT INTO `empresa` (`id`, `nombre`, `tipo`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(11, 'FUNDACION AYUDA EN ACCION', 'NUEVO', '2025-06-23 17:54:48', '2025-06-23 17:54:48', NULL),
 	(12, 'ALDEAS INFANTILES SOS', 'NUEVO', '2025-06-23 18:16:13', '2025-06-23 18:16:13', NULL),
@@ -402,9 +402,20 @@ CREATE TABLE IF NOT EXISTS `pulse_aggregates` (
   KEY `pulse_aggregates_period_bucket_index` (`period`,`bucket`),
   KEY `pulse_aggregates_type_index` (`type`),
   KEY `pulse_aggregates_period_type_aggregate_bucket_index` (`period`,`type`,`aggregate`,`bucket`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_aggregates: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_aggregates: ~10 rows (aproximadamente)
+INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggregate`, `value`, `count`) VALUES
+	(1, 1752086580, 60, 'user_request', '1', 'count', 20.00, NULL),
+	(2, 1752086520, 360, 'user_request', '1', 'count', 22.00, NULL),
+	(3, 1752085440, 1440, 'user_request', '1', 'count', 22.00, NULL),
+	(4, 1752085440, 10080, 'user_request', '1', 'count', 22.00, NULL),
+	(5, 1752086580, 60, 'cache_hit', 'spatie.permission.cache', 'count', 10.00, NULL),
+	(6, 1752086520, 360, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
+	(7, 1752085440, 1440, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
+	(8, 1752085440, 10080, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
+	(121, 1752086640, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(122, 1752086640, 60, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL);
 
 -- Volcando estructura para tabla geca.pulse_entries
 CREATE TABLE IF NOT EXISTS `pulse_entries` (
@@ -419,9 +430,43 @@ CREATE TABLE IF NOT EXISTS `pulse_entries` (
   KEY `pulse_entries_type_index` (`type`),
   KEY `pulse_entries_key_hash_index` (`key_hash`),
   KEY `pulse_entries_timestamp_type_key_hash_value_index` (`timestamp`,`type`,`key_hash`,`value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_entries: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_entries: ~33 rows (aproximadamente)
+INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
+	(1, 1752086598, 'user_request', '1', NULL),
+	(2, 1752086599, 'user_request', '1', NULL),
+	(3, 1752086599, 'cache_hit', 'spatie.permission.cache', NULL),
+	(4, 1752086603, 'user_request', '1', NULL),
+	(5, 1752086603, 'cache_hit', 'spatie.permission.cache', NULL),
+	(6, 1752086606, 'user_request', '1', NULL),
+	(7, 1752086608, 'user_request', '1', NULL),
+	(8, 1752086611, 'user_request', '1', NULL),
+	(9, 1752086612, 'user_request', '1', NULL),
+	(10, 1752086613, 'user_request', '1', NULL),
+	(11, 1752086614, 'user_request', '1', NULL),
+	(12, 1752086615, 'user_request', '1', NULL),
+	(13, 1752086616, 'user_request', '1', NULL),
+	(14, 1752086616, 'user_request', '1', NULL),
+	(15, 1752086619, 'user_request', '1', NULL),
+	(16, 1752086619, 'cache_hit', 'spatie.permission.cache', NULL),
+	(17, 1752086621, 'user_request', '1', NULL),
+	(18, 1752086621, 'cache_hit', 'spatie.permission.cache', NULL),
+	(19, 1752086624, 'user_request', '1', NULL),
+	(20, 1752086624, 'cache_hit', 'spatie.permission.cache', NULL),
+	(21, 1752086627, 'user_request', '1', NULL),
+	(22, 1752086628, 'cache_hit', 'spatie.permission.cache', NULL),
+	(23, 1752086630, 'user_request', '1', NULL),
+	(24, 1752086630, 'cache_hit', 'spatie.permission.cache', NULL),
+	(25, 1752086633, 'user_request', '1', NULL),
+	(26, 1752086634, 'cache_hit', 'spatie.permission.cache', NULL),
+	(27, 1752086636, 'user_request', '1', NULL),
+	(28, 1752086636, 'cache_hit', 'spatie.permission.cache', NULL),
+	(29, 1752086638, 'user_request', '1', NULL),
+	(30, 1752086638, 'cache_hit', 'spatie.permission.cache', NULL),
+	(31, 1752086642, 'user_request', '1', NULL),
+	(32, 1752086642, 'cache_hit', 'spatie.permission.cache', NULL),
+	(33, 1752086644, 'user_request', '1', NULL);
 
 -- Volcando estructura para tabla geca.pulse_values
 CREATE TABLE IF NOT EXISTS `pulse_values` (
@@ -493,7 +538,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla geca.sessions: ~1 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('xmcZt7IDcIGp2D6Ncd1hrrEztpufo0q2lgrC4Ym0', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiOW9GV1RkMWNsZDF5eklwcndtZHRxV1FyMTFqTktFdU9sRWs4dGxINCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2ctdmlld2VyIjt9czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1752078466);
+	('TzdYixP6AS7GlVX8W2jvbiN60VKSeagxoVUL5Az5', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTlQ0dHFPUU9ORmRKaTllS0FiWFNqMkhPa21FaGxZMjlubWpPd1R1aCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2VudmlhciI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1752086645);
 
 -- Volcando estructura para tabla geca.tarifario
 CREATE TABLE IF NOT EXISTS `tarifario` (
@@ -512,9 +557,9 @@ CREATE TABLE IF NOT EXISTS `tarifario` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla geca.tarifario: ~77 rows (aproximadamente)
+-- Volcando datos para la tabla geca.tarifario: ~95 rows (aproximadamente)
 INSERT INTO `tarifario` (`id`, `peso`, `empresa`, `local`, `nacional`, `camiri`, `sud`, `norte`, `centro`, `euro`, `asia`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(20, 4, 11, NULL, NULL, NULL, 14.8, 20.8, 16.8, 23.8, 26.8, '2025-06-23 18:05:02', '2025-06-23 18:05:02', NULL),
 	(21, 5, 11, NULL, NULL, NULL, 26.4, 38.4, 27.6, 40.8, 56.3, '2025-06-23 18:06:38', '2025-06-23 18:06:38', NULL),
@@ -592,7 +637,25 @@ INSERT INTO `tarifario` (`id`, `peso`, `empresa`, `local`, `nacional`, `camiri`,
 	(93, 25, 16, NULL, NULL, NULL, 854, 1473, 995, 1948, 2702, '2025-06-25 19:29:11', '2025-06-25 19:29:11', NULL),
 	(94, 26, 16, NULL, NULL, NULL, 896, 1550, 1046, 2052, 2851, '2025-06-25 19:30:04', '2025-06-25 19:30:04', NULL),
 	(95, 28, 16, NULL, NULL, NULL, 936, 1628, 1096, 2156, 3001, '2025-06-25 19:31:18', '2025-06-25 19:31:18', NULL),
-	(96, 27, 16, NULL, NULL, NULL, 977, 1706, 1147, 2260, 3149, '2025-06-25 19:31:57', '2025-06-25 19:31:57', NULL);
+	(96, 27, 16, NULL, NULL, NULL, 977, 1706, 1147, 2260, 3149, '2025-06-25 19:31:57', '2025-06-25 19:31:57', NULL),
+	(97, 4, 17, NULL, NULL, NULL, 13, 18, 14, 21, 23, '2025-06-23 18:44:43', '2025-06-23 18:44:43', NULL),
+	(98, 14, 17, NULL, NULL, NULL, 25, 37, 29, 41, 57, '2025-06-23 18:45:04', '2025-06-23 18:45:04', NULL),
+	(99, 7, 17, NULL, NULL, NULL, 46, 73, 65, 79, 135, '2025-06-23 18:45:40', '2025-06-23 18:45:40', NULL),
+	(100, 8, 17, NULL, NULL, NULL, 95, 100, 97, 119, 270, '2025-06-23 18:46:04', '2025-06-23 18:46:04', NULL),
+	(101, 9, 17, NULL, NULL, NULL, 126, 194, 148, 235, 337, '2025-06-23 18:46:25', '2025-06-23 18:46:25', NULL),
+	(102, 10, 17, NULL, NULL, NULL, 239, 271, 244, 316, 505, '2025-06-23 18:46:49', '2025-06-23 18:46:49', NULL),
+	(103, 4, 18, NULL, NULL, NULL, 13, 18, 14, 21, 23, '2025-06-23 18:44:43', '2025-06-23 18:44:43', NULL),
+	(104, 14, 18, NULL, NULL, NULL, 25, 37, 29, 41, 57, '2025-06-23 18:45:04', '2025-06-23 18:45:04', NULL),
+	(105, 7, 18, NULL, NULL, NULL, 46, 73, 65, 79, 135, '2025-06-23 18:45:40', '2025-06-23 18:45:40', NULL),
+	(106, 8, 18, NULL, NULL, NULL, 95, 100, 97, 119, 270, '2025-06-23 18:46:04', '2025-06-23 18:46:04', NULL),
+	(107, 9, 18, NULL, NULL, NULL, 126, 194, 148, 235, 337, '2025-06-23 18:46:25', '2025-06-23 18:46:25', NULL),
+	(108, 10, 18, NULL, NULL, NULL, 239, 271, 244, 316, 505, '2025-06-23 18:46:49', '2025-06-23 18:46:49', NULL),
+	(109, 4, 19, NULL, NULL, NULL, 13, 18, 14, 21, 23, '2025-06-23 18:44:43', '2025-06-23 18:44:43', NULL),
+	(110, 14, 19, NULL, NULL, NULL, 25, 37, 29, 41, 57, '2025-06-23 18:45:04', '2025-06-23 18:45:04', NULL),
+	(111, 7, 19, NULL, NULL, NULL, 46, 73, 65, 79, 135, '2025-06-23 18:45:40', '2025-06-23 18:45:40', NULL),
+	(112, 8, 19, NULL, NULL, NULL, 95, 100, 97, 119, 270, '2025-06-23 18:46:04', '2025-06-23 18:46:04', NULL),
+	(113, 9, 19, NULL, NULL, NULL, 126, 194, 148, 235, 337, '2025-06-23 18:46:25', '2025-06-23 18:46:25', NULL),
+	(114, 10, 19, NULL, NULL, NULL, 239, 271, 244, 316, 505, '2025-06-23 18:46:49', '2025-06-23 18:46:49', NULL);
 
 -- Volcando estructura para tabla geca.users
 CREATE TABLE IF NOT EXISTS `users` (
