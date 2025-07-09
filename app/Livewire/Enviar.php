@@ -35,6 +35,7 @@ class Enviar extends Component
     public $observacion;
     public $certificacion = false;
     public $grupo = false;
+    public $pda;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -46,6 +47,7 @@ class Enviar extends Component
         'peso'          => 'nullable|numeric',
         'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
+        'pda'         => 'nullable|string|max:100',
         'certificacion' => 'boolean',
         'grupo'         => 'boolean',
     ];
@@ -169,7 +171,7 @@ class Enviar extends Component
 
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion']);
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion', 'pda']);
         $this->modal = true;
     }
 
@@ -189,6 +191,7 @@ class Enviar extends Component
         $this->peso         = $p->peso;
         $this->cantidad     = $p->cantidad;
         $this->observacion  = $p->observacion;
+        $this->pda          = $p->pda;
         $this->certificacion = (bool)$p->certificacion;
         $this->grupo         = (bool) $p->grupo;
         $this->modal        = true;
@@ -204,6 +207,7 @@ class Enviar extends Component
             'destino'      => $this->destino,
             'peso'         => $this->peso,
             'cantidad'     => $this->cantidad,
+            'pda'           => $this->pda,
             'observacion'  => strtoupper($this->observacion),
             'certificacion' => $this->certificacion ? 1 : 0,
             'grupo'         => $this->grupo ? 1 : 0,

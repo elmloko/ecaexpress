@@ -24,6 +24,7 @@ class Paquete extends Model
         'photo',
         'cantidad',
         'grupo',
+        'pda',
         'certificacion',
     ];
 
