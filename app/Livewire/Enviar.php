@@ -64,65 +64,19 @@ class Enviar extends Component
 
     public function buscar()
     {
+        // 1. Tomamos el valor ingresado
         $this->search = trim($this->searchInput);
 
+        // 2. Si está vacío, mostramos mensaje y salimos
         if (! $this->search) {
-            session()->flash('message', 'Debe ingresar un código para buscar.');
+            session()->flash('message', 'Debe ingresar un código o término para buscar.');
             return;
         }
 
-        $url = config('services.correos.url') . '/' . $this->search;
+        // 3. Reiniciamos la paginación para que la búsqueda empiece desde la página 1
+        $this->resetPage();
 
-        $response = Http::withOptions([
-            'verify' => false,
-            'curl' => [
-                CURLOPT_SSLVERSION   => CURL_SSLVERSION_TLSv1_2,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_IPRESOLVE    => CURL_IPRESOLVE_V4,
-            ],
-        ])
-            ->withToken(config('services.correos.token'))
-            ->acceptJson()
-            ->get($url);
-
-        if (! $response->successful()) {
-            session()->flash('message', "Paquete no encontrado o error API ({$response->status()}).");
-            return;
-        }
-
-        $data = $response->json();
-
-        if (
-            $data['VENTANILLA'] !== 'ECA' ||
-            $data['ESTADO']     !== 'DESPACHO' ||
-            strtoupper($data['CUIDAD']) !== strtoupper(Auth::user()->city)
-        ) {
-            session()->flash('message', 'El paquete no cumple los criterios de Ventanilla, Estado o Ciudad.');
-            return;
-        }
-
-        // Crear o actualizar sin destino
-        $paquete = Paquete::updateOrCreate(
-            ['codigo' => $data['CODIGO']],
-            [
-                'destinatario' => strtoupper($data['DESTINATARIO']),
-                'estado'       => 'ENVIANDO',
-                'cuidad'       => strtoupper($data['CUIDAD']),
-                'peso'         => floatval($data['PESO']),
-                'user'         => Auth::user()->name,
-                'cantidad'     => 1,
-            ]
-        );
-
-        Evento::create([
-            'accion'      => 'ENCONTRADO',
-            'descripcion' => 'Paquete Registrado',
-            'user_id'     => Auth::user()->name,
-            'codigo'      => $paquete->codigo,
-        ]);
-
-        $this->paqueteDestinoId = $paquete->id;
-        $this->modalDestino     = true;
+        // ¡Listo! El método render() se encargará de filtrar los resultados
     }
 
     public function asignarDestino()
