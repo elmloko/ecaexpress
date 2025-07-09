@@ -373,7 +373,7 @@
                                     <option value="norte">NORTE AMERICA</option>
                                     <option value="euro">EUROPA Y AFRICA</option>
                                     <option value="asia">ASIA Y OCEANIA</option>
-                                    
+
                                 </select>
                             </div>
                         </div>
@@ -382,6 +382,14 @@
                             <div class="form-group">
                                 <label>Peso (kg)</label>
                                 <input type="number" wire:model.defer="peso" step="0.01" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input type="number" min="1" wire:model.defer="cantidad"
+                                    class="form-control">
+                                @error('cantidad')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Observación</label>

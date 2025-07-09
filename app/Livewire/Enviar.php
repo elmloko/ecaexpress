@@ -222,6 +222,7 @@ class Enviar extends Component
         $this->destino      = $p->destino;
         $this->peso         = $p->peso;
         $this->observacion  = $p->observacion;
+        $this->cantidad     = $p->cantidad;
         $this->certificacion = (bool) $p->certificacion;
         $this->modal        = true;
     }
