@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'GECA',
+    'title' => 'UNIENVIO',
     'title_prefix' => '',
     'title_postfix' => '| AGBC',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>geca</b>AGBC',
+    'logo' => '<b>unienvio</b>AGBC',
     'logo_img' => 'images/AGBClogo.png',
     'logo_img_class' => 'brand-image img-circle',
     'logo_img_xl' => null,
@@ -366,16 +366,17 @@ return [
             ],
         ],
         [
-            'text' => 'Todos los paquetes',
-            'icon' => 'fas fa-boxes', // Icono representativo de "paquetes"
-            // 'can'  => 'users.index',
-            'submenu' => [
-                [
                     'text' => 'Todos los paquetes',
                     'url'  => '/todos',
                     'icon' => 'fas fa-paper-plane', // Icono de "enviar"
                     'can'  => 'visor',
                 ],
+        [
+            'text' => 'Envio de Paquetes',
+            'icon' => 'fas fa-plane-departure', // Icono representativo de "paquetes"
+            // 'can'  => 'users.index',
+            'submenu' => [
+                
                 [
                     'text' => 'Enviar',
                     'url'  => '/enviar',
@@ -388,6 +389,13 @@ return [
                     'icon' => 'fas fa-shipping-fast', // Ícono de "despacho/envío rápido"
                     'can'  => 'enviar',
                 ],
+            ],
+        ],
+        [
+            'text' => 'Recepcion de Paquetes',
+            'icon' => 'fas fa-box-open', // Icono representativo de "paquetes"
+            // 'can'  => 'users.index',
+            'submenu' => [
                 [
                     'text' => 'Recibir',
                     'url'  => '/recibir',
