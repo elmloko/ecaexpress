@@ -52,6 +52,7 @@
                         <tr>
                             <th>Cantidad</th>
                             <th>Código</th>
+                            <th>PDA</th>
                             <th>Empresa</th>
                             <th>Ciudad</th>
                             <th>Peso</th>
@@ -68,6 +69,7 @@
                             <tr wire:key="inventario-{{ $p->id }}">
                                 <td>{{ $p->cantidad }}</td>
                                 <td>{{ $p->codigo }}</td>
+                                <td>{{ $p->pda }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->peso }} kg</td>
