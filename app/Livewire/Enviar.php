@@ -10,39 +10,31 @@ use App\Models\Evento;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use PDF;
 
 class Enviar extends Component
 {
     use WithPagination;
 
-    // Filtros y selección
     public $search = '';
     public $searchInput = '';
     public $selectAll = false;
     public $selected = [];
 
-    // Modal API -> destino
-    public $modalDestino = false;
-    public $paqueteDestinoId = null;
-
-    // Modal crear/editar paquete
+    // Modal único
     public $modal = false;
-    public $paquete_id;
+    public $paquete_id = null;
 
-    // Campos de paquete
+    // Campos del formulario
     public $codigo;
     public $destinatario;
     public $cuidad;
     public $destino;
     public $peso;
+    public $cantidad = 1;
     public $observacion;
     public $certificacion = false;
-
-    // Nuevo modal: cantidad + registro
-    public $modalCantidad = false;
-    public $cantidad = 1;
+    public $grupo = false;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -52,9 +44,10 @@ class Enviar extends Component
         'cuidad'        => 'nullable|string|max:50',
         'destino'       => 'required|string|max:50',
         'peso'          => 'nullable|numeric',
+        'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
         'certificacion' => 'boolean',
-        'cantidad'      => 'required|integer|min:1',
+        'grupo'         => 'boolean',
     ];
 
     public function mount()
@@ -64,43 +57,23 @@ class Enviar extends Component
 
     public function buscar()
     {
-        // 1. Tomamos el valor ingresado
         $this->search = trim($this->searchInput);
-
-        // 2. Si está vacío, mostramos mensaje y salimos
-        if (! $this->search) {
+        if (!$this->search) {
             session()->flash('message', 'Debe ingresar un código o término para buscar.');
             return;
         }
-
-        // 3. Reiniciamos la paginación para que la búsqueda empiece desde la página 1
-        $this->resetPage();
-
-        // ¡Listo! El método render() se encargará de filtrar los resultados
-    }
-
-    public function asignarDestino()
-    {
-        $this->validateOnly('destino');
-
-        Paquete::findOrFail($this->paqueteDestinoId)
-            ->update(['destino' => $this->destino]);
-
-        session()->flash('message', "Destino asignado al paquete {$this->paqueteDestinoId}.");
-        $this->reset(['destino', 'paqueteDestinoId', 'searchInput', 'search']);
-        $this->modalDestino = false;
         $this->resetPage();
     }
+
     public function toggleSelectAll()
     {
-        $this->selectAll = ! $this->selectAll;
-
+        $this->selectAll = !$this->selectAll;
         if ($this->selectAll) {
             $this->selected = Paquete::where('estado', 'ENVIANDO')
                 ->where(function ($q) {
-                    $q->where('codigo', 'like', '%' . $this->search . '%')
-                        ->orWhere('cuidad', 'like', '%' . $this->search . '%')
-                        ->orWhere('observacion', 'like', '%' . $this->search . '%');
+                    $q->where('codigo', 'like', "%{$this->search}%")
+                        ->orWhere('cuidad', 'like', "%{$this->search}%")
+                        ->orWhere('observacion', 'like', "%{$this->search}%");
                 })
                 ->orderBy('id', 'desc')
                 ->paginate(10)
@@ -118,66 +91,60 @@ class Enviar extends Component
             return;
         }
 
-        // 1) Obtener los paquetes a procesar
         $packages = Paquete::whereIn('id', $this->selected)->get();
 
-        // 2) Calcular precio y actualizar estado de cada paquete
-        foreach ($packages as $paquete) {
-            // 2.1 Buscar empresa
-            $empresaModel = Empresa::whereRaw('UPPER(nombre) = ?', [strtoupper($paquete->destinatario)])->first();
-
-            // 2.2 Buscar categoría de peso
-            $pesoCat = Peso::where('min', '<=', $paquete->peso)
-                ->where('max', '>=', $paquete->peso)
+        foreach ($packages as $p) {
+            // 1) Buscamos empresa y categoría de peso
+            $empresa = Empresa::whereRaw('UPPER(nombre)=?', [strtoupper($p->destinatario)])->first();
+            $pesoCat = Peso::where('min', '<=', $p->peso)
+                ->where('max', '>=', $p->peso)
                 ->first();
 
-            $precioUnitario = 0;
-            if ($empresaModel && $pesoCat) {
-                // 2.3 Obtener tarifa
-                $tarifa = Tarifario::where('empresa', $empresaModel->id)
+            // 2) Obtenemos tarifa base
+            $unit = 0;
+            if ($empresa && $pesoCat) {
+                $tarifa = Tarifario::where('empresa', $empresa->id)
                     ->where('peso', $pesoCat->id)
                     ->first();
 
-                if ($tarifa) {
-                    $col = strtolower($paquete->destino);
-                    if (isset($tarifa->$col)) {
-                        $precioUnitario = $tarifa->$col;
-                    }
+                if ($tarifa && isset($tarifa->{strtolower($p->destino)})) {
+                    $unit = $tarifa->{strtolower($p->destino)};
                 }
             }
 
-            // 2.4 Extra certificación
-            if ($paquete->certificacion) {
-                $precioUnitario += 8;
+            // 3) Extra por certificación
+            if ($p->certificacion) {
+                $unit += 8;
             }
 
-            // 2.5 Multiplicar por la cantidad
-            $precioFinal = $precioUnitario * $paquete->cantidad;
+            // 4) Determinamos cuántas unidades multiplicar:
+            //    - Si grupo == 1: multiplicamos por la cantidad real
+            //    - Si grupo == 0: multiplicamos solo por 1
+            $multiplier = $p->grupo ? $p->cantidad : 1;
 
-            // 2.6 Actualizar paquete con precio total y estado
-            $paquete->update([
+            // 5) Cálculo final
+            $total = $unit * $multiplier;
+
+            // 6) Actualizamos el paquete y registramos evento
+            $p->update([
                 'estado' => 'DESPACHADO',
-                'precio' => $precioFinal,
+                'precio' => $total,
             ]);
-        }
 
-        // 3) Registrar un evento por cada paquete
-        foreach ($packages as $pkg) {
             Evento::create([
                 'accion'      => 'DESPACHADO',
-                'descripcion' => 'Paquete Despachado a Destinatario',
+                'descripcion' => 'Paquete Despachado',
                 'user_id'     => Auth::user()->name,
-                'codigo'      => $pkg->codigo,
+                'codigo'      => $p->codigo,
             ]);
         }
 
-        // 4) Reiniciar selección y paginación
+        // 7) Reset de selección y paginación
         $this->selected  = [];
         $this->selectAll = false;
         $this->resetPage();
 
-        // 5) Generar y forzar descarga de PDF
-        //    Asegúrate de tener configurada la vista 'pdf.despacho' (o crea una nueva como 'pdf.recepcion')
+        // 8) Generación de PDF
         $pdf = PDF::loadView('pdf.despacho', ['packages' => $packages]);
         return response()->streamDownload(
             fn() => print($pdf->output()),
@@ -185,25 +152,24 @@ class Enviar extends Component
         );
     }
 
+
     public function eliminarPaquete($id)
     {
         $p = Paquete::findOrFail($id);
         $p->forceDelete();
-        $this->resetPage();
-        session()->flash('message', 'Paquete eliminado permanentemente.');
-
         Evento::create([
-            'accion' => 'ELIMINADO',
+            'accion'      => 'ELIMINADO',
             'descripcion' => 'Paquete Eliminado',
-            'user_id' => Auth::user()->name,
-            'codigo' => $p->codigo,
+            'user_id'     => Auth::user()->name,
+            'codigo'      => $p->codigo,
         ]);
+        session()->flash('message', 'Paquete eliminado permanentemente.');
+        $this->resetPage();
     }
 
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'destino', 'observacion', 'certificacion']);
-        $this->cantidad = 1;
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion']);
         $this->modal = true;
     }
 
@@ -221,119 +187,63 @@ class Enviar extends Component
         $this->cuidad       = $p->cuidad;
         $this->destino      = $p->destino;
         $this->peso         = $p->peso;
-        $this->observacion  = $p->observacion;
         $this->cantidad     = $p->cantidad;
-        $this->certificacion = (bool) $p->certificacion;
+        $this->observacion  = $p->observacion;
+        $this->certificacion = (bool)$p->certificacion;
+        $this->grupo         = (bool) $p->grupo;
         $this->modal        = true;
     }
 
     public function guardar()
     {
         $this->validate();
-
         $data = [
-            'codigo'        => strtoupper($this->codigo),
-            'destinatario'  => strtoupper($this->destinatario),
-            'cuidad'        => strtoupper($this->cuidad),
-            'destino'       => $this->destino,
-            'peso'          => $this->peso,
-            'observacion'   => strtoupper($this->observacion),
+            'codigo'       => strtoupper($this->codigo),
+            'destinatario' => strtoupper($this->destinatario),
+            'cuidad'       => strtoupper($this->cuidad),
+            'destino'      => $this->destino,
+            'peso'         => $this->peso,
+            'cantidad'     => $this->cantidad,
+            'observacion'  => strtoupper($this->observacion),
             'certificacion' => $this->certificacion ? 1 : 0,
-            'cantidad'      => $this->cantidad,
+            'grupo'         => $this->grupo ? 1 : 0,
         ];
 
         if ($this->paquete_id) {
             $p = Paquete::findOrFail($this->paquete_id);
             $p->update($data);
-
-            session()->flash('message', 'Paquete actualizado.');
             Evento::create([
                 'accion'      => 'EDICION',
                 'descripcion' => 'Paquete Editado',
                 'user_id'     => Auth::user()->name,
                 'codigo'      => $p->codigo,
             ]);
+            session()->flash('message', 'Paquete actualizado.');
         } else {
             $data['estado'] = 'ENVIANDO';
             $data['user']   = Auth::user()->name;
-            Paquete::create($data);
-
-            session()->flash('message', 'Paquete registrado como ENVIANDO.');
+            $p = Paquete::create($data);
             Evento::create([
                 'accion'      => 'ENVIANDO',
-                'descripcion' => 'Paquete asignado para envio',
+                'descripcion' => 'Paquete asignado para envío',
                 'user_id'     => Auth::user()->name,
-                'codigo'      => $data['codigo'],
+                'codigo'      => $p->codigo,
             ]);
+            session()->flash('message', 'Paquete registrado como ENVIANDO.');
         }
 
         $this->cerrarModal();
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'peso', 'destino', 'observacion', 'certificacion', 'cantidad']);
-    }
-
-    public function abrirModalCantidad()
-    {
-        $this->modalCantidad = true;
-    }
-
-    public function cerrarModalCantidad()
-    {
-        $this->modalCantidad = false;
-    }
-
-    public function confirmarCantidad()
-    {
-        $this->validate();
-
-        // 1) Crear el paquete y capturarlo en $paquete
-        $paquete = Paquete::create([
-            'codigo'        => strtoupper($this->codigo),
-            'destinatario'  => strtoupper($this->destinatario),
-            'cuidad'        => strtoupper($this->cuidad),
-            'destino'       => $this->destino,
-            'peso'          => $this->peso,
-            'observacion'   => strtoupper($this->observacion),
-            'certificacion' => $this->certificacion ? 1 : 0,
-            'cantidad'      => $this->cantidad,
-            'estado'        => 'ENVIANDO',
-            'user'          => Auth::user()->name, // si realmente quieres guardar el nombre aquí
-        ]);
-
-        // 2) Crear el evento usando el ID de usuario y el código del paquete
-        Evento::create([
-            'accion'      => 'ENVIANDO',
-            'descripcion' => "Se enviaron {$this->cantidad} paquetes",
-            'user_id'     => Auth::id(),           // ahora es un entero
-            'codigo'      => $paquete->codigo,     // tomamos el código del paquete creado
-        ]);
-
-        // 3) Mensaje flash y restablecer propiedades
-        session()->flash('message', 'Paquete creado y despachado correctamente.');
-
-        $this->reset([
-            'codigo',
-            'destinatario',
-            'cuidad',
-            'destino',
-            'peso',
-            'observacion',
-            'certificacion',
-            'cantidad',
-        ]);
-
-        // 4) Cerrar modal y resetear paginación
-        $this->modalCantidad = false;
-        $this->resetPage();
     }
 
     public function render()
     {
         $paquetes = Paquete::where('estado', 'ENVIANDO')
-            ->where(function ($q) {
-                $q->where('codigo', 'like', '%' . $this->search . '%')
-                    ->orWhere('cuidad', 'like', '%' . $this->search . '%')
-                    ->orWhere('observacion', 'like', '%' . $this->search . '%');
-            })
+            ->where(
+                fn($q) =>
+                $q->where('codigo', 'like', "%{$this->search}%")
+                    ->orWhere('cuidad', 'like', "%{$this->search}%")
+                    ->orWhere('observacion', 'like', "%{$this->search}%")
+            )
             ->orderBy('id', 'desc')
             ->paginate(10);
 

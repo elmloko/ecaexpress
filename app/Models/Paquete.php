@@ -23,6 +23,7 @@ class Paquete extends Model
         'observacion',
         'photo',
         'cantidad',
+        'grupo',
         'certificacion',
     ];
 
