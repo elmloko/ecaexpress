@@ -125,20 +125,14 @@ class TOdos extends Component
 
     public function render()
     {
-        $from = Carbon::parse($this->dateFrom)->startOfDay();
-        $to   = Carbon::parse($this->dateTo)->endOfDay();
-
-        $paquetes = Paquete::withTrashed()   // <-- incluir borrados
+        $paquetes = Paquete::withTrashed()    // <— incluye borrados y no borrados
             ->where(function ($q) {
                 $q->where('codigo', 'like', "%{$this->search}%")
                     ->orWhere('destinatario', 'like', "%{$this->search}%")
                     ->orWhere('cuidad', 'like', "%{$this->search}%");
             })
-            ->when($this->dateFrom && $this->dateTo, function ($q) use ($from, $to) {
-                return $q->whereBetween('created_at', [$from, $to]);
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(100);
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
 
         return view('livewire.todos', compact('paquetes'));
     }
