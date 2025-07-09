@@ -20,10 +20,10 @@
                 <div class="col-md-6 d-flex">
                     <!-- Botón para crear nuevo paquete -->
                     <button class="btn btn-success ml-2" wire:click="abrirModal">
-                        <i class="fas fa-plus-circle"></i> Crear Paquete
+                        <i class="fas fa-plus-circle"></i> Envío Individual
                     </button>
                     <button class="btn btn-primary" wire:click="abrirModalCantidad">
-                        <i class="fas fa-inbox"></i> Agrupar paquetes
+                        <i class="fas fa-inbox"></i> Envío Agrupado
                     </button>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
@@ -55,7 +55,7 @@
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Peso</th>
-                            <th>Destino</th>
+                            <th>Tarifa</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observación</th>
@@ -116,7 +116,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ $paquete_id ? 'Editar Paquete' : 'Crear Paquete' }}</h5>
+                    <h5 class="modal-title">{{ $paquete_id ? 'Editar Paquete' : 'Registrar un Paquete' }}</h5>
                     <button type="button" class="close" wire:click="cerrarModal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -361,7 +361,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Destino</label>
+                                <label>Tarifa</label>
                                 <select wire:model.defer="destino" class="form-control"
                                     style="text-transform: uppercase;">
                                     <option value="">SELECCIONE...</option>
@@ -412,14 +412,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Asignar Destino</h5>
+                    <h5 class="modal-title">Asignar Tarifa</h5>
                     <button type="button" class="close" wire:click="$set('modalDestino', false)">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Destino</label>
+                        <label>Tarifa</label>
                         <select wire:model.defer="destino" class="form-control" style="text-transform: uppercase;">
                             <option value="">SELECCIONE...</option>
                             <option value="local">LOCAL</option>
@@ -438,7 +438,7 @@
                 </div>
                 <div class="modal-footer">
                     <button wire:click="asignarDestino" class="btn btn-primary">
-                        Guardar Destino
+                        Guardar Tarifa
                     </button>
                     <button type="button" class="btn btn-secondary" wire:click="$set('modalDestino', false)">
                         Cancelar
@@ -453,7 +453,7 @@
         <div class="modal-dialog modal-lg"><!-- agrandamos un poco para todos los campos -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar y Enviar Paquetes</h5>
+                    <h5 class="modal-title">Registrar varios Paquetes</h5>
                     <button type="button" class="close"
                         wire:click="cerrarModalCantidad"><span>&times;</span></button>
                 </div>
@@ -701,7 +701,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Destino</label>
+                                <label>Tarifa</label>
                                 <select wire:model.defer="destino" class="form-control"
                                     style="text-transform: uppercase;">
                                     <option value="">SELECCIONE...</option>

@@ -56,7 +56,7 @@
                             <th>Ciudad</th>
                             <th>Peso</th>
                             <th>Precio</th>
-                            <th>Destino</th>
+                            <th>Tarifa</th>
                             <th>Estado</th>
                             <th>Observación</th>
                             <th>Fecha Baja</th>

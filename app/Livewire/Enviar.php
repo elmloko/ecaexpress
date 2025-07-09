@@ -11,6 +11,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use PDF;
 
 class Enviar extends Component
 {
@@ -163,21 +164,22 @@ class Enviar extends Component
             return;
         }
 
-        foreach ($this->selected as $id) {
-            $paquete = Paquete::find($id);
+        // 1) Obtener los paquetes a procesar
+        $packages = Paquete::whereIn('id', $this->selected)->get();
 
-            // 1. Buscar empresa
+        // 2) Calcular precio y actualizar estado de cada paquete
+        foreach ($packages as $paquete) {
+            // 2.1 Buscar empresa
             $empresaModel = Empresa::whereRaw('UPPER(nombre) = ?', [strtoupper($paquete->destinatario)])->first();
 
-            // 2. Buscar categoría de peso
+            // 2.2 Buscar categoría de peso
             $pesoCat = Peso::where('min', '<=', $paquete->peso)
                 ->where('max', '>=', $paquete->peso)
                 ->first();
 
             $precioUnitario = 0;
-
             if ($empresaModel && $pesoCat) {
-                // 3. Obtener tarifa
+                // 2.3 Obtener tarifa
                 $tarifa = Tarifario::where('empresa', $empresaModel->id)
                     ->where('peso', $pesoCat->id)
                     ->first();
@@ -190,32 +192,43 @@ class Enviar extends Component
                 }
             }
 
-            // 4. Extra certificación
+            // 2.4 Extra certificación
             if ($paquete->certificacion) {
                 $precioUnitario += 8;
             }
 
-            // 5. Multiplicar por la cantidad
+            // 2.5 Multiplicar por la cantidad
             $precioFinal = $precioUnitario * $paquete->cantidad;
 
-            // 6. Actualizar paquete con precio total
+            // 2.6 Actualizar paquete con precio total y estado
             $paquete->update([
                 'estado' => 'DESPACHADO',
                 'precio' => $precioFinal,
             ]);
         }
 
-        Evento::create([
-            'accion' => 'DESPACHADO',
-            'descripcion' => 'Paquete Despachado a Destinatario',
-            'user_id' => Auth::user()->name,
-            'codigo' => $paquete->codigo,
-        ]);
+        // 3) Registrar un evento por cada paquete
+        foreach ($packages as $pkg) {
+            Evento::create([
+                'accion'      => 'DESPACHADO',
+                'descripcion' => 'Paquete Despachado a Destinatario',
+                'user_id'     => Auth::user()->name,
+                'codigo'      => $pkg->codigo,
+            ]);
+        }
 
+        // 4) Reiniciar selección y paginación
         $this->selected  = [];
         $this->selectAll = false;
-        session()->flash('message', 'Paquetes recibidos y marcados como ALMACEN correctamente.');
         $this->resetPage();
+
+        // 5) Generar y forzar descarga de PDF
+        //    Asegúrate de tener configurada la vista 'pdf.despacho' (o crea una nueva como 'pdf.recepcion')
+        $pdf = PDF::loadView('pdf.despacho', ['packages' => $packages]);
+        return response()->streamDownload(
+            fn() => print($pdf->output()),
+            'recepcion_' . now()->format('Ymd_His') . '.pdf'
+        );
     }
 
     public function eliminarPaquete($id)

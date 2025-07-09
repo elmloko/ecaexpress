@@ -51,7 +51,7 @@
                             <th>Código</th>
                             <th>Empresa</th>
                             <th>Peso</th>
-                            <th>Destino</th>
+                            <th>Tarifa</th>
                             <th>Estado</th>
                             <th>Ciudad</th>
                             <th>Observación</th>

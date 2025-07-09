@@ -223,11 +223,7 @@ class Despacho extends Component
                     ->orWhere('destinatario', 'like', "%{$this->search}%")
                     ->orWhere('cuidad', 'like', "%{$this->search}%");
             })
-            // opcional: filtrar por fecha de creación
-            ->when($this->dateFrom && $this->dateTo, function ($q) use ($from, $to) {
-                return $q->whereBetween('created_at', [$from, $to]);
-            })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         $empresas = Empresa::orderBy('nombre')->get();

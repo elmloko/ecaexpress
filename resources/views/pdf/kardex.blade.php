@@ -90,7 +90,7 @@
                 <th>Código</th>
                 <th>Destinatario</th>
                 <th>Cantidad</th>
-                <th>Destino</th>
+                <th>Tarifa</th>
                 <th>Tarifa</th>
                 <th>Estado</th>
                 <th>Peso (kg)</th>
