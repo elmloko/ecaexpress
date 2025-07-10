@@ -51,11 +51,14 @@
                     <thead>
                         <tr>
                             <th>Código</th>
+                            <th>PDA</th>
                             <th>Empresa</th>
                             <th>Ciudad</th>
                             <th>Peso</th>
+                            <th>Tarifa</th>
                             <th>Precio</th>
                             <th>Estado</th>
+                            <th>Ciudad</th>
                             <th>Observación</th>
                             <th>Fecha Baja</th>
                             @hasrole('Administrador')
@@ -67,18 +70,21 @@
                         @forelse ($paquetes as $p)
                             <tr wire:key="inventario-{{ $p->id }}">
                                 <td>{{ $p->codigo }}</td>
+                                <td>{{ $p->pda }}</td>
                                 <td>{{ $p->destinatario }}</td>
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->peso }} kg</td>
+                                <td>{{ strtoupper($p->destino) }}</td>
                                 <td>{{ $p->precio }} Bs</td>
                                 <td>{{ $p->estado }}</td>
+                                <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->observacion }}</td>
                                 <td>{{ $p->deleted_at }}</td>
                                 <td>
                                     @hasrole('Administrador')
-                                        <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
+                                        {{-- <button class="btn btn-sm btn-warning" wire:click="editar({{ $p->id }})">
                                             <i class="fas fa-edit"></i> Editar
-                                        </button>
+                                        </button> --}}
                                         <button class="btn btn-sm btn-success" wire:click="restaurar({{ $p->id }})">
                                             <i class="fas fa-undo"></i>
                                             Alta
