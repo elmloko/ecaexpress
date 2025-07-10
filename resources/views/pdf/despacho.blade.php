@@ -132,7 +132,7 @@
                         <td>{{ $pkg->pda }}</td>
                     @endif
                     <td>{{ number_format($pkg->peso, 2) }}</td>
-                    <td></td>
+                    <td>{{ $pkg->origen }}</td>
                     <td>{{ $pkg->cuidad }}</td>
                     <td>{{ strtoupper($pkg->destino) }}</td>
                     @if ($showAlmacen)

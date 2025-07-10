@@ -17,6 +17,7 @@ class Paquete extends Model
         'estado',
         'cuidad',
         'precio',
+        'origen',
         'destino',
         'peso',
         'user',
