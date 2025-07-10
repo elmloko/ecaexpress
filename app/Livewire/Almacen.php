@@ -32,11 +32,15 @@ class Almacen extends Component
     public $peso;
     public $observacion;
     public $modal = false;
-    
+
     // checkbox
     public $selectAll = false;
     public $certificacion = false;
+    public $grupo = false;
+    public $almacenaje = false;
+    public $pda;
     public $selected = [];
+    public $cantidad = 1;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -47,7 +51,11 @@ class Almacen extends Component
         'peso'         => 'nullable|numeric',
         'observacion'  => 'nullable|string|max:255',
         'destino'      => 'required|string|max:50',
+        'pda'           => 'nullable|numeric',
         'certificacion' => 'boolean',
+        'grupo'         => 'boolean',
+        'almacenaje'    => 'boolean',
+        'cantidad'    => 'required|integer|min:1',
     ];
 
     public function mount()
@@ -86,7 +94,12 @@ class Almacen extends Component
             'destino',
             'peso',
             'user',
-            'observacion'
+            'observacion',
+            'grupo',
+            'certificacion',
+            'almacenaje',
+            'cantidad',
+            'pda',
         ]);
         $this->modal = true;
     }
@@ -96,83 +109,96 @@ class Almacen extends Component
         $this->modal = false;
     }
 
-public function guardar()
-{
-    $this->validate();
+    public function guardar()
+    {
+        $this->validate();
 
-    // 1. Datos base, incluyendo certificación
-    $data = [
-        'codigo'        => strtoupper($this->codigo),
-        'destinatario'  => strtoupper($this->destinatario),
-        'cuidad'        => strtoupper($this->cuidad),
-        'peso'          => $this->peso,
-        'observacion'   => strtoupper($this->observacion),
-        'certificacion' => $this->certificacion ? 1 : 0,
-        'estado'        => 'ALMACEN',
-        'user'          => Auth::user()->name,
-    ];
+        // 1. Datos base, incluyendo certificación
+        $data = [
+            'codigo'        => strtoupper($this->codigo),
+            'destinatario'  => strtoupper($this->destinatario),
+            'cuidad'        => strtoupper($this->cuidad),
+            'peso'          => $this->peso,
+            'destino'       => $this->destino,
+            'observacion'   => strtoupper($this->observacion),
+            'pda'           => $this->pda,
+            'certificacion' => $this->certificacion ? 1 : 0,
+            'grupo'         => $this->grupo ? 1 : 0,
+            'almacenaje'    => $this->almacenaje ? 1 : 0,
+            'estado'        => 'ALMACEN',
+            'user'          => Auth::user()->name,
+        ];
 
-    // 2. Crear o actualizar el paquete
-    $paquete = Paquete::updateOrCreate(
-        ['id' => $this->paquete_id],
-        $data
-    );
+        // 2. Crear o actualizar el paquete
+        $paquete = Paquete::updateOrCreate(
+            ['id' => $this->paquete_id],
+            $data
+        );
 
-    // 3. Cálculo de precio basado en Empresa, Peso, Destino y Certificación
-    $precio = 0;
+        // 3. Cálculo de precio basado en Empresa, Peso, Destino y Certificación
+        $precio = 0;
 
-    // 3.1. Buscar la empresa (nombres en mayúsculas)
-    $empresaModel = Empresa::whereRaw(
-        'UPPER(nombre) = ?',
-        [strtoupper($paquete->destinatario)]
-    )->first();
+        // 3.1. Buscar la empresa (nombres en mayúsculas)
+        $empresaModel = Empresa::whereRaw(
+            'UPPER(nombre) = ?',
+            [strtoupper($paquete->destinatario)]
+        )->first();
 
-    // 3.2. Categoría de peso
-    $pesoCat = Peso::where('min', '<=', $paquete->peso)
-                   ->where('max', '>=', $paquete->peso)
-                   ->first();
+        // 3.2. Categoría de peso
+        $pesoCat = Peso::where('min', '<=', $paquete->peso)
+            ->where('max', '>=', $paquete->peso)
+            ->first();
 
-    if ($empresaModel && $pesoCat) {
-        // 3.3. Obtener la tarifa correspondiente
-        $tarifa = Tarifario::where('empresa', $empresaModel->id)
-                           ->where('peso', $pesoCat->id)
-                           ->first();
+        if ($empresaModel && $pesoCat) {
+            // 3.3. Obtener la tarifa correspondiente
+            $tarifa = Tarifario::where('empresa', $empresaModel->id)
+                ->where('peso', $pesoCat->id)
+                ->first();
 
-        if ($tarifa) {
-            // 3.4. Columna según destino (asegúrate de tener el campo 'destino' en tu tabla)
-            $col = strtolower($paquete->destino);
-            if (isset($tarifa->$col)) {
-                $precio = $tarifa->$col;
+            if ($tarifa) {
+                // 3.4. Columna según destino (asegúrate de tener el campo 'destino' en tu tabla)
+                $col = strtolower($paquete->destino);
+                if (isset($tarifa->$col)) {
+                    $precio = $tarifa->$col;
+                }
             }
         }
+
+        // 3.5. Agregar cargo de certificación si aplica
+        if ($paquete->certificacion) {
+            $precio += 8;
+        }
+
+        if ($paquete->almacenaje) {
+            $precio += 15;
+        }
+
+        $multiplier = $paquete->grupo ? $paquete->cantidad : 1;
+
+        // 5) Cálculo final
+        $total = $precio * $multiplier;
+
+        // 4. Actualizar el precio en el modelo
+        $paquete->update(['total' => $total]);
+
+        // 5. Registrar el evento
+        Evento::create([
+            'accion'      => 'EDICION',
+            'descripcion' => 'Paquete editado y precio recalculado',
+            'user_id'     => Auth::user()->name,
+            'codigo'      => $data['codigo'],
+        ]);
+
+        // 6. Mensaje y cierre de modal
+        session()->flash(
+            'message',
+            $this->paquete_id
+                ? 'Paquete actualizado en Inventario.'
+                : 'Paquete agregado a Inventario.'
+        );
+
+        $this->cerrarModal();
     }
-
-    // 3.5. Agregar cargo de certificación si aplica
-    if ($paquete->certificacion) {
-        $precio += 8;
-    }
-
-    // 4. Actualizar el precio en el modelo
-    $paquete->update(['precio' => $precio]);
-
-    // 5. Registrar el evento
-    Evento::create([
-        'accion'      => 'EDICION',
-        'descripcion' => 'Paquete editado y precio recalculado',
-        'user_id'     => Auth::user()->name,
-        'codigo'      => $data['codigo'],
-    ]);
-
-    // 6. Mensaje y cierre de modal
-    session()->flash(
-        'message',
-        $this->paquete_id
-            ? 'Paquete actualizado en Inventario.'
-            : 'Paquete agregado a Inventario.'
-    );
-
-    $this->cerrarModal();
-}
 
 
     public function editar($id)
@@ -187,8 +213,11 @@ public function guardar()
         $this->cuidad       = $p->cuidad;
         $this->peso         = $p->peso;
         $this->observacion  = $p->observacion;
+        $this->pda          = $p->pda;
         $this->modal        = true;
         $this->certificacion = (bool) $p->certificacion;
+        $this->grupo         = (bool) $p->grupo;
+        $this->almacenaje   = (bool) $p->almacenaje;
     }
 
     public function toggleSelectAll()
@@ -215,14 +244,52 @@ public function guardar()
             return;
         }
 
-        // 1) Obtener los paquetes a procesar
+        // 1) Obtener paquetes
         $packages = Paquete::whereIn('id', $this->selected)->get();
 
-        // 2) Marcar como INVENTARIO y soft-delete
-        Paquete::whereIn('id', $this->selected)->update(['estado' => 'INVENTARIO']);
+        // 2) Para cada paquete, calcular precio y actualizar antes de dar baja
+        foreach ($packages as $p) {
+            // 2.1 Empresa y categoría de peso
+            $empresa   = Empresa::whereRaw('UPPER(nombre)=?', [strtoupper($p->destinatario)])->first();
+            $pesoCat   = Peso::where('min', '<=', $p->peso)
+                ->where('max', '>=', $p->peso)
+                ->first();
+
+            $unit = 0;
+            if ($empresa && $pesoCat) {
+                $tarifa = Tarifario::where('empresa', $empresa->id)
+                    ->where('peso', $pesoCat->id)
+                    ->first();
+                $col = strtolower($p->destino);
+                if ($tarifa && isset($tarifa->$col)) {
+                    $unit = $tarifa->$col;
+                }
+            }
+
+            // 2.2 Cargos extras
+            if ($p->certificacion) {
+                $unit += 8;
+            }
+            if ($p->almacenaje) {
+                $unit += 15;
+            }
+
+            // 2.3 Multiplicador
+            $mult = $p->grupo ? $p->cantidad : 1;
+
+            // 2.4 Total final
+            $total = $unit * $mult;
+
+            // 2.5 Guardar total en BD
+            $p->update(['total' => $total]);
+        }
+
+        // 3) Marcar como INVENTARIO y soft-delete
+        Paquete::whereIn('id', $this->selected)
+            ->update(['estado' => 'INVENTARIO']);
         Paquete::whereIn('id', $this->selected)->delete();
 
-        // 3) Registrar un evento por cada paquete
+        // 4) Registrar evento de entrega
         foreach ($packages as $pkg) {
             Evento::create([
                 'accion'      => 'ENTREGADO',
@@ -232,18 +299,17 @@ public function guardar()
             ]);
         }
 
-        // 4) Reiniciar selección
+        // 5) Limpiar selección
         $this->selected  = [];
         $this->selectAll = false;
 
-        // 5) Generar y forzar descarga de PDF
+        // 6) Generar PDF de despacho
         $pdf = PDF::loadView('pdf.despacho', ['packages' => $packages]);
         return response()->streamDownload(
             fn() => print($pdf->output()),
             'despacho_' . now()->format('Ymd_His') . '.pdf'
         );
     }
-
 
     public function render()
     {
