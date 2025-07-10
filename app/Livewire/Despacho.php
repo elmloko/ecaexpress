@@ -213,16 +213,13 @@ class Despacho extends Component
 
     public function render()
     {
-        $from = Carbon::parse($this->dateFrom)->startOfDay();
-        $to   = Carbon::parse($this->dateTo)->endOfDay();
-
-        $paquetes = Paquete::query()
-            ->where('estado', 'DESPACHADO')
-            ->where(function ($q) {
+        $paquetes = Paquete::where('estado', 'DESPACHADO')
+            ->where(
+                fn($q) =>
                 $q->where('codigo', 'like', "%{$this->search}%")
-                    ->orWhere('destinatario', 'like', "%{$this->search}%")
-                    ->orWhere('cuidad', 'like', "%{$this->search}%");
-            })
+                    ->orWhere('cuidad', 'like', "%{$this->search}%")
+                    ->orWhere('observacion', 'like', "%{$this->search}%")
+            )
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
 

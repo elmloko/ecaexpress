@@ -51,7 +51,7 @@ class Enviar extends Component
         'peso'          => 'nullable|numeric',
         'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
-        'pda'           => 'nullable|string|max:100',
+        'pda'           => 'nullable|numeric',
         'certificacion' => 'boolean',
         'grupo'         => 'boolean',
         'almacenaje'    => 'boolean',
@@ -518,7 +518,7 @@ class Enviar extends Component
                     ->orWhere('cuidad', 'like', "%{$this->search}%")
                     ->orWhere('observacion', 'like', "%{$this->search}%")
             )
-            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         $empresas = Empresa::orderBy('nombre')->get();

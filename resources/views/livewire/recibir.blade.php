@@ -172,6 +172,14 @@
                                     <option value="asia">ASIA Y OCEANIA</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="pda">PDA</label>
+                                <input type="text" id="pda" wire:model.defer="pda" class="form-control"
+                                    maxlength="100" placeholder="Ingrese PDA (opcional)">
+                                @error('pda')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
                         <!-- Columna derecha -->
                         <div class="col-md-6">
@@ -188,6 +196,20 @@
                                     wire:model.defer="certificacion">
                                 <label class="form-check-label" for="certificacion">
                                     Taza de Certificación (8 Bs.)
+                                </label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="almacenaje" wire:model.defer="almacenaje"
+                                    class="form-check-input">
+                                <label for="almacenaje" class="form-check-label">
+                                    Aplicar tarifa de Almacenaje (15 Bs.)
+                                </label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="grupo" wire:model.defer="grupo"
+                                    class="form-check-input">
+                                <label for="grupo" class="form-check-label">
+                                    Aplicar tarifa de Agrupacion
                                 </label>
                             </div>
                         </div>

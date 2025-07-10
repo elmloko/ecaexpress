@@ -143,17 +143,14 @@ class Inventario extends Component
 
     public function render()
     {
-        $from = Carbon::parse($this->dateFrom)->startOfDay();
-        $to   = Carbon::parse($this->dateTo)->endOfDay();
-
-        $paquetes = Paquete::onlyTrashed()
+            $paquetes = Paquete::onlyTrashed()
             ->where('estado', 'INVENTARIO')
-            ->where(function ($q) {
+            ->where(
+                fn($q) =>
                 $q->where('codigo', 'like', "%{$this->search}%")
-                    ->orWhere('destinatario', 'like', "%{$this->search}%")
-                    ->orWhere('cuidad', 'like', "%{$this->search}%");
-            })
-            ->whereBetween('deleted_at', [$from, $to])
+                    ->orWhere('cuidad', 'like', "%{$this->search}%")
+                    ->orWhere('observacion', 'like', "%{$this->search}%")
+            )
             ->orderBy('deleted_at', 'desc')
             ->paginate(10);
 

@@ -247,16 +247,15 @@ public function guardar()
 
     public function render()
     {
-        $from = Carbon::parse($this->dateFrom)->startOfDay();
-        $to   = Carbon::parse($this->dateTo)->endOfDay();
+        $empresas = Empresa::orderBy('nombre')->get();
 
         $paquetes = Paquete::where('estado', 'ALMACEN')
-            ->where(function ($q) {
+            ->where(
+                fn($q) =>
                 $q->where('codigo', 'like', "%{$this->search}%")
                     ->orWhere('cuidad', 'like', "%{$this->search}%")
-                    ->orWhere('observacion', 'like', "%{$this->search}%");
-            })
-            ->whereBetween('created_at', [$from, $to])
+                    ->orWhere('observacion', 'like', "%{$this->search}%")
+            )
             ->orderBy('id', 'desc')
             ->paginate(10);
 
