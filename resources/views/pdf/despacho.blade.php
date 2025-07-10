@@ -87,26 +87,48 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Cantidad</th>
                 <th>Código</th>
                 <th>Destinatario</th>
-                <th>Peso (kg)</th>
-                <th>Precio (Bs)</th>
+                <th>PDA</th>
+                <th>Peso Neto (kg)</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Tarifa</th>
+                <th>Almac.</th>
+                <th>Certif.</th>
+                <th>Precio Total (Bs)</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($packages as $i => $pkg)
                 <tr>
                     <td>{{ $i + 1 }}</td>
+                    <td>{{ $pkg->cantidad }}</td>
                     <td>{{ $pkg->codigo }}</td>
                     <td>{{ $pkg->destinatario }}</td>
+                    <td>{{ $pkg->pda }}</td>
                     <td>{{ number_format($pkg->peso, 2) }}</td>
+                    <td></td>
+                    <td>{{ $pkg->cuidad }}</td>
+                    <td>{{ strtoupper($pkg->destino) }}</td>
+                    <td>
+                        @if ($pkg->almacenaje == 1)
+                            {{ number_format(15, 2, '.', '') }}
+                        @endif
+                    </td>
+                    <td>
+                        @if ($pkg->certificacion == 1)
+                            {{ number_format(8, 2, '.', '') }}
+                        @endif
+                    </td>
                     <td>{{ number_format($pkg->precio, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4" style="text-align: right;">
+                <td colspan="11" style="text-align: right;">
                     Total Precio (Bs):
                 </td>
                 <td>

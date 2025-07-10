@@ -25,6 +25,7 @@ class Paquete extends Model
         'cantidad',
         'grupo',
         'pda',
+        'almacenaje',
         'certificacion',
     ];
 

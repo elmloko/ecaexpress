@@ -234,14 +234,21 @@
                                 <input type="checkbox" id="certificacion" wire:model.defer="certificacion"
                                     class="form-check-input">
                                 <label for="certificacion" class="form-check-label">
-                                    Tasa de Certificación (8 Bs.)
+                                    Aplicar Tasa de Certificación (8 Bs.)
                                 </label>
                             </div>
                             <div class="form-group form-check">
                                 <input type="checkbox" id="grupo" wire:model.defer="grupo"
                                     class="form-check-input">
                                 <label for="grupo" class="form-check-label">
-                                    Aplicar tarifa de agrupacion
+                                    Aplicar tarifa de Almacenaje (15 Bs.)
+                                </label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="grupo" wire:model.defer="grupo"
+                                    class="form-check-input">
+                                <label for="grupo" class="form-check-label">
+                                    Aplicar tarifa de Agrupacion
                                 </label>
                             </div>
                         </div>
