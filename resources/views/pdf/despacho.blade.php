@@ -82,7 +82,22 @@
             <td style="border:none;"></td>
         </tr>
     </table>
+    @php
+        // ¿Algún paquete tiene PDA no vacío?
+        $showPDA = $packages->filter(fn($p) => !empty($p->pda))->isNotEmpty();
 
+        // ¿Algún paquete tiene almacenaje == 1?
+        $showAlmacen = $packages->filter(fn($p) => $p->almacenaje == 1)->isNotEmpty();
+
+        // ¿Algún paquete tiene certificación == 1?
+        $showCert = $packages->filter(fn($p) => $p->certificacion == 1)->isNotEmpty();
+
+        // Para el footer: calcula cuántas columnas hay antes de “Precio Total”
+        // (sin contar “PDA”, “Almac.” y “Certif.”)
+        $staticCols = 9;
+        // Total columnas antes del “Precio Total” = columnas fijas + las dinámicas mostradas
+        $colspan = $staticCols + ($showPDA ? 1 : 0) + ($showAlmacen ? 1 : 0) + ($showCert ? 1 : 0) - 1; // restamos 1 para dejar la última celda del precio
+    @endphp
     <table class="first-table">
         <thead>
             <tr>
@@ -90,13 +105,19 @@
                 <th>Cantidad</th>
                 <th>Código</th>
                 <th>Destinatario</th>
-                <th>PDA</th>
+                @if ($showPDA)
+                    <th>PDA</th>
+                @endif
                 <th>Peso Neto (kg)</th>
                 <th>Origen</th>
                 <th>Destino</th>
                 <th>Tarifa</th>
-                <th>Almac.</th>
-                <th>Certif.</th>
+                @if ($showAlmacen)
+                    <th>Almac.</th>
+                @endif
+                @if ($showCert)
+                    <th>Certif.</th>
+                @endif
                 <th>Precio Total (Bs)</th>
             </tr>
         </thead>
@@ -107,33 +128,38 @@
                     <td>{{ $pkg->cantidad }}</td>
                     <td>{{ $pkg->codigo }}</td>
                     <td>{{ $pkg->destinatario }}</td>
-                    <td>{{ $pkg->pda }}</td>
+                    @if ($showPDA)
+                        <td>{{ $pkg->pda }}</td>
+                    @endif
                     <td>{{ number_format($pkg->peso, 2) }}</td>
                     <td></td>
                     <td>{{ $pkg->cuidad }}</td>
                     <td>{{ strtoupper($pkg->destino) }}</td>
-                    <td>
-                        @if ($pkg->almacenaje == 1)
-                            {{ number_format(15, 2, '.', '') }}
-                        @endif
-                    </td>
-                    <td>
-                        @if ($pkg->certificacion == 1)
-                            {{ number_format(8, 2, '.', '') }}
-                        @endif
-                    </td>
+                    @if ($showAlmacen)
+                        <td>
+                            @if ($pkg->almacenaje == 1)
+                                {{ number_format(15, 2, '.', '') }}
+                            @endif
+                        </td>
+                    @endif
+
+                    @if ($showCert)
+                        <td>
+                            @if ($pkg->certificacion == 1)
+                                {{ number_format(8, 2, '.', '') }}
+                            @endif
+                        </td>
+                    @endif
                     <td>{{ number_format($pkg->precio, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="11" style="text-align: right;">
+                <td colspan="{{ $colspan }}" style="text-align: right;">
                     Total Precio (Bs):
                 </td>
-                <td>
-                    {{ number_format($packages->sum('precio'), 2) }}
-                </td>
+                <td>{{ number_format($packages->sum('precio'), 2) }}</td>
             </tr>
         </tfoot>
     </table>

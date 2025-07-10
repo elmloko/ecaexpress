@@ -35,7 +35,9 @@ class Enviar extends Component
     public $observacion;
     public $certificacion = false;
     public $grupo = false;
+    public $almacenaje = false;
     public $pda;
+
 
     protected $paginationTheme = 'bootstrap';
 
@@ -47,9 +49,10 @@ class Enviar extends Component
         'peso'          => 'nullable|numeric',
         'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
-        'pda'         => 'nullable|string|max:100',
+        'pda'           => 'nullable|string|max:100',
         'certificacion' => 'boolean',
         'grupo'         => 'boolean',
+        'almacenaje'    => 'boolean',
     ];
 
     public function mount()
@@ -114,9 +117,13 @@ class Enviar extends Component
                 }
             }
 
-            // 3) Extra por certificación
+            // 3) Extra 
             if ($p->certificacion) {
                 $unit += 8;
+            }
+
+            if ($p->almacenaje) {
+                $unit += 15;
             }
 
             // 4) Determinamos cuántas unidades multiplicar:
@@ -171,7 +178,7 @@ class Enviar extends Component
 
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion', 'pda']);
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion', 'almacenaje', 'pda']);
         $this->modal = true;
     }
 
@@ -194,6 +201,7 @@ class Enviar extends Component
         $this->pda          = $p->pda;
         $this->certificacion = (bool)$p->certificacion;
         $this->grupo         = (bool) $p->grupo;
+        $this->almacenaje   = (bool) $p->almacenaje;
         $this->modal        = true;
     }
 
@@ -211,6 +219,7 @@ class Enviar extends Component
             'observacion'  => strtoupper($this->observacion),
             'certificacion' => $this->certificacion ? 1 : 0,
             'grupo'         => $this->grupo ? 1 : 0,
+            'almacenaje'    => $this->almacenaje ? 1 : 0,
         ];
 
         if ($this->paquete_id) {
