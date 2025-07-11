@@ -39,7 +39,7 @@ INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
 	('laravel_cache_laravel:pulse:Laravel\\Pulse\\Livewire\\Usage:requests:1_hour', 'a:3:{i:0;O:29:"Illuminate\\Support\\Collection":2:{s:8:"\0*\0items";a:1:{i:0;O:8:"stdClass":3:{s:3:"key";s:1:"1";s:4:"user";O:8:"stdClass":3:{s:4:"name";s:28:"Marco Antonio Espinoza Rojas";s:5:"extra";s:29:"marco.espinoza@correos.gob.bo";s:6:"avatar";s:97:"https://gravatar.com/avatar/f37a6ca5fae038f24777da3902c897f4d49fd108e665719ec6daaee86cc1079c?d=mp";}s:5:"count";i:78;}}s:28:"\0*\0escapeWhenCastingToString";b:0;}i:1;d:96.2727;i:2;s:19:"2025-07-09 16:27:42";}', 1752078467),
 	('laravel_cache_lv:v3.17.1:file:970a4c3d-laravel.log:metadata', 'a:1:{s:4:"type";s:7:"laravel";}', 1752683266),
 	('laravel_cache_lv:v3.17.1:file:c3206927-laravel.log:metadata', 'a:1:{s:4:"type";s:7:"laravel";}', 1751985000),
-	('laravel_cache_spatie.permission.cache', 'a:3:{s:5:"alias";a:4:{s:1:"a";s:2:"id";s:1:"b";s:4:"name";s:1:"c";s:10:"guard_name";s:1:"r";s:5:"roles";}s:11:"permissions";a:5:{i:0;a:4:{s:1:"a";i:1;s:1:"b";s:9:"tarifario";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:1;a:4:{s:1:"a";i:2;s:1:"b";s:6:"enviar";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:2;}}i:2;a:4:{s:1:"a";i:3;s:1:"b";s:7:"recibir";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:2;}}i:3;a:4:{s:1:"a";i:4;s:1:"b";s:5:"visor";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}}i:4;a:4:{s:1:"a";i:5;s:1:"b";s:8:"usuarios";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}}s:5:"roles";a:3:{i:0;a:3:{s:1:"a";i:1;s:1:"b";s:13:"Administrador";s:1:"c";s:3:"web";}i:1;a:3:{s:1:"a";i:2;s:1:"b";s:7:"Cartero";s:1:"c";s:3:"web";}i:2;a:3:{s:1:"a";i:3;s:1:"b";s:11:"Informacion";s:1:"c";s:3:"web";}}}', 1752096646);
+	('laravel_cache_spatie.permission.cache', 'a:3:{s:5:"alias";a:4:{s:1:"a";s:2:"id";s:1:"b";s:4:"name";s:1:"c";s:10:"guard_name";s:1:"r";s:5:"roles";}s:11:"permissions";a:5:{i:0;a:4:{s:1:"a";i:1;s:1:"b";s:9:"tarifario";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:1;a:4:{s:1:"a";i:2;s:1:"b";s:6:"enviar";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:2;}}i:2;a:4:{s:1:"a";i:3;s:1:"b";s:7:"recibir";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:2;}}i:3;a:4:{s:1:"a";i:4;s:1:"b";s:5:"visor";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}}i:4;a:4:{s:1:"a";i:5;s:1:"b";s:8:"usuarios";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}}s:5:"roles";a:3:{i:0;a:3:{s:1:"a";i:1;s:1:"b";s:13:"Administrador";s:1:"c";s:3:"web";}i:1;a:3:{s:1:"a";i:2;s:1:"b";s:7:"Cartero";s:1:"c";s:3:"web";}i:2;a:3:{s:1:"a";i:3;s:1:"b";s:11:"Informacion";s:1:"c";s:3:"web";}}}', 1752183352);
 
 -- Volcando estructura para tabla geca.cache_locks
 CREATE TABLE IF NOT EXISTS `cache_locks` (
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla geca.eventos: ~89 rows (aproximadamente)
+-- Volcando datos para la tabla geca.eventos: ~167 rows (aproximadamente)
 INSERT INTO `eventos` (`id`, `accion`, `user_id`, `codigo`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(2, NULL, 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Registrado', '2025-06-24 01:34:52', '2025-06-24 01:35:48', '2025-06-24 01:35:48'),
 	(3, 'ENCONTRADO', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Registrado', '2025-06-24 01:35:39', '2025-06-24 01:35:39', NULL),
@@ -178,7 +178,85 @@ INSERT INTO `eventos` (`id`, `accion`, `user_id`, `codigo`, `descripcion`, `crea
 	(87, 'ENCONTRADO', 'Marco Antonio Espinoza Rojas', 'UR506481043CA', 'Paquete Registrado', '2025-07-09 17:23:52', '2025-07-09 17:23:52', NULL),
 	(88, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Despachado a Destinatario', '2025-07-09 18:31:47', '2025-07-09 18:31:47', NULL),
 	(89, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Despachado a Destinatario', '2025-07-09 18:32:10', '2025-07-09 18:32:10', NULL),
-	(90, 'ENVIANDO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete asignado para envio', '2025-07-09 20:07:20', '2025-07-09 20:07:20', NULL);
+	(90, 'ENVIANDO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete asignado para envio', '2025-07-09 20:07:20', '2025-07-09 20:07:20', NULL),
+	(91, 'ENVIANDO', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete asignado para envío', '2025-07-09 23:16:10', '2025-07-09 23:16:10', NULL),
+	(92, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Editado', '2025-07-09 23:16:17', '2025-07-09 23:16:17', NULL),
+	(93, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Editado', '2025-07-10 01:30:09', '2025-07-10 01:30:09', NULL),
+	(94, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Editado', '2025-07-10 01:31:11', '2025-07-10 01:31:11', NULL),
+	(95, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Editado', '2025-07-10 01:31:14', '2025-07-10 01:31:14', NULL),
+	(96, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Editado', '2025-07-10 01:37:58', '2025-07-10 01:37:58', NULL),
+	(97, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Despachado', '2025-07-10 01:42:16', '2025-07-10 01:42:16', NULL),
+	(98, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Editado', '2025-07-10 01:43:03', '2025-07-10 01:43:03', NULL),
+	(99, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Editado', '2025-07-10 01:43:10', '2025-07-10 01:43:10', NULL),
+	(100, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Despachado', '2025-07-10 01:43:13', '2025-07-10 01:43:13', NULL),
+	(101, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Editado', '2025-07-10 01:43:53', '2025-07-10 01:43:53', NULL),
+	(102, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Editado', '2025-07-10 01:44:01', '2025-07-10 01:44:01', NULL),
+	(103, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Despachado', '2025-07-10 01:44:05', '2025-07-10 01:44:05', NULL),
+	(104, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Despachado', '2025-07-10 01:44:05', '2025-07-10 01:44:05', NULL),
+	(105, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY543233522DE', 'Paquete Editado', '2025-07-10 02:07:03', '2025-07-10 02:07:03', NULL),
+	(106, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160390561DE', 'Paquete Despachado', '2025-07-10 16:56:57', '2025-07-10 16:56:57', NULL),
+	(107, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Despachado', '2025-07-10 17:41:21', '2025-07-10 17:41:21', NULL),
+	(108, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Despachado', '2025-07-10 17:42:40', '2025-07-10 17:42:40', NULL),
+	(109, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Despachado', '2025-07-10 17:43:33', '2025-07-10 17:43:33', NULL),
+	(110, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160390561DE', 'Paquete Despachado', '2025-07-10 17:57:41', '2025-07-10 17:57:41', NULL),
+	(111, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY162197328DE', 'Paquete Despachado', '2025-07-10 18:08:39', '2025-07-10 18:08:39', NULL),
+	(112, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Despachado', '2025-07-10 18:10:59', '2025-07-10 18:10:59', NULL),
+	(113, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UF105260739HK', 'Paquete Despachado', '2025-07-10 18:12:15', '2025-07-10 18:12:15', NULL),
+	(114, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160390561DE', 'Paquete Despachado', '2025-07-10 18:13:30', '2025-07-10 18:13:30', NULL),
+	(115, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984635DE', 'Paquete Editado', '2025-07-10 18:26:59', '2025-07-10 18:26:59', NULL),
+	(116, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984635DE', 'Paquete Editado', '2025-07-10 18:27:06', '2025-07-10 18:27:06', NULL),
+	(117, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984635DE', 'Paquete Editado', '2025-07-10 18:31:10', '2025-07-10 18:31:10', NULL),
+	(118, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984634DE', 'Paquete Editado', '2025-07-10 18:31:19', '2025-07-10 18:31:19', NULL),
+	(119, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160984634DE', 'Paquete Despachado', '2025-07-10 18:31:31', '2025-07-10 18:31:31', NULL),
+	(120, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160984635DE', 'Paquete Despachado', '2025-07-10 18:31:31', '2025-07-10 18:31:31', NULL),
+	(121, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Editado', '2025-07-10 18:37:10', '2025-07-10 18:37:10', NULL),
+	(122, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY543233522DE', 'Paquete Despachado', '2025-07-10 18:37:56', '2025-07-10 18:37:56', NULL),
+	(123, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UY160390561DE', 'Paquete Despachado', '2025-07-10 18:42:52', '2025-07-10 18:42:52', NULL),
+	(124, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UP644880905CH', 'Paquete Despachado', '2025-07-10 18:43:21', '2025-07-10 18:43:21', NULL),
+	(125, 'ENVIANDO', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete asignado para envío', '2025-07-10 18:57:13', '2025-07-10 18:57:13', NULL),
+	(126, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete Despachado', '2025-07-10 18:57:36', '2025-07-10 18:57:36', NULL),
+	(127, 'DESPACHADO', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete Despachado', '2025-07-10 18:58:23', '2025-07-10 18:58:23', NULL),
+	(128, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete Recibido', '2025-07-10 19:02:23', '2025-07-10 19:02:23', NULL),
+	(129, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete Recibido', '2025-07-10 19:02:28', '2025-07-10 19:02:28', NULL),
+	(130, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'UR506481043CA', 'Paquete Recibido', '2025-07-10 19:10:03', '2025-07-10 19:10:03', NULL),
+	(131, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete Entregado', '2025-07-10 19:10:46', '2025-07-10 19:10:46', NULL),
+	(132, 'CREACION', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Creado', '2025-07-10 19:28:37', '2025-07-10 19:28:37', NULL),
+	(133, 'CREACION', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Creado', '2025-07-10 19:35:33', '2025-07-10 19:35:33', NULL),
+	(134, 'CREACION', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Creado', '2025-07-10 19:36:41', '2025-07-10 19:36:41', NULL),
+	(135, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Editado', '2025-07-10 19:36:46', '2025-07-10 19:36:46', NULL),
+	(136, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Editado', '2025-07-10 19:36:53', '2025-07-10 19:36:53', NULL),
+	(137, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Editado', '2025-07-10 19:36:58', '2025-07-10 19:36:58', NULL),
+	(138, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Recibido', '2025-07-10 19:38:26', '2025-07-10 19:38:26', NULL),
+	(139, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP400165047LU', 'Paquete Editado', '2025-07-10 19:38:32', '2025-07-10 19:38:32', NULL),
+	(140, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Entregado', '2025-07-10 19:40:08', '2025-07-10 19:40:08', NULL),
+	(141, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete editado y precio recalculado', '2025-07-10 19:52:58', '2025-07-10 19:52:58', NULL),
+	(142, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete editado y precio recalculado', '2025-07-10 19:54:22', '2025-07-10 19:54:22', NULL),
+	(143, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete editado y precio recalculado', '2025-07-10 19:54:28', '2025-07-10 19:54:28', NULL),
+	(144, 'EDICION', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete editado y precio recalculado', '2025-07-10 19:54:48', '2025-07-10 19:54:48', NULL),
+	(145, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete Entregado', '2025-07-10 19:55:11', '2025-07-10 19:55:11', NULL),
+	(146, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Recibido', '2025-07-10 19:57:52', '2025-07-10 19:57:52', NULL),
+	(147, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Entregado', '2025-07-10 19:59:26', '2025-07-10 19:59:26', NULL),
+	(148, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete Entregado', '2025-07-10 20:03:38', '2025-07-10 20:03:38', NULL),
+	(149, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete Entregado', '2025-07-10 20:04:00', '2025-07-10 20:04:00', NULL),
+	(150, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UP400250888LU', 'Paquete editado y precio recalculado', '2025-07-10 20:07:19', '2025-07-10 20:07:19', NULL),
+	(151, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UP400250888LU', 'Paquete Entregado', '2025-07-10 20:07:32', '2025-07-10 20:07:32', NULL),
+	(152, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UP400242643LU', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:33', '2025-07-10 20:08:33', NULL),
+	(153, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UY161815126DE', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:33', '2025-07-10 20:08:33', NULL),
+	(154, 'ALTA', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:35', '2025-07-10 20:08:35', NULL),
+	(155, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UY159222305DE', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:35', '2025-07-10 20:08:35', NULL),
+	(156, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UR506489033CA', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:36', '2025-07-10 20:08:36', NULL),
+	(157, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UP400165045LU', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:37', '2025-07-10 20:08:37', NULL),
+	(158, 'ALTA', 'Marco Antonio Espinoza Rojas', 'UY160984636DE', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:37', '2025-07-10 20:08:37', NULL),
+	(159, 'ALTA', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:38', '2025-07-10 20:08:38', NULL),
+	(160, 'ALTA', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete Restaurado a Almacen', '2025-07-10 20:08:39', '2025-07-10 20:08:39', NULL),
+	(161, 'EDICION', 'Marco Antonio Espinoza Rojas', 'UY161815126DE', 'Paquete editado y precio recalculado', '2025-07-10 20:09:06', '2025-07-10 20:09:06', NULL),
+	(162, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'UY161815126DE', 'Paquete Entregado', '2025-07-10 20:09:10', '2025-07-10 20:09:10', NULL),
+	(163, 'EDICION', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete editado y precio recalculado', '2025-07-10 20:12:45', '2025-07-10 20:12:45', NULL),
+	(164, 'ENTREGADO', 'Marco Antonio Espinoza Rojas', 'LH248642596US', 'Paquete Entregado', '2025-07-10 20:12:48', '2025-07-10 20:12:48', NULL),
+	(165, 'RECIBIDO', 'Marco Antonio Espinoza Rojas', 'UP400165047LU', 'Paquete Recibido', '2025-07-10 20:16:06', '2025-07-10 20:16:06', NULL),
+	(166, 'EDICION', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete editado y precio recalculado', '2025-07-10 20:16:23', '2025-07-10 20:16:23', NULL),
+	(167, 'EDICION', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete editado y precio recalculado', '2025-07-10 20:16:30', '2025-07-10 20:16:30', NULL),
+	(168, 'EDICION', 'Marco Antonio Espinoza Rojas', 'RF322074048ES', 'Paquete editado y precio recalculado', '2025-07-10 20:17:29', '2025-07-10 20:17:29', NULL);
 
 -- Volcando estructura para tabla geca.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -279,39 +357,48 @@ CREATE TABLE IF NOT EXISTS `paquetes` (
   `cuidad` varchar(50) DEFAULT NULL,
   `peso` float DEFAULT NULL,
   `precio` float DEFAULT NULL,
+  `origen` varchar(50) DEFAULT NULL,
   `destino` varchar(50) DEFAULT NULL,
   `user` varchar(50) DEFAULT NULL,
   `observacion` text DEFAULT NULL,
   `photo` longtext DEFAULT NULL,
   `certificacion` int(11) DEFAULT NULL,
+  `almacenaje` int(11) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
+  `grupo` int(11) DEFAULT NULL,
+  `pda` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla geca.paquetes: ~19 rows (aproximadamente)
-INSERT INTO `paquetes` (`id`, `codigo`, `destinatario`, `estado`, `cuidad`, `peso`, `precio`, `destino`, `user`, `observacion`, `photo`, `certificacion`, `cantidad`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'UY160984636DE', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.63, 17.21, 'local', 'MARCO ANTONIO ESPINOZA ROJAS', 'X', NULL, 1, 1, '2025-06-18 00:44:22', '2025-06-25 23:43:45', NULL),
-	(2, 'UY160984634DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.63, 17.21, 'local', 'Marco Antonio Espinoza Rojas', 'X', NULL, 1, 1, '2025-06-18 00:44:22', '2025-07-09 18:44:50', NULL),
-	(3, 'UY160984635DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.63, 17.21, 'local', 'MARCO ANTONIO ESPINOZA ROJAS', 'X', NULL, 1, 1, '2025-06-18 00:44:22', '2025-07-09 18:44:49', NULL),
-	(4, 'RD000196175BO', 'ALDEAS INFANTILES SOS', 'INVENTARIO', 'LA PAZ', 3.3, 546, 'euro', 'Marco Antonio Espinoza Rojas', 'API EXTERNA', NULL, 1, 1, '2025-06-20 19:21:51', '2025-06-26 00:58:13', NULL),
-	(5, 'UP400250889LU', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.21, 14.21, 'local', 'Marco Antonio Espinoza Rojas', 'X', NULL, 1, 1, '2025-06-23 17:42:04', '2025-06-26 00:41:01', NULL),
-	(6, 'UP400250888LU', 'ALDEAS INFANTILES SOS', 'ALMACEN', 'LA PAZ', 2, 8, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, '2025-06-23 19:48:27', '2025-06-26 00:49:52', NULL),
-	(7, 'UY159222305DE', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 1.17, 0, 'local', NULL, '', NULL, NULL, 1, '2025-06-23 20:14:00', '2025-06-25 18:50:48', '2025-06-25 18:50:48'),
-	(8, 'UY160390561DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.011, 11.8, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, '2025-06-23 20:14:35', '2025-07-09 18:44:48', NULL),
-	(9, 'UP400242643LU', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.21, 6.21, 'local', 'Marco Antonio Espinoza Rojas', NULL, NULL, NULL, 1, '2025-06-23 20:18:19', '2025-06-25 17:32:26', '2025-06-25 17:32:26'),
-	(10, 'LH248642596US', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.5, 6.8, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, NULL, 1, '2025-06-23 23:07:58', '2025-06-24 01:53:20', '2025-06-24 01:53:20'),
-	(12, 'RF322074048ES', 'WORLD VISION BOLIVIA', 'RECIBIDO', 'COCHABAMBA', 0.12, 0, 'centro', 'MARCO ANTONIO ESPINOZA ROJAS', '', NULL, NULL, 1, '2025-06-24 19:49:14', '2025-06-24 19:49:44', NULL),
-	(13, 'RB251312246IT', 'FUNDACION AYUDA EN ACCION', 'INVENTARIO', 'LA PAZ', 0.45, 108.9, 'sud', 'Marco Antonio Espinoza Rojas', '', NULL, NULL, 1, '2025-06-24 20:12:21', '2025-06-25 20:13:29', NULL),
-	(14, 'UY161815126DE', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.82, 0, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, NULL, 1, '2025-06-25 17:31:43', '2025-06-25 18:41:16', '2025-06-25 18:41:16'),
-	(15, 'UY160984636DE', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.4, 6.8, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 1, '2025-06-25 23:35:36', '2025-06-26 01:02:01', NULL),
-	(16, 'UY543233522DE', 'ENCOMIENDA', 'ENVIANDO', 'LA PAZ', 4, NULL, 'sud', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 12, '2025-06-26 18:12:17', '2025-06-26 18:12:17', NULL),
-	(17, 'UY159222305DE', 'ENCOMIENDA', 'DESPACHADO', 'LA PAZ', 4, 3460, 'centro', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 10, '2025-06-26 18:21:28', '2025-06-26 18:47:38', NULL),
-	(18, 'UP644880905CH', 'INTERNACIONAL', 'DESPACHADO', 'LA PAZ', 11, 8, 'Angola', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, '2025-06-26 18:29:07', '2025-07-09 18:31:47', NULL),
-	(19, 'UR506481043CA', 'WORLD VISION BOLIVIA', 'RECIBIDO', 'LA PAZ', 0.015, NULL, NULL, 'Marco Antonio Espinoza Rojas', NULL, NULL, NULL, NULL, '2025-07-09 17:23:52', '2025-07-09 17:23:52', NULL),
-	(20, 'UF105260739HK', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.45, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 10, '2025-07-09 20:07:20', '2025-07-09 20:07:20', NULL);
+-- Volcando datos para la tabla geca.paquetes: ~24 rows (aproximadamente)
+INSERT INTO `paquetes` (`id`, `codigo`, `destinatario`, `estado`, `cuidad`, `peso`, `precio`, `origen`, `destino`, `user`, `observacion`, `photo`, `certificacion`, `almacenaje`, `cantidad`, `grupo`, `pda`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'UY160984636DE', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.63, 17.21, NULL, 'local', 'MARCO ANTONIO ESPINOZA ROJAS', 'X', NULL, 1, NULL, 1, NULL, NULL, '2025-06-18 00:44:22', '2025-07-10 20:04:00', '2025-07-10 20:04:00'),
+	(2, 'UY160984634DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.63, 9.21, NULL, 'local', 'Marco Antonio Espinoza Rojas', 'X', NULL, 0, 0, 1, 0, NULL, '2025-06-18 00:44:22', '2025-07-10 18:32:04', NULL),
+	(3, 'UY160984635DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.63, 24.21, NULL, 'local', 'MARCO ANTONIO ESPINOZA ROJAS', 'X', NULL, 0, 1, 1, 0, NULL, '2025-06-18 00:44:22', '2025-07-10 18:32:05', NULL),
+	(4, 'RD000196175BO', 'ALDEAS INFANTILES SOS', 'INVENTARIO', 'LA PAZ', 3.3, 546, NULL, 'euro', 'Marco Antonio Espinoza Rojas', 'API EXTERNA', NULL, 1, NULL, 1, NULL, NULL, '2025-06-20 19:21:51', '2025-06-26 00:58:13', NULL),
+	(5, 'UP400250889LU', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.21, 14.21, NULL, 'local', 'Marco Antonio Espinoza Rojas', 'X', NULL, 1, 1, 1, 1, NULL, '2025-06-23 17:42:04', '2025-07-10 20:03:50', NULL),
+	(6, 'UP400250888LU', 'ALDEAS INFANTILES SOS', 'INVENTARIO', 'LA PAZ', 2, 8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 0, 1, 0, NULL, '2025-06-23 19:48:27', '2025-07-10 20:07:32', '2025-07-10 20:07:32'),
+	(7, 'UY159222305DE', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 1.17, 0, NULL, 'local', NULL, '', NULL, NULL, NULL, 1, NULL, NULL, '2025-06-23 20:14:00', '2025-07-10 20:08:35', NULL),
+	(8, 'UY160390561DE', 'WORLD VISION BOLIVIA', 'DESPACHADO', 'LA PAZ', 0.011, 11.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, NULL, 1, NULL, NULL, '2025-06-23 20:14:35', '2025-07-10 18:42:52', NULL),
+	(9, 'UP400242643LU', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.21, 6.21, NULL, 'local', 'Marco Antonio Espinoza Rojas', NULL, NULL, NULL, NULL, 1, NULL, NULL, '2025-06-23 20:18:19', '2025-07-10 20:08:33', NULL),
+	(10, 'LH248642596US', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.5, 6.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 0, 1, 0, 1741, '2025-06-23 23:07:58', '2025-07-10 20:12:48', '2025-07-10 20:12:48'),
+	(12, 'RF322074048ES', 'WORLD VISION BOLIVIA', 'ALMACEN', 'COCHABAMBA', 0.12, 0, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 0, 1, 0, NULL, '2025-06-24 19:49:14', '2025-07-10 20:17:29', NULL),
+	(13, 'RB251312246IT', 'FUNDACION AYUDA EN ACCION', 'INVENTARIO', 'LA PAZ', 0.45, 108.9, NULL, 'sud', 'Marco Antonio Espinoza Rojas', '', NULL, NULL, NULL, 1, NULL, NULL, '2025-06-24 20:12:21', '2025-06-25 20:13:29', NULL),
+	(14, 'UY161815126DE', 'WORLD VISION BOLIVIA', 'INVENTARIO', 'LA PAZ', 0.82, 0, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 0, 0, 1, 0, 2441, '2025-06-25 17:31:43', '2025-07-10 20:09:10', '2025-07-10 20:09:10'),
+	(15, 'UY160984636DE', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.4, 6.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 0, 1, 1, 0, '2025-06-25 23:35:36', '2025-07-10 20:08:37', NULL),
+	(16, 'UY543233522DE', 'ENCOMIENDA', 'DESPACHADO', 'LA PAZ', 4, 323, NULL, 'sud', 'Marco Antonio Espinoza Rojas', '', NULL, 0, NULL, 12, 0, 2545, '2025-06-26 18:12:17', '2025-07-10 18:37:56', NULL),
+	(17, 'UY159222305DE', 'ENCOMIENDA', 'DESPACHADO', 'LA PAZ', 4, 3460, NULL, 'centro', 'Marco Antonio Espinoza Rojas', '', NULL, 1, NULL, 10, NULL, NULL, '2025-06-26 18:21:28', '2025-06-26 18:47:38', NULL),
+	(18, 'UP644880905CH', 'FUNDACION AYUDA EN ACCION', 'DESPACHADO', 'LA PAZ', 11, 23, NULL, 'centro', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, 1, 1, 2545, '2025-06-26 18:29:07', '2025-07-10 18:43:21', NULL),
+	(19, 'UR506481043CA', 'WORLD VISION BOLIVIA', 'RECIBIDO', 'LA PAZ', 0.015, 3.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-09 17:23:52', '2025-07-10 19:10:03', NULL),
+	(20, 'UF105260739HK', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.256, 14.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, NULL, 11, 0, NULL, '2025-07-09 20:07:20', '2025-07-10 18:32:07', NULL),
+	(21, 'UY162197328DE', 'WORLD VISION BOLIVIA', 'ENVIANDO', 'LA PAZ', 0.256, 162.8, NULL, 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, NULL, 11, 1, NULL, '2025-07-09 23:16:10', '2025-07-10 18:32:08', NULL),
+	(22, 'UR506489033CA', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 0.65, 17.21, 'CANADA', 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, 1, 1, 2441, '2025-07-10 18:57:13', '2025-07-10 20:08:36', NULL),
+	(23, 'LH248642596US', 'WORLD VISION BOLIVIA', 'ALMACEN', 'LA PAZ', 1565, 8, 'UNITED STATES', 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, NULL, 1, 2545, '2025-07-10 19:28:37', '2025-07-10 20:08:38', NULL),
+	(24, 'UP400165047LU', 'WORLD VISION BOLIVIA', 'ALMACEN', 'ORURO', 0.45, 14.8, 'LUXEMBOURG', 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 1, 1, 1, 2441, '2025-07-10 19:35:33', '2025-07-10 20:16:06', NULL),
+	(25, 'UP400165045LU', 'WORLD VISION BOLIVIA', 'ALMACEN', 'BENI', 0.65, 17.21, 'LUXEMBOURG', 'local', 'Marco Antonio Espinoza Rojas', '', NULL, 1, 0, 1, 0, 2441, '2025-07-10 19:36:41', '2025-07-10 20:08:37', NULL);
 
 -- Volcando estructura para tabla geca.password_reset_tokens
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
@@ -402,20 +489,18 @@ CREATE TABLE IF NOT EXISTS `pulse_aggregates` (
   KEY `pulse_aggregates_period_bucket_index` (`period`,`bucket`),
   KEY `pulse_aggregates_type_index` (`type`),
   KEY `pulse_aggregates_period_type_aggregate_bucket_index` (`period`,`type`,`aggregate`,`bucket`)
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_aggregates: ~10 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_aggregates: ~8 rows (aproximadamente)
 INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggregate`, `value`, `count`) VALUES
-	(1, 1752086580, 60, 'user_request', '1', 'count', 20.00, NULL),
-	(2, 1752086520, 360, 'user_request', '1', 'count', 22.00, NULL),
-	(3, 1752085440, 1440, 'user_request', '1', 'count', 22.00, NULL),
-	(4, 1752085440, 10080, 'user_request', '1', 'count', 22.00, NULL),
-	(5, 1752086580, 60, 'cache_hit', 'spatie.permission.cache', 'count', 10.00, NULL),
-	(6, 1752086520, 360, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
-	(7, 1752085440, 1440, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
-	(8, 1752085440, 10080, 'cache_hit', 'spatie.permission.cache', 'count', 11.00, NULL),
-	(121, 1752086640, 60, 'user_request', '1', 'count', 2.00, NULL),
-	(122, 1752086640, 60, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL);
+	(1, 1752165420, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(2, 1752165360, 360, 'user_request', '1', 'count', 1.00, NULL),
+	(3, 1752164640, 1440, 'user_request', '1', 'count', 1.00, NULL),
+	(4, 1752156000, 10080, 'user_request', '1', 'count', 1.00, NULL),
+	(5, 1752165420, 60, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL),
+	(6, 1752165360, 360, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL),
+	(7, 1752164640, 1440, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL),
+	(8, 1752156000, 10080, 'cache_hit', 'spatie.permission.cache', 'count', 1.00, NULL);
 
 -- Volcando estructura para tabla geca.pulse_entries
 CREATE TABLE IF NOT EXISTS `pulse_entries` (
@@ -430,43 +515,12 @@ CREATE TABLE IF NOT EXISTS `pulse_entries` (
   KEY `pulse_entries_type_index` (`type`),
   KEY `pulse_entries_key_hash_index` (`key_hash`),
   KEY `pulse_entries_timestamp_type_key_hash_value_index` (`timestamp`,`type`,`key_hash`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla geca.pulse_entries: ~33 rows (aproximadamente)
+-- Volcando datos para la tabla geca.pulse_entries: ~2 rows (aproximadamente)
 INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
-	(1, 1752086598, 'user_request', '1', NULL),
-	(2, 1752086599, 'user_request', '1', NULL),
-	(3, 1752086599, 'cache_hit', 'spatie.permission.cache', NULL),
-	(4, 1752086603, 'user_request', '1', NULL),
-	(5, 1752086603, 'cache_hit', 'spatie.permission.cache', NULL),
-	(6, 1752086606, 'user_request', '1', NULL),
-	(7, 1752086608, 'user_request', '1', NULL),
-	(8, 1752086611, 'user_request', '1', NULL),
-	(9, 1752086612, 'user_request', '1', NULL),
-	(10, 1752086613, 'user_request', '1', NULL),
-	(11, 1752086614, 'user_request', '1', NULL),
-	(12, 1752086615, 'user_request', '1', NULL),
-	(13, 1752086616, 'user_request', '1', NULL),
-	(14, 1752086616, 'user_request', '1', NULL),
-	(15, 1752086619, 'user_request', '1', NULL),
-	(16, 1752086619, 'cache_hit', 'spatie.permission.cache', NULL),
-	(17, 1752086621, 'user_request', '1', NULL),
-	(18, 1752086621, 'cache_hit', 'spatie.permission.cache', NULL),
-	(19, 1752086624, 'user_request', '1', NULL),
-	(20, 1752086624, 'cache_hit', 'spatie.permission.cache', NULL),
-	(21, 1752086627, 'user_request', '1', NULL),
-	(22, 1752086628, 'cache_hit', 'spatie.permission.cache', NULL),
-	(23, 1752086630, 'user_request', '1', NULL),
-	(24, 1752086630, 'cache_hit', 'spatie.permission.cache', NULL),
-	(25, 1752086633, 'user_request', '1', NULL),
-	(26, 1752086634, 'cache_hit', 'spatie.permission.cache', NULL),
-	(27, 1752086636, 'user_request', '1', NULL),
-	(28, 1752086636, 'cache_hit', 'spatie.permission.cache', NULL),
-	(29, 1752086638, 'user_request', '1', NULL),
-	(30, 1752086638, 'cache_hit', 'spatie.permission.cache', NULL),
-	(31, 1752086642, 'user_request', '1', NULL),
-	(32, 1752086642, 'cache_hit', 'spatie.permission.cache', NULL),
-	(33, 1752086644, 'user_request', '1', NULL);
+	(1, 1752165455, 'user_request', '1', NULL),
+	(2, 1752165455, 'cache_hit', 'spatie.permission.cache', NULL);
 
 -- Volcando estructura para tabla geca.pulse_values
 CREATE TABLE IF NOT EXISTS `pulse_values` (
@@ -538,7 +592,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla geca.sessions: ~1 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('TzdYixP6AS7GlVX8W2jvbiN60VKSeagxoVUL5Az5', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTlQ0dHFPUU9ORmRKaTllS0FiWFNqMkhPa21FaGxZMjlubWpPd1R1aCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2VudmlhciI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1752086645);
+	('jFjfcD3XkyWAybF2eVnY1jyuGLcz3gQNGy9812x0', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiSkw4YTZ5NTBFdFNlakNYNnlNV3hxT0JzVHMwREM5NmRJZlM2bUdENiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI5OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWxtYWNlbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTg6ImZsYXNoZXI6OmVudmVsb3BlcyI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1752165455);
 
 -- Volcando estructura para tabla geca.tarifario
 CREATE TABLE IF NOT EXISTS `tarifario` (
