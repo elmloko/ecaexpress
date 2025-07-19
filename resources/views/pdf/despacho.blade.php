@@ -117,10 +117,10 @@
                 <th>Tarifa</th>
                 <th>Precio Unitario (Bs)</th>
                 @if ($showAlmacen)
-                    <th>Almac.</th>
+                    <th>Almac. (Bs)</th>
                 @endif
                 @if ($showCert)
-                    <th>Certif.</th>
+                    <th>Certif. (Bs)</th>
                 @endif
                 <th>Precio Total (Bs)</th>
             </tr>
@@ -139,7 +139,7 @@
                     <td>{{ number_format($pkg->peso, 2) }}</td>
                     {{-- <td>{{ $pkg->origen }}</td> --}}
                     <td>{{ $pkg->cuidad }}</td>
-                     <td>{{ strtoupper($pkg->final) }}</td>
+                    <td>{{ strtoupper($pkg->final) }}</td>
                     <td>
                         @php
                             switch ($pkg->destino) {
@@ -179,7 +179,7 @@
                         @php
                             $precioInicial = $pkg->precio - ($pkg->certificacion ? 8 : 0) - ($pkg->almacenaje ? 15 : 0);
                         @endphp
-                        {{ number_format($precioInicial, 2) }} Bs
+                        {{ number_format($precioInicial, 2) }}
                     </td>
                     @if ($showAlmacen)
                         <td>
@@ -202,12 +202,47 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="{{ $colspan }}" style="text-align: right;">
-                    Total Precio (Bs):
+                @php
+                    // Columnas fijas antes de Cantidad: 2 (No, Fecha Recepcion)
+                    $colsAntesCantidad = 2;
+
+                    // Columnas entre Cantidad y Peso:
+                    // Desde Código (1) + Destinatario(1) + PDA (0 o 1)
+                    $colsEntreCantidadYPeso = 2 + ($showPDA ? 1 : 0);
+
+                    // Columnas entre Peso y Precio total:
+                    // Origen(1), Destino(1), Region(1), Tarifa(1), Precio Unitario(1), Almac.(0 o 1), Certif.(0 o 1)
+                    $colsEntrePesoYPrecio = 5 + ($showAlmacen ? 1 : 0) + ($showCert ? 1 : 0);
+                @endphp
+
+                {{-- Celda vacía o con texto "Totales:" que abarque las columnas antes de Cantidad --}}
+                <td colspan="{{ $colsAntesCantidad }}" style="text-align: right; font-weight: bold;">
+                    Totales:
                 </td>
-                <td>{{ number_format($packages->sum('precio'), 2) }}</td>
+
+                {{-- Cantidad total --}}
+                <td style="font-weight: bold; text-align: center;">
+                    Cantidad Total: {{ $packages->sum('cantidad') }}
+                </td>
+
+                {{-- Columnas intermedias (Código, Destinatario, PDA) las saltamos con colspan --}}
+                <td colspan="{{ $colsEntreCantidadYPeso }}" style="border:none;"></td>
+
+                {{-- Peso total --}}
+                <td style="font-weight: bold; text-align: center;">
+                    Peso Total: {{ number_format($packages->sum('peso'), 2) }} Kg.
+                </td>
+
+                {{-- Columnas intermedias entre Peso y Precio total las saltamos con colspan --}}
+                <td colspan="{{ $colsEntrePesoYPrecio }}" style="border:none;"></td>
+
+                {{-- Precio total --}}
+                <td style="font-weight: bold; text-align: center;">
+                    Precio Total: {{ number_format($packages->sum('precio'), 2)  }} Bs.
+                </td>
             </tr>
         </tfoot>
+
     </table>
 
     <br>
