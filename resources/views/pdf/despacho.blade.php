@@ -137,8 +137,9 @@
                         <td>{{ $pkg->pda }}</td>
                     @endif
                     <td>{{ number_format($pkg->peso, 2) }}</td>
+                    {{-- <td>{{ $pkg->origen }}</td> --}}
                     <td>{{ $pkg->cuidad }}</td>
-                    <td>{{ $pkg->origen }}</td>
+                     <td>{{ strtoupper($pkg->final) }}</td>
                     <td>
                         @php
                             switch ($pkg->destino) {

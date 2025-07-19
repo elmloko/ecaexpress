@@ -31,6 +31,7 @@ class Enviar extends Component
     public $cuidad;
     public $origen;
     public $destino;
+    public $final;
     public $peso;
     public $cantidad = 1;
     public $observacion;
@@ -48,6 +49,7 @@ class Enviar extends Component
         'cuidad'        => 'nullable|string|max:50',
         'origen'        => 'nullable|string|max:100',
         'destino'       => 'required|string|max:50',
+        'final'       => 'required|string|max:50',
         'peso'          => 'nullable|numeric',
         'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
@@ -180,7 +182,7 @@ class Enviar extends Component
 
     public function abrirModal()
     {
-        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion', 'almacenaje', 'pda']);
+        $this->reset(['paquete_id', 'codigo', 'destinatario', 'cuidad', 'destino', 'peso', 'cantidad', 'observacion', 'grupo', 'certificacion', 'almacenaje', 'final', 'pda']);
         $this->modal = true;
     }
 
@@ -197,6 +199,7 @@ class Enviar extends Component
         $this->destinatario = $p->destinatario;
         $this->cuidad       = $p->cuidad;
         $this->destino      = $p->destino;
+        $this->final      = $p->final;
         $this->peso         = $p->peso;
         $this->cantidad     = $p->cantidad;
         $this->observacion  = $p->observacion;
@@ -215,8 +218,9 @@ class Enviar extends Component
         $data = [
             'codigo'        => strtoupper($this->codigo),
             'destinatario'  => strtoupper($this->destinatario),
-            'cuidad'        => strtoupper($this->cuidad),
+            'cuidad'        => strtoupper(Auth::user()->city),
             'destino'       => $this->destino,
+            'final'       => $this->final,
             'peso'          => $this->peso,
             'cantidad'      => $this->cantidad,
             'pda'           => $this->pda,

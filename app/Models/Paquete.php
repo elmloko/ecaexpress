@@ -19,6 +19,7 @@ class Paquete extends Model
         'precio',
         'origen',
         'destino',
+        'final',
         'peso',
         'user',
         'observacion',
