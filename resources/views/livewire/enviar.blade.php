@@ -154,7 +154,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Departamento</label>
                                 <select wire:model.defer="cuidad" class="form-control"
                                     style="text-transform: uppercase;">
@@ -172,7 +172,7 @@
                                 @error('cuidad')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <label>Tarifa</label>

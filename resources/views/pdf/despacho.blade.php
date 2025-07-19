@@ -14,7 +14,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         th,
@@ -94,14 +94,16 @@
 
         // Para el footer: calcula cuántas columnas hay antes de “Precio Total”
         // (sin contar “PDA”, “Almac.” y “Certif.”)
-        $staticCols = 9;
+        $staticCols = 12;
         // Total columnas antes del “Precio Total” = columnas fijas + las dinámicas mostradas
         $colspan = $staticCols + ($showPDA ? 1 : 0) + ($showAlmacen ? 1 : 0) + ($showCert ? 1 : 0) - 1; // restamos 1 para dejar la última celda del precio
+
     @endphp
     <table class="first-table">
         <thead>
             <tr>
                 <th>No</th>
+                <th>Fecha Recepcion</th>
                 <th>Cantidad</th>
                 <th>Código</th>
                 <th>Destinatario</th>
@@ -111,7 +113,9 @@
                 <th>Peso Neto (kg)</th>
                 <th>Origen</th>
                 <th>Destino</th>
+                <th>Region</th>
                 <th>Tarifa</th>
+                <th>Precio Unitario (Bs)</th>
                 @if ($showAlmacen)
                     <th>Almac.</th>
                 @endif
@@ -125,6 +129,7 @@
             @foreach ($packages as $i => $pkg)
                 <tr>
                     <td>{{ $i + 1 }}</td>
+                    <td>{{ $pkg->created_at->format('d/m/Y') }}</td>
                     <td>{{ $pkg->cantidad }}</td>
                     <td>{{ $pkg->codigo }}</td>
                     <td>{{ $pkg->destinatario }}</td>
@@ -132,9 +137,49 @@
                         <td>{{ $pkg->pda }}</td>
                     @endif
                     <td>{{ number_format($pkg->peso, 2) }}</td>
-                    <td>{{ $pkg->origen }}</td>
                     <td>{{ $pkg->cuidad }}</td>
-                    <td>{{ strtoupper($pkg->destino) }}</td>
+                    <td>{{ $pkg->origen }}</td>
+                    <td>
+                        @php
+                            switch ($pkg->destino) {
+                                case 'local':
+                                    $destinoNombre = 'LOCAL';
+                                    break;
+                                case 'nacional':
+                                    $destinoNombre = 'NACIONAL';
+                                    break;
+                                case 'camiri':
+                                    $destinoNombre = 'CAMIRI';
+                                    break;
+                                case 'sud':
+                                    $destinoNombre = 'SUDAMERICA';
+                                    break;
+                                case 'norte':
+                                    $destinoNombre = 'NORTEAMERICA';
+                                    break;
+                                case 'centro':
+                                    $destinoNombre = 'CENTROAMERICA';
+                                    break;
+                                case 'euro':
+                                    $destinoNombre = 'EUROPA/AFRICA';
+                                    break;
+                                case 'asia':
+                                    $destinoNombre = 'ASIA/OCEANIA';
+                                    break;
+                                default:
+                                    $destinoNombre = strtoupper($pkg->destino);
+                                    break;
+                            }
+                        @endphp
+                        {{ $destinoNombre }}
+                    </td>
+                    <td>ECA</td>
+                    <td>
+                        @php
+                            $precioInicial = $pkg->precio - ($pkg->certificacion ? 8 : 0) - ($pkg->almacenaje ? 15 : 0);
+                        @endphp
+                        {{ number_format($precioInicial, 2) }} Bs
+                    </td>
                     @if ($showAlmacen)
                         <td>
                             @if ($pkg->almacenaje == 1)
