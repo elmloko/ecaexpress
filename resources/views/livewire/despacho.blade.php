@@ -57,6 +57,7 @@
                             <th>Ciudad</th>
                             <th>Peso</th>
                             <th>Precio</th>
+                            <th>Destino</th>
                             <th>Tarifa</th>
                             <th>Estado</th>
                             <th>Observación</th>
@@ -74,6 +75,7 @@
                                 <td>{{ $p->cuidad }}</td>
                                 <td>{{ $p->peso }} kg</td>
                                 <td>{{ $p->precio }} Bs</td>
+                                <td>{{ strtoupper($p->final) }}</td>
                                 <td>{{ strtoupper($p->destino) }}</td>
                                 <td>{{ $p->estado }}</td>
                                 <td>{{ $p->observacion }}</td>
