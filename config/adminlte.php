@@ -372,13 +372,13 @@ return [
                     'can'  => 'visor',
                 ],
         [
-            'text' => 'Envio de Paquetes',
+            'text' => 'Exportacion de Paquetes',
             'icon' => 'fas fa-plane-departure', // Icono representativo de "paquetes"
             // 'can'  => 'users.index',
             'submenu' => [
                 
                 [
-                    'text' => 'Enviar',
+                    'text' => 'Admision',
                     'url'  => '/enviar',
                     'icon' => 'fas fa-paper-plane', // Icono de "enviar"
                     'can'  => 'enviar',
@@ -392,7 +392,7 @@ return [
             ],
         ],
         [
-            'text' => 'Recepcion de Paquetes',
+            'text' => 'Importacion de Paquetes',
             'icon' => 'fas fa-box-open', // Icono representativo de "paquetes"
             // 'can'  => 'users.index',
             'submenu' => [

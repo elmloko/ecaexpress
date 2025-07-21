@@ -13,7 +13,7 @@ class Empresas extends Component
     public $search = '';
     public $searchInput = '';
     public $modal = false;
-    public $nombre, $tipo, $empresa_id;
+    public $nombre, $tipo, $empresa_id, $contrato;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -22,6 +22,7 @@ class Empresas extends Component
     protected $rules = [
         'nombre' => 'required|string|max:50',
         'tipo'   => 'required|string|max:50',
+        'contrato'   => 'required|string|max:50',
     ];
 
     public function mount()
@@ -37,7 +38,7 @@ class Empresas extends Component
 
     public function abrirModal()
     {
-        $this->reset(['nombre', 'tipo', 'empresa_id']);
+        $this->reset(['nombre', 'tipo','contrato', 'empresa_id']);
         $this->modal = true;
     }
 
@@ -55,6 +56,7 @@ class Empresas extends Component
             [
                 'nombre' => strtoupper($this->nombre),
                 'tipo'   => strtoupper($this->tipo),
+                'contrato'   => strtoupper($this->contrato),
             ]
         );
 
@@ -70,6 +72,7 @@ class Empresas extends Component
         $this->empresa_id = $empresa->id;
         $this->nombre = strtoupper($empresa->nombre);
         $this->tipo = strtoupper($empresa->tipo);
+        $this->contrato = strtoupper($empresa->contrato);
         $this->modal = true;
     }
 

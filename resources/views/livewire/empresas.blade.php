@@ -24,7 +24,8 @@
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <div class="input-group" style="max-width: 400px;">
-                            <input type="text" class="form-control" placeholder="Buscar..." wire:model.defer="searchInput">
+                            <input type="text" class="form-control" placeholder="Buscar..."
+                                wire:model.defer="searchInput">
                             <div class="input-group-append">
                                 <button class="btn btn-primary btn-flat" wire:click="buscar">
                                     <i class="fas fa-search"></i>
@@ -46,6 +47,7 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Nro. de Contrato</th>
                             <th>Tipo</th>
                             <th>Creado</th>
                             <th>Actualizado</th>
@@ -56,6 +58,7 @@
                         @forelse ($empresas as $empresa)
                             <tr>
                                 <td>{{ $empresa->nombre }}</td>
+                                <td>{{ $empresa->contrato }}</td>
                                 <td>{{ $empresa->tipo }}</td>
                                 <td>{{ $empresa->created_at }}</td>
                                 <td>{{ $empresa->updated_at }}</td>
@@ -98,12 +101,20 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
-                        <input type="text" wire:model.defer="nombre" class="form-control" placeholder="Nombre" style="text-transform: uppercase;">
+                        <input type="text" wire:model.defer="nombre" class="form-control" placeholder="Nombre"
+                            style="text-transform: uppercase;">
                         @error('nombre')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-
+                    <div class="form-group">
+                        <label for="contrato">Nombre</label>
+                        <input type="number" wire:model.defer="contrato" class="form-control" placeholder="Nro. Contrato"
+                            style="text-transform: uppercase;">
+                        @error('contrato')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                     <div class="form-group">
                         <label for="tipo">Tipo</label>
                         <select wire:model.defer="tipo" class="form-control" style="text-transform: uppercase;">

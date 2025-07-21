@@ -60,7 +60,7 @@
             <img src="{{ public_path('images/images.png') }}" width="150" height="50">
         </div>
         <div class="title">
-            <h2>Manifiesto de Entrega</h2>
+            <h2>Detalle de Debito</h2>
             <h2>Envíos de Correspondencia Agrupada / Pliegos</h2>
             <h3>AGENCIA BOLIVIANA DE CORREOS</h3>
         </div>

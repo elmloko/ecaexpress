@@ -409,14 +409,14 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="pda">PDA</label>
                                 <input type="text" id="pda" wire:model.defer="pda" class="form-control"
                                     maxlength="100" placeholder="Ingrese PDA (opcional)">
                                 @error('pda')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <label>Observación</label>
@@ -426,7 +426,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group form-check">
+                            {{-- <div class="form-group form-check">
                                 <input type="checkbox" id="certificacion" wire:model.defer="certificacion"
                                     class="form-check-input">
                                 <label for="certificacion" class="form-check-label">
@@ -439,7 +439,7 @@
                                 <label for="almacenaje" class="form-check-label">
                                     Aplicar tarifa de Almacenaje (15 Bs.)
                                 </label>
-                            </div>
+                            </div> --}}
                             <div class="form-group form-check">
                                 <input type="checkbox" id="grupo" wire:model.defer="grupo"
                                     class="form-check-input">
