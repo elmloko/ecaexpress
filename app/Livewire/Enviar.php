@@ -53,7 +53,7 @@ class Enviar extends Component
         'peso'          => 'nullable|numeric',
         'cantidad'      => 'required|integer|min:1',
         'observacion'   => 'nullable|string|max:255',
-        'pda'           => 'nullable|numeric',
+        'pda'           => 'nullable|string|max:50',
         'certificacion' => 'boolean',
         'grupo'         => 'boolean',
         'almacenaje'    => 'boolean',

@@ -51,7 +51,7 @@ class Almacen extends Component
         'peso'         => 'nullable|numeric',
         'observacion'  => 'nullable|string|max:255',
         'destino'      => 'required|string|max:50',
-        'pda'           => 'nullable|numeric',
+        'pda'           => 'nullable|string|max:50',
         'certificacion' => 'boolean',
         'grupo'         => 'boolean',
         'almacenaje'    => 'boolean',
