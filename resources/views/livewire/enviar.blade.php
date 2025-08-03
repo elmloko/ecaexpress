@@ -426,14 +426,14 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="form-group form-check">
+                            <div class="form-group form-check">
                                 <input type="checkbox" id="certificacion" wire:model.defer="certificacion"
                                     class="form-check-input">
                                 <label for="certificacion" class="form-check-label">
                                     Aplicar Tasa de Certificación (8 Bs.)
                                 </label>
                             </div>
-                            <div class="form-group form-check">
+                            {{-- <div class="form-group form-check">
                                 <input type="checkbox" id="almacenaje" wire:model.defer="almacenaje"
                                     class="form-check-input">
                                 <label for="almacenaje" class="form-check-label">
