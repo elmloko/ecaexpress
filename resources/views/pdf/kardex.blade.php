@@ -60,7 +60,7 @@
             <img src="{{ public_path('images/images.png') }}" width="150" height="50">
         </div>
         <div class="title">
-            <h2>DEBITO DE </h2>
+            <h2>DEBITO DE {{ strtoupper($empresaNombre) }}</h2>
             <h3>ENVÍOS DE CORRESPONDENCIA AGRUPADA / PLIEGOS</h3>
             <h3>AGENCIA BOLIVIANA DE CORREOS</h3>
         </div>
@@ -214,7 +214,7 @@
 
                     // Columnas entre Peso y Precio total:
                     // Origen(1), Destino(1), Region(1), Tarifa(1), Precio Unitario(1), Almac.(0 o 1), Certif.(0 o 1)
-                    $colsEntrePesoYPrecio = 4 + ($showAlmacen ? 1 : 0) + ($showCert ? 1 : 0);
+                    $colsEntrePesoYPrecio = 5 + ($showAlmacen ? 1 : 0) + ($showCert ? 1 : 0);
                 @endphp
 
                 {{-- Celda vacía o con texto "Totales:" que abarque las columnas antes de Cantidad --}}
