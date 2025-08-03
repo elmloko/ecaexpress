@@ -12,25 +12,29 @@
     <form action="{{ route('dashboard.kardex') }}" method="GET" class="form-inline mt-2 mb-4">
         <div class="form-group mr-3">
             <label for="start_date" class="mr-1">Desde:</label>
-            <input 
-                type="date" 
-                name="start_date" 
-                id="start_date" 
-                class="form-control" 
-                value="{{ request('start_date') }}" 
-                required
-            >
+            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request('start_date') }}"
+                required>
         </div>
         <div class="form-group mr-3">
             <label for="end_date" class="mr-1">Hasta:</label>
-            <input 
-                type="date" 
-                name="end_date" 
-                id="end_date" 
-                class="form-control" 
-                value="{{ request('end_date') }}" 
-                required
-            >
+            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request('end_date') }}"
+                required>
+        </div>
+
+        @php
+            $empresas = \App\Models\Empresa::pluck('nombre'); // trae sólo los nombres
+        @endphp
+
+        <div class="form-group mr-3">
+            <label for="empresa" class="mr-1">Empresa:</label>
+            <select name="empresa" id="empresa" class="form-control">
+                <option value="">Todas</option>
+                @foreach ($empresas as $empresa)
+                    <option value="{{ $empresa }}" {{ request('empresa') == $empresa ? 'selected' : '' }}>
+                        {{ $empresa }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <button type="submit" class="btn btn-success">
             <i class="fas fa-file-pdf"></i> Generar Kardex PDF
@@ -134,12 +138,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const labels = @json($destinoLabels);
-            const data   = @json($destinoTotals);
+            const data = @json($destinoTotals);
 
             // Gráfico de línea
             new Chart(
-                document.getElementById('destinoLineChart').getContext('2d'),
-                {
+                document.getElementById('destinoLineChart').getContext('2d'), {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -159,8 +162,7 @@
 
             // Gráfico de área
             new Chart(
-                document.getElementById('destinoAreaChart').getContext('2d'),
-                {
+                document.getElementById('destinoAreaChart').getContext('2d'), {
                     type: 'line',
                     data: {
                         labels: labels,

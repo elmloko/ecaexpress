@@ -409,14 +409,14 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                                 <label for="pda">PDA</label>
                                 <input type="text" id="pda" wire:model.defer="pda" class="form-control"
                                     maxlength="100" placeholder="Ingrese PDA (opcional)">
                                 @error('pda')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div> --}}
+                            </div>
 
                             <div class="form-group">
                                 <label>Observación</label>

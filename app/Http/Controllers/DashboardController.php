@@ -43,18 +43,25 @@ class DashboardController extends Controller
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
+            'empresa'    => 'nullable|string|max:50',
         ]);
 
         $from = $request->start_date . ' 00:00:00';
         $to   = $request->end_date   . ' 23:59:59';
 
-        $packages = Paquete::withTrashed()                     // trae también los soft-deleted
-            ->whereIn('estado', ['INVENTARIO', 'DESPACHADO'])    // filtra ambos estados
-            ->whereBetween('created_at', [$from, $to])         // rango de fechas
-            ->get();
+        $query = \App\Models\Paquete::withTrashed()
+            ->whereIn('estado', ['INVENTARIO', 'DESPACHADO'])
+            ->whereBetween('created_at', [$from, $to]);
 
-        // ya puedes pasar $packages al PDF
-        $pdf = PDF::loadView('pdf.kardex', compact('packages'));
+        if ($request->filled('empresa')) {
+            $query->where('destinatario', $request->empresa); // Asegúrate que "user" sea el campo que almacena el nombre de la empresa
+        }
+
+        $packages = $query->get();
+
+        $empresaNombre = $request->empresa ?? 'TODAS';
+
+        $pdf = \PDF::loadView('pdf.kardex', compact('packages', 'empresaNombre'));
 
         return $pdf->stream("kardex_{$request->start_date}_{$request->end_date}.pdf");
     }
